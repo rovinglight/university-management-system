@@ -1,14 +1,16 @@
 const axios = require('axios')
+const UserModel = require('../model/userModel')
 
 module.exports = {
-  searchByUserName : async (userName) => {
+  searchByNamePwd : async (userName, pwd) => {
     return new Promise ((resolve, reject) => {
-      axios.get(`https://api.bmob.cn/1/classes/User_Rank/`, {
-        params: {
-          where: JSON.stringify({user: userName})
-        }
-      }).then((res) => {
-        resolve(res.data)
+      console.log(userName)
+      console.log(pwd)
+      UserModel.findOne({
+        name: userName,
+        pwd: pwd
+      }).then((user) => {
+        resolve(user)
       }).catch((err) => {
         reject(err)
       })

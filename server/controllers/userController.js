@@ -9,7 +9,7 @@ module.exports = {
     if (!userName || !pwd) {
       res.status(401).send('User name or password cant be empty')
     }
-    let result = await userService.searchByUserName(userName)
+    let result = await userService.searchByNamePwd(userName)
     if (result.results.length !== 0) {
       return res.status(401).send('User name duplicated')
     }
@@ -25,11 +25,12 @@ module.exports = {
     if (!userName || !pwd) {
       res.status(401).send('User name or password cant be empty')
     }
-    let result = await userService.searchByUserName(userName).catch((err) => {
+    userService.searchByNamePwd(userName, pwd).then((result) => {
+      res.status(200).send(result)
+    }).catch((err) => {
       console.log(err)
       res.status(401).send('Login fail')
     })
-    res.status(200).send(result)
   },
   updateExam: async (req, res) => {
     let userId = req.headers['x-userid']

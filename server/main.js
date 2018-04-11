@@ -3,6 +3,7 @@ const userRoute = require('./routes/user')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const axios = require('axios')
+const mongoose = require('./db/connect')
 
 const app = express()
 app.use(cors())
