@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
 import { Icon, Row, Col, Menu, Layout, Dropdown, Avatar } from 'antd'
+import { Link } from 'react-router-dom'
 const { SubMenu } = Menu;
 const { Sider } = Layout;
 
@@ -16,9 +17,12 @@ export default class SiderMenu extends Component {
     }
   }
   toggleSide () {
-    console.log('toggle')
     this.setState({sideShow: !this.state.sideShow})
+    this.props.getSideStatus(!this.state.sideShow)
   }
+  // jumpTo () {
+  //   this.props.history.push(path)
+  // }
   render () {
     const menu = (
       <Menu>
@@ -55,7 +59,7 @@ export default class SiderMenu extends Component {
                 selectedKeys={['2']}
               >
                 <SubMenu key="sub1" title={<span><Icon type="user" />学科竞赛</span>}>
-                  <Menu.Item key="1">全部竞赛</Menu.Item>
+                  <Menu.Item key="1"><Link to='login'>全部竞赛</Link></Menu.Item>
                   <Menu.Item key="2">竞赛申办</Menu.Item>
                   <Menu.Item key="3">项目库</Menu.Item>
                 </SubMenu>
@@ -80,7 +84,7 @@ export default class SiderMenu extends Component {
               <Col span={4} onClick={this.toggleSide.bind(this)}>
                 <Icon className="side-trigger font-20" type={!this.state.sideShow ? "menu-unfold" : "menu-fold"} />
               </Col>
-              <Row flex></Row>
+              <Row type="flex"></Row>
               <Col>
                 <span className={classnames('header-item', 'font-14')}>
                   <Icon className="icon-gap" type="login" />
