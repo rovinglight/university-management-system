@@ -80,7 +80,8 @@ export default class SiderMenu extends Component {
               <Col span={4} onClick={this.toggleSide.bind(this)}>
                 <Icon className="side-trigger font-20" type={!this.state.sideShow ? "menu-unfold" : "menu-fold"} />
               </Col>
-              <Col span={4}>
+              <Row flex></Row>
+              <Col>
                 <span className={classnames('header-item', 'font-14')}>
                   <Icon className="icon-gap" type="login" />
                   登录/注册
