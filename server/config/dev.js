@@ -1,6 +1,6 @@
 module.exports = {
   mongoDB: {
-    host: 'localhost',
+    host: 'ums_db',
     port: '27017',
     user: 'test',
     pwd: '123456'
