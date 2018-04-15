@@ -19,7 +19,7 @@ module.exports = {
       res.status(401).send('register fail')
     })
   },
-  login: async (req, res) => {
+  login: (req, res) => {
     let userName = req.body.user
     let pwd = req.body.pwd
     if (!userName || !pwd) {
@@ -28,18 +28,7 @@ module.exports = {
     userService.searchByNamePwd(userName, pwd).then((result) => {
       res.status(200).send(result)
     }).catch((err) => {
-      console.log(err)
       res.status(401).send('Login fail')
-    })
-  },
-  updateExam: async (req, res) => {
-    let userId = req.headers['x-userid']
-    console.log('req.body')
-    console.log(JSON.stringify(req.body))
-    userService.update(userId, req.body).then((result) => {
-      res.status(200).send('Updated')
-    }).catch((err) => {
-      res.status(400).send('update fail')
     })
   }
 }
