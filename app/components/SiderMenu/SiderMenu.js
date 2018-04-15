@@ -6,7 +6,7 @@ const { SubMenu } = Menu;
 const { Sider } = Layout;
 
 import './SiderMenu.scss'
-const badge = require('./asset/badge.jpg')
+const badge = require('./asset/badge.png')
 
 export default class SiderMenu extends Component {
 
