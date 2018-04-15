@@ -15,7 +15,7 @@
   "author": "rovinglight",
   "license": "ISC",
   "dependencies": {
-    "antd": "^2.13.6",
+    "antd": "^2.13.13",
     "axios": "^0.17.1",
     "classnames": "^2.2.5",
     "history": "^4.7.2",
