@@ -22,7 +22,7 @@ module.exports = {
     if (!userName || !pwd) {
       return res.status(401).send('User name or password cant be empty')
     }
-    userService.searchByNamePwd(userName, pwd).then((result) => {
+    userService.searchByPwd(userName, pwd).then((result) => {
       userService.refreshSessionKey(result).then((result) => {
         result = result.toObject()
         res.status(200).send(_.omit(result, ['pwd']))

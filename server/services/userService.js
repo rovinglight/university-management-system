@@ -3,10 +3,10 @@ const UserModel = require('../model/userModel')
 const mongoose = require('mongoose')
 
 module.exports = {
-  searchByNamePwd : (userName, pwd) => {
+  searchByPwd : (userName, pwd) => {
     return new Promise((resolve, reject) => {
       UserModel.findOne({
-        name: userName,
+        user: userName,
         pwd: pwd
       }).then((user) => {
         if (!user || user.length === 0) {
