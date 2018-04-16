@@ -18,13 +18,24 @@ body {
   display: none !important;
 }
 .main-container {
-  margin-top: 64px;
-  width: 100%;
   transition: all .3s;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  top: 64px;
+  left: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #f0f2f5;
+  z-index: 0;
 }
 .main-container.side {
-  margin-left: 256px;
-  width: calc(100% - 256px);
+  left: 256px;
+}
+@media (max-width: 992px) {
+  .main-container.side {
+    left: 0;
+  }
 }
 /*-------------- App -------------*/
 /*-------------- template ------------*/
@@ -34,20 +45,26 @@ body {
 .font-14 {
   font-size: 14px;
 }
+.height-100 {
+  height: 100%;
+}
+.float-right {
+  float: right;
+}
 .icon-gap {
   margin-right: .5em;
 }
 .shadow-box {
   border-radius: 2rem;
-  box-shadow: inset 0.1rem 0.1rem 0 rgba(0, 0, 0, 0.1), 0.2rem 0.2rem 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 5px 40px rgba(0,0,0,.16);
   background: rgba(0, 0, 0, 0.25);
-  padding: 1rem;
   text-align: center;
 }
 .card {
   background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 6px 6px #ECF0F1;
+  box-shadow: 0 5px 40px rgba(0,0,0,.16);
+  border-radius: 8px;
+  overflow: hidden;
 }
 .btn {
   color: #fff;

@@ -1,0 +1,35 @@
+.Login {
+  .login-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    .login-card {
+      width: 100%;
+      position: relative;
+      .login-card-title{
+        background-color: #5295ff;
+        height: 75px;
+        box-shadow: 0 1px 4px rgba(0,0,0,.2);
+        color: #fff;
+        img {
+          width: 60px;
+          height: 60px;
+          margin-right: 15px;
+        }
+      }
+      .login-card-content {
+        padding-top: 24px;
+        width: 100%;
+        .login-form {
+          width: 300px;
+          margin: 0 auto;
+          .login-form-submit {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

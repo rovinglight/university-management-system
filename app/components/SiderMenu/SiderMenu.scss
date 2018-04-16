@@ -6,13 +6,14 @@
     top: 0;
     right:0;
     left: 0;
+    background-color: white;
     box-shadow: 0 1px 4px rgba(0,21,41,.08);
     transition: all 0.3s;
+    z-index: 9;
     .side-trigger {
       padding: 0 24px;
       line-height: 64px;
       transition: all .3s,padding 0s;
-      z-index: 0;
       cursor: pointer;
     }
     .side-trigger:hover {

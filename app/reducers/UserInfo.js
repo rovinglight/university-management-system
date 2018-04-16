@@ -1,9 +1,10 @@
-import { FINISH_QUIZ } from './QuizList'
 import axios from 'axios'
+const config = require('../config/config')
 // ------------------------------------
 // Constants
 // ------------------------------------
 const USER_LOGIN = 'USER_LOGIN'
+const FINISH_QUIZ = 'FINISH_QUIZ'
 // ------------------------------------
 // Actions
 // ------------------------------------
