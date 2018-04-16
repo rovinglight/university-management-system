@@ -15,6 +15,10 @@ export default class Login extends Component {
         user: '',
         pwd: ''
       },
+      validation: {
+        user: false,
+        pwd: false
+      },
       loginBtnLoading: false
     }
   }
@@ -22,8 +26,26 @@ export default class Login extends Component {
     _.set(this.state, path, e.target.value)
     this.setState(this.state)
   }
+  validation () {
+    let flag = true
+    let validation = {}
+    let form = this.state.form
+    for (let key in form) {
+      if (!form[key]) {
+        flag = false
+        validation[key] = true
+      } else {
+        validation[key] = false
+      }
+    }
+    this.setState({validation: validation})
+    return flag
+  }
   login () {
     let form = this.state.form
+    if (!this.validation()) {
+      return
+    }
     this.setState({loginBtnLoading:true})
     this.props.login(form.user, form.pwd).then((res) => {
       message.success('登录成功')
@@ -34,6 +56,8 @@ export default class Login extends Component {
     })
   }
   render () {
+    console.log(this.state)
+    let validation = this.state.validation
     return (
       <div className="Login">
         <Row className="login-container" type="flex" justify="center" align="middle">
@@ -52,7 +76,9 @@ export default class Login extends Component {
                       <TabPane tab="" key="3"></TabPane>
                       <TabPane tab="用户登录" key="1">
                         <Form className="login-form">
-                          <FormItem>
+                          <FormItem
+                            help={validation.user ? "账号不可为空" : ""}
+                            validateStatus={validation.user ? "error" : ""}>
                             <Input
                               value={this.state.form.user}
                               onChange={this.handleChange.bind(this, 'form.user')}
@@ -60,10 +86,13 @@ export default class Login extends Component {
                               size="large"
                               placeholder="学号" />
                           </FormItem>
-                          <FormItem>
+                          <FormItem
+                            help={validation.pwd ? "密码不可为空" : ""}
+                            validateStatus={validation.pwd ? "error" : ""}>
                             <Input
                               value={this.state.form.pwd}
                               onChange={this.handleChange.bind(this, 'form.pwd')}
+                              onPressEnter={this.login.bind(this)}
                               prefix={<Icon type="lock"
                               style={{ color: 'rgba(0,0,0,.25)' }} />}
                               size="large"

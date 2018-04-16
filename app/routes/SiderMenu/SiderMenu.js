@@ -66,7 +66,7 @@ export default class SiderMenu extends Component {
                 selectedKeys={['2']}
               >
                 <SubMenu key="sub1" title={<span><Icon type="user" />学科竞赛</span>}>
-                  <Menu.Item key="1"><Link to='login'>全部竞赛</Link></Menu.Item>
+                  <Menu.Item key="1">全部竞赛</Menu.Item>
                   <Menu.Item key="2">竞赛申办</Menu.Item>
                   <Menu.Item key="3">项目库</Menu.Item>
                 </SubMenu>
@@ -93,10 +93,12 @@ export default class SiderMenu extends Component {
               </Col>
               <Row type="flex"></Row>
               <Col>
+                <Link to='login'>
                 <span className={classnames('header-item', 'font-14', {hide: loggedIn})}>
                   <Icon className="icon-gap" type="login" />
                   登录/注册
                 </span>
+              </Link>
                 <Dropdown overlay={menu}>
                   <span className={classnames("ant-dropdown-link font-14 header-item", {hide: !loggedIn})} href="#">
                      <Avatar className="vertical-middle icon-gap" icon="user" />
