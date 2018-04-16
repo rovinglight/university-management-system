@@ -1,5 +1,6 @@
 const axios = require('axios')
 const userService = require('../services/userService')
+const _ = require('lodash')
 
 module.exports = {
   register: async (req, res) => {
@@ -26,7 +27,8 @@ module.exports = {
       res.status(401).send('User name or password cant be empty')
     }
     userService.searchByNamePwd(userName, pwd).then((result) => {
-      res.status(200).send(result)
+      result = result.toObject()
+      res.status(200).send(_.omit(result, ['pwd']))
     }).catch((err) => {
       res.status(401).send('Login fail')
     })

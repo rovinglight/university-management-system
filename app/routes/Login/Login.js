@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Row, Col, Button, Form, Input, Icon, Checkbox, Tabs } from 'antd'
+import { Row, Col, Button, Form, Input, Icon, Checkbox, Tabs, message } from 'antd'
+import _ from 'lodash'
 const FormItem = Form.Item
 const TabPane = Tabs.TabPane;
 
@@ -7,6 +8,31 @@ import './Login.scss'
 const badge = require('../../components/SiderMenu/asset/badge.png')
 
 export default class Login extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      form: {
+        user: '',
+        pwd: ''
+      },
+      loginBtnLoading: false
+    }
+  }
+  handleChange (path, e) {
+    _.set(this.state, path, e.target.value)
+    this.setState(this.state)
+  }
+  login () {
+    let form = this.state.form
+    this.setState({loginBtnLoading:true})
+    this.props.login(form.user, form.pwd).then((res) => {
+      message.success('登录成功')
+      this.setState({loginBtnLoading:false})
+    }).catch((err) => {
+      message.error('登录失败')
+      this.setState({loginBtnLoading:false})
+    })
+  }
   render () {
     return (
       <div className="Login">
@@ -23,16 +49,21 @@ export default class Login extends Component {
                 <Row type="flex" justify="center" align="middle">
                   <Col>
                     <Tabs tabBarStyle={{"borderBottom": "none", "textAlign": "center", "marginBottom": "30px"}} defaultActiveKey="1">
-                      <TabPane tab="学生登录" key="1">
+                      <TabPane tab="" key="3"></TabPane>
+                      <TabPane tab="用户登录" key="1">
                         <Form className="login-form">
                           <FormItem>
                             <Input
+                              value={this.state.form.user}
+                              onChange={this.handleChange.bind(this, 'form.user')}
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               size="large"
-                              placeholder="用户名" />
+                              placeholder="学号" />
                           </FormItem>
                           <FormItem>
                             <Input
+                              value={this.state.form.pwd}
+                              onChange={this.handleChange.bind(this, 'form.pwd')}
                               prefix={<Icon type="lock"
                               style={{ color: 'rgba(0,0,0,.25)' }} />}
                               size="large"
@@ -44,39 +75,18 @@ export default class Login extends Component {
                             <a className="float-right" href="">忘记密码？</a>
                           </FormItem>
                           <FormItem>
-                            <Button type="primary" size="large" className="login-form-submit">
+                            <Button
+                              loading={this.state.loginBtnLoading}
+                              onClick={this.login.bind(this)}
+                              type="primary"
+                              size="large"
+                              className="login-form-submit">
                               登录
                             </Button>
                           </FormItem>
                         </Form>
                       </TabPane>
-                      <TabPane tab="教师登录" key="2">
-                        <Form className="login-form">
-                          <FormItem>
-                            <Input
-                              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              size="large"
-                              placeholder="用户名" />
-                          </FormItem>
-                          <FormItem>
-                            <Input
-                              prefix={<Icon type="lock"
-                              style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              size="large"
-                              type="password"
-                              placeholder="密码" />
-                          </FormItem>
-                          <FormItem>
-                            <Checkbox>自动登录</Checkbox>
-                            <a className="float-right" href="">忘记密码？</a>
-                          </FormItem>
-                          <FormItem>
-                            <Button type="primary" size="large" className="login-form-submit">
-                              登录
-                            </Button>
-                          </FormItem>
-                        </Form>
-                      </TabPane>
+                      <TabPane tab="" key="2"></TabPane>
                     </Tabs>
                   </Col>
                 </Row>

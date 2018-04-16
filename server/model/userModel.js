@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
   'name': String,
-  'pwd': String
+  'pwd': String,
+  'role': String
 })
 
 const UserModel = DB.model('user', userSchema)
