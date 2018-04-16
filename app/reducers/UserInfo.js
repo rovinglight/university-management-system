@@ -4,7 +4,6 @@ const config = require('../config/config')
 // Constants
 // ------------------------------------
 const USER_LOGIN = 'USER_LOGIN'
-const FINISH_QUIZ = 'FINISH_QUIZ'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -19,6 +18,7 @@ export const login = (user, pwd) => {
           pwd: pwd
         }
       }).then((res) => {
+        localStorage.setItem('sessionKey', res.data.sessionKey)
         dispatch({
           type: USER_LOGIN,
           payload: {
@@ -32,87 +32,36 @@ export const login = (user, pwd) => {
     })
   }
 }
-export const visitorLogin = () => {
-  return (dispatch, getState) => {
-    return dispatch({
-      type : USER_LOGIN,
-      payload: {
-        user: 'visitor',
-        total: 0,
-        correct: 0,
-        local: true
-      }
-    })
-  }
-}
-export const register = (userName, pwd) => {
+export const loginWithSessionKey = (sessionKey) => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
-        url: 'http://tupulin.com:3000/register',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/loginSession`,
         data: {
-          user: userName,
-          pwd: pwd
+          sessionKey: sessionKey
         }
       }).then((res) => {
         dispatch({
           type: USER_LOGIN,
           payload: {
-            ...res.data,
-            user:userName,
-            total: 0,
-            correct: 0
+            ...res.data
           }
         })
-        resolve('success')
-      }).catch((err) => {
-        reject('duplicated user name')
+        resolve(res.data)
+      }).catch((e) => {
+        reject(e)
+        console.log('session expired', e)
       })
     })
   }
 }
-// export const login = (userName, pwd) => {
-//   return (dispatch, getState) => {
-//     return new Promise((resolve, reject) => {
-//       axios({
-//         method: 'post',
-//         url: 'http://tupulin.com:3000/login',
-//         data: {
-//           user: userName,
-//           pwd: pwd
-//         }
-//       }).then((res) => {
-//         if (res.data.results.length === 0 || res.data.results[0].pwd !== pwd) {
-//           return reject('login fail')
-//         }
-//         dispatch({
-//           type: USER_LOGIN,
-//           payload: {
-//             ...res.data.results[0],
-//             local: false
-//           }
-//         })
-//         resolve(res.data.results[0])
-//       }).catch((err) => {
-//         reject('login fail')
-//       })
-//     })
-//   }
-// }
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
   [USER_LOGIN] : (state, action) => {
     return action.payload
-  },
-  [FINISH_QUIZ] : (state, action) => {
-    return {
-      ...state,
-      total: state.total + action.payload.total,
-      correct: state.correct + action.payload.correct
-    }
   }
 }
 // ------------------------------------

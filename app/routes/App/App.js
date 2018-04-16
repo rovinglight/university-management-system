@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Route, Link } from 'react-router-dom'
+import { message } from 'antd'
 import QuizList from '../QuizList/QuizListContainer'
 import Profile from '../Profile/ProfileContainer'
 import SiderMenu from '../../components/SiderMenu/SiderMenu.js'
@@ -13,6 +14,16 @@ export default class App extends Component {
     super(props)
     this.state = {
       sideShow : true
+    }
+  }
+  componentDidMount () {
+    let sessionKey = localStorage.getItem('sessionKey')
+    if (sessionKey) {
+      this.props.loginWithSessionKey(sessionKey).then((user) => {
+        message.success(`${user.name}登录成功`)
+      }).catch((e) => {
+        localStorage.removeItem('sessionKey')
+      })
     }
   }
   getSideStatus (status) {

@@ -71,7 +71,7 @@ export default class Login extends Component {
                               placeholder="密码" />
                           </FormItem>
                           <FormItem>
-                            <Checkbox>自动登录</Checkbox>
+                            <Checkbox>记住我</Checkbox>
                             <a className="float-right" href="">忘记密码？</a>
                           </FormItem>
                           <FormItem>

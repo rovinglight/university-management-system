@@ -4,7 +4,9 @@ const mongoose = require('mongoose')
 const userSchema = new mongoose.Schema({
   'name': String,
   'pwd': String,
-  'role': String
+  'role': String,
+  'lastLogin': Date,
+  'sessionKey': String
 })
 
 const UserModel = DB.model('user', userSchema)
