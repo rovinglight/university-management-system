@@ -56,6 +56,18 @@ export const loginWithSessionKey = (sessionKey) => {
     })
   }
 }
+export const logOut = () => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      localStorage.removeItem('sessionKey')
+      dispatch({
+        type: USER_LOGIN,
+        payload: {role: "visitor"}
+      })
+      resolve('logout succ')
+    })
+  }
+}
 // ------------------------------------
 // Action Handlers
 // ------------------------------------

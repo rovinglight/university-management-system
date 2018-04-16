@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
-import { Icon, Row, Col, Menu, Layout, Dropdown, Avatar } from 'antd'
+import { Icon, Row, Col, Menu, Layout, Dropdown, Avatar, message } from 'antd'
 import { Link } from 'react-router-dom'
 const { SubMenu } = Menu;
 const { Sider } = Layout;
@@ -20,17 +20,24 @@ export default class SiderMenu extends Component {
     this.setState({sideShow: !this.state.sideShow})
     this.props.getSideStatus(!this.state.sideShow)
   }
+  logout () {
+    this.props.logOut().then(() => {
+      message.success('已登出')
+    })
+  }
   // jumpTo () {
   //   this.props.history.push(path)
   // }
   render () {
+    let loggedIn = this.props.userInfo.role === 'visitor' ? false : true
+    console.log(loggedIn)
     const menu = (
       <Menu>
         <Menu.Item>
           <a href="">个人设置</a>
         </Menu.Item>
         <Menu.Item>
-          <a href="">登出</a>
+          <a onClick={this.logout.bind(this)}>登出</a>
         </Menu.Item>
       </Menu>
     )
@@ -86,14 +93,14 @@ export default class SiderMenu extends Component {
               </Col>
               <Row type="flex"></Row>
               <Col>
-                <span className={classnames('header-item', 'font-14')}>
+                <span className={classnames('header-item', 'font-14', {hide: loggedIn})}>
                   <Icon className="icon-gap" type="login" />
                   登录/注册
                 </span>
-                <Dropdown className={classnames('')} overlay={menu}>
-                  <span className="ant-dropdown-link font-14 header-item" href="#">
+                <Dropdown overlay={menu}>
+                  <span className={classnames("ant-dropdown-link font-14 header-item", {hide: !loggedIn})} href="#">
                      <Avatar className="vertical-middle icon-gap" icon="user" />
-                     用户名
+                     {this.props.userInfo.name}
                      <Icon type="down" />
                   </span>
                 </Dropdown>

@@ -3,7 +3,7 @@ import { Route, Link } from 'react-router-dom'
 import { message } from 'antd'
 import QuizList from '../QuizList/QuizListContainer'
 import Profile from '../Profile/ProfileContainer'
-import SiderMenu from '../../components/SiderMenu/SiderMenu.js'
+import SiderMenu from '../SiderMenu/SiderMenuContainer'
 import Login from '../Login/LoginContainer'
 import classnames from 'classnames'
 

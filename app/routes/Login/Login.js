@@ -5,7 +5,7 @@ const FormItem = Form.Item
 const TabPane = Tabs.TabPane;
 
 import './Login.scss'
-const badge = require('../../components/SiderMenu/asset/badge.png')
+const badge = require('../SiderMenu/asset/badge.png')
 
 export default class Login extends Component {
   constructor (props) {
