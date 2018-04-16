@@ -72,7 +72,7 @@ export default class Login extends Component {
               <div className="login-card-content">
                 <Row type="flex" justify="center" align="middle">
                   <Col>
-                    <Tabs tabBarStyle={{"borderBottom": "none", "textAlign": "center", "marginBottom": "30px"}} defaultActiveKey="1">
+                    <Tabs tabBarStyle={{"borderBottom": "none", "textAlign": "center", "marginBottom": "30px"}} activeKey="1">
                       <TabPane tab="" key="3"></TabPane>
                       <TabPane tab="用户登录" key="1">
                         <Form className="login-form">

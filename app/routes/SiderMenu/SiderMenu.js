@@ -62,7 +62,7 @@ export default class SiderMenu extends Component {
                 theme="light"
                 mode="inline"
                 defaultSelectedKeys={['1']}
-                defaultOpenKeys={['sub1']}
+                defaultOpenKeys={['sub1', 'sub2', 'sub3']}
                 selectedKeys={['2']}
               >
                 <SubMenu key="sub1" title={<span><Icon type="user" />学科竞赛</span>}>
@@ -80,7 +80,6 @@ export default class SiderMenu extends Component {
                   <Menu.Item key="9">option9</Menu.Item>
                   <Menu.Item key="10">option10</Menu.Item>
                   <Menu.Item key="11">option11</Menu.Item>
-                  <Menu.Item key="12">option12</Menu.Item>
                 </SubMenu>
               </Menu>
             </Sider>
