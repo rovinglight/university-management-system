@@ -2,6 +2,7 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import { routerReducer as routing, routerMiddleware } from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory'
 import userInfoReducer from '../reducers/UserInfo'
+import sgroupsReducer from '../reducers/Sgroups'
 import thunk from 'redux-thunk'
 
 export const history = createHistory()
@@ -10,6 +11,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const rootReducer = combineReducers({
   userInfo : userInfoReducer,
+  sgroups : sgroupsReducer,
   routing
 })
 

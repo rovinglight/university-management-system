@@ -1,5 +1,6 @@
 const express = require('express')
 const userRoute = require('./routes/user')
+const sgroupRoute = require('./routes/sgroup')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const axios = require('axios')
@@ -11,5 +12,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 userRoute(app)
+sgroupRoute(app)
 
 app.listen(3000)

@@ -6,6 +6,7 @@ import './StudentGroups.scss'
 export default class StudentGroups extends Component {
   constructor (props) {
     super(props)
+    props.getAllGroups()
   }
   render () {
     return (
