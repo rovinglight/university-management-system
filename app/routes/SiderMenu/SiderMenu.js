@@ -95,7 +95,7 @@ export default class SiderMenu extends Component {
               </Col>
               <Row type="flex"></Row>
               <Col>
-                <Link to='login'>
+                <Link to='/login'>
                 <span className={classnames('header-item', 'font-14', {hide: loggedIn})}>
                   <Icon className="icon-gap" type="login" />
                   登录/注册
