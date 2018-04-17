@@ -5,7 +5,13 @@
     overflow: hidden;
     margin-bottom: 24px;
     .group-card-left {
-      min-height: 150px;
+      height: 100%;
+      color: white;
+      font-size: 24px;
+      padding: 20px;
+    }
+    .group-card-right {
+      text-align: left;
     }
   }
 }
