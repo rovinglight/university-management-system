@@ -9,7 +9,8 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (state) => ({
-  userInfo: state.userInfo
+  userInfo: state.userInfo,
+  routing: state.routing
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SiderMenu)

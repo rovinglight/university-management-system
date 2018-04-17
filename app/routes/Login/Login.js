@@ -22,6 +22,11 @@ export default class Login extends Component {
       loginBtnLoading: false
     }
   }
+  componentDidUpdate () {
+    if (this.props.userInfo.sessionKey) {
+        this.props.history.push('/')
+    }
+  }
   handleChange (path, e) {
     _.set(this.state, path, e.target.value)
     this.setState(this.state)
@@ -56,7 +61,6 @@ export default class Login extends Component {
     })
   }
   render () {
-    console.log(this.state)
     let validation = this.state.validation
     return (
       <div className="Login">

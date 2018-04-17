@@ -30,7 +30,6 @@ export default class SiderMenu extends Component {
   // }
   render () {
     let loggedIn = this.props.userInfo.role === 'visitor' ? false : true
-    console.log(loggedIn)
     const menu = (
       <Menu>
         <Menu.Item>
@@ -49,37 +48,38 @@ export default class SiderMenu extends Component {
           {'side-show': this.state.sideShow}
         )}>
           <div className="side-bar">
-            <Row className="side-title font-20">
-              <Col span={8}>
-                <img className="side-title-img" src={badge} />
-              </Col>
-              <Col span={16}>
-                集美大学
-              </Col>
-            </Row>
+            <Link to='/'>
+              <Row className="side-title font-20">
+                <Col span={8}>
+                  <img className="side-title-img" src={badge} />
+                </Col>
+                <Col span={16}>
+                  集美大学
+                </Col>
+              </Row>
+            </Link>
             <Sider width={256}>
               <Menu
                 theme="light"
                 mode="inline"
-                defaultSelectedKeys={['1']}
                 defaultOpenKeys={['sub1', 'sub2', 'sub3']}
-                selectedKeys={['2']}
+                selectedKeys={['quiz']}
               >
                 <SubMenu key="sub1" title={<span><Icon type="user" />学科竞赛</span>}>
                   <Menu.Item key="1">全部竞赛</Menu.Item>
                   <Menu.Item key="2">竞赛申办</Menu.Item>
                   <Menu.Item key="3">项目库</Menu.Item>
                 </SubMenu>
-                <SubMenu key="sub2" title={<span><Icon type="laptop" />subnav 2</span>}>
-                  <Menu.Item key="5">option5</Menu.Item>
-                  <Menu.Item key="6">option6</Menu.Item>
+                <SubMenu key="sub2" title={<span><Icon type="solution" />社团管理</span>}>
+                  <Menu.Item key="5">社团列表</Menu.Item>
+                  <Menu.Item key="6">新社团申请</Menu.Item>
                   <Menu.Item key="7">option7</Menu.Item>
                   <Menu.Item key="8">option8</Menu.Item>
                 </SubMenu>
-                <SubMenu key="sub3" title={<span><Icon type="notification" />subnav 3</span>}>
-                  <Menu.Item key="9">option9</Menu.Item>
-                  <Menu.Item key="10">option10</Menu.Item>
-                  <Menu.Item key="11">option11</Menu.Item>
+                <SubMenu key="sub3" title={<span><Icon type="notification" />管理员功能</span>}>
+                  <Menu.Item key="9">学生信息统计</Menu.Item>
+                  <Menu.Item key="10">动态审核设置</Menu.Item>
+                  <Menu.Item key="11">权限设置</Menu.Item>
                 </SubMenu>
               </Menu>
             </Sider>
