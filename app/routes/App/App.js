@@ -3,6 +3,7 @@ import { Route, Link } from 'react-router-dom'
 import { message } from 'antd'
 import SiderMenu from '../SiderMenu/SiderMenuContainer'
 import Login from '../Login/LoginContainer'
+import StudentGroups from '../StudentGroups/StudentGroupsContainer'
 import classnames from 'classnames'
 
 import './App.scss'
@@ -33,6 +34,7 @@ export default class App extends Component {
         <SiderMenu getSideStatus={this.getSideStatus.bind(this)} />
         <div className={classnames("main-container", {side: this.state.sideShow})}>
           <Route path='/login' component={Login}/>
+          <Route path='/studentgroups' component={StudentGroups}/>
         </div>
       </div>
     )

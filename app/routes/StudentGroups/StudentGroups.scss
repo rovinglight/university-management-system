@@ -1,0 +1,11 @@
+.studentgroups {
+  .group-card {
+    width: 100%;
+    background-color: white;
+    overflow: hidden;
+    margin-bottom: 24px;
+    .group-card-left {
+      min-height: 150px;
+    }
+  }
+}
