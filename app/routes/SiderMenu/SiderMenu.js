@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import classnames from 'classnames'
 import { Icon, Row, Col, Menu, Layout, Dropdown, Avatar, message } from 'antd'
 import { Link } from 'react-router-dom'
+import _ from 'lodash'
 const { SubMenu } = Menu;
 const { Sider } = Layout;
 
@@ -12,8 +13,10 @@ export default class SiderMenu extends Component {
 
   constructor (props) {
     super(props)
+    let randomNum = _.random(1, 10)
     this.state = {
-      sideShow: true
+      sideShow: true,
+      randomNum: randomNum
     }
   }
   toggleSide () {
@@ -70,7 +73,7 @@ export default class SiderMenu extends Component {
                   <Menu.Item key="2">竞赛申办</Menu.Item>
                   <Menu.Item key="3">项目库</Menu.Item>
                 </SubMenu>
-                <SubMenu key="sub2" title={<span><Icon type="solution" />社团管理</span>}>
+                <SubMenu key="sub2" title={<span><Icon type="solution" />学生组织</span>}>
                   <Menu.Item key="5"><Link to='/studentgroups'>所有社团</Link></Menu.Item>
                   <Menu.Item key="6">新社团申请</Menu.Item>
                   <Menu.Item key="7">社团管理</Menu.Item>
@@ -100,7 +103,7 @@ export default class SiderMenu extends Component {
               </Link>
                 <Dropdown overlay={menu}>
                   <span className={classnames("ant-dropdown-link font-14 header-item", {hide: !loggedIn})} href="#">
-                     <Avatar className="vertical-middle icon-gap" icon="user" />
+                     <Avatar className={`vertical-middle icon-gap bg-gradient-${this.state.randomNum}`} icon="user" />
                      {this.props.userInfo.name}
                      <Icon type="down" />
                   </span>
