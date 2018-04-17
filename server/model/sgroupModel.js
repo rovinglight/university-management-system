@@ -4,7 +4,8 @@ const mongoose = require('mongoose')
 const sgroupSchema = new mongoose.Schema({
   'name': String,
   'desc': String,
-  'members': Array
+  'members': Array,
+  'foundTime': Date
 })
 
 const SgroupModel = DB.model('sgroup', sgroupSchema)

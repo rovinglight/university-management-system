@@ -1,0 +1,15 @@
+.group-card {
+  width: 100%;
+  background-color: white;
+  overflow: hidden;
+  margin-bottom: 24px;
+  .group-card-left {
+    height: 100%;
+    color: white;
+    font-size: 24px;
+    padding: 20px;
+  }
+  .group-card-right {
+    text-align: left;
+  }
+}

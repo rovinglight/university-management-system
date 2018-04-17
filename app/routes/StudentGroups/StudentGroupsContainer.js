@@ -9,7 +9,8 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (state) => ({
-
+  sgroups: state.sgroups,
+  userInfo: state.userInfo
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentGroups)
