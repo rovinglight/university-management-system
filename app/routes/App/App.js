@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import { Route, Link } from 'react-router-dom'
 import { message } from 'antd'
-import QuizList from '../QuizList/QuizListContainer'
-import Profile from '../Profile/ProfileContainer'
 import SiderMenu from '../SiderMenu/SiderMenuContainer'
 import Login from '../Login/LoginContainer'
 import classnames from 'classnames'
@@ -35,8 +33,6 @@ export default class App extends Component {
         <SiderMenu getSideStatus={this.getSideStatus.bind(this)} />
         <div className={classnames("main-container", {side: this.state.sideShow})}>
           <Route path='/login' component={Login}/>
-          <Route exact path='/test' component={Profile} />
-          <Route path='/quizList' component={QuizList} />
         </div>
       </div>
     )
