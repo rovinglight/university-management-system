@@ -1,10 +1,11 @@
 import { connect } from 'react-redux'
 import StudentGroups from './StudentGroups'
-import { getAllGroups } from '../../reducers/Sgroups'
+import { getAllGroups, applyForSgroup } from '../../reducers/Sgroups'
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getAllGroups: () => dispatch(getAllGroups()),
+    applyForSgroup: (userId, groupId) => dispatch(applyForSgroup(userId, groupId))
   }
 }
 

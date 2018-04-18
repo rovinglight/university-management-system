@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Row, Col, Button } from 'antd'
+import { Row, Col, Button, Icon } from 'antd'
+import { Link } from 'react-router-dom'
 import _ from 'lodash'
 
 import './GroupCard.scss'
@@ -9,8 +10,20 @@ export default class GroupCard extends Component {
     super(props)
     let randomNum = _.random(1, 10)
     this.state = {
-      randomNum: randomNum
+      randomNum: randomNum,
+      applyButtonLoading: false
     }
+  }
+  applyForSgroup () {
+    let userId = this.props.userId
+    let groupId = this.props.group._id
+    this.setState({applyButtonLoading: true})
+    this.props.applyForSgroup(userId, groupId).then((res) => {
+      this.setState({applyButtonLoading: false})
+    }).catch((e) => {
+      this.setState({applyButtonLoading: false})
+      console.log(e)
+    })
   }
   render () {
     let group = this.props.group
@@ -39,10 +52,16 @@ export default class GroupCard extends Component {
               </Row>
               <Row type="flex" justify="end" gutter={16}>
                 <Col>
-                  <Button type="default">申请加入</Button>
+                  <Link to={`/studentgroups/${group._id}`}>
+                    <Button type="default">社团管理</Button>
+                  </Link>
                 </Col>
                 <Col>
-                  <Button type="default">社团管理</Button>
+                  <Button loading={this.state.applyButtonLoading} onClick={this.applyForSgroup.bind(this)} type="default">申请加入</Button>
+                  <span className='hide'>
+                    <Icon className='icon-gap' type="clock-circle-o" />
+                    申请状态：等待通过
+                  </span>
                 </Col>
               </Row>
             </Col>

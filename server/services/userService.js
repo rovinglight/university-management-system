@@ -18,6 +18,15 @@ module.exports = {
       })
     })
   },
+  searchById : (userId) => {
+    return new Promise((resolve, reject) => {
+      UserModel.findById(userId).then((user) => {
+        resolve(user)
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  },
   searchBySessionKey : (sessionKey) => {
     return new Promise((resolve, reject) => {
       UserModel.findOne({

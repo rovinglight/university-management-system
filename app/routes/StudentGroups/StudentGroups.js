@@ -11,6 +11,8 @@ export default class StudentGroups extends Component {
   }
   render () {
     let groups = this.props.sgroups.groups
+    let userId = _.get(this.props, 'userInfo._id')
+    console.log(userId)
     return (
       <div className="studentgroups">
         <Row className="page-title">
@@ -23,7 +25,7 @@ export default class StudentGroups extends Component {
             groups.map((group, index) => {
               return (
                 <Col key="index" span={24} xl={12}>
-                  <GroupCard group={group} />
+                  <GroupCard group={group} userId={userId} applyForSgroup={this.props.applyForSgroup} />
                 </Col>
               )
             })

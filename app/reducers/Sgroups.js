@@ -1,4 +1,5 @@
 import axios from 'axios'
+import _ from 'lodash'
 const config = require('../config/config')
 // ------------------------------------
 // Constants
@@ -18,6 +19,40 @@ export const getAllGroups = () => {
           type: GET_ALL_GROUPS,
           payload: {
             groups: res.data
+          }
+        })
+        resolve(res)
+      }).catch((e) => {
+        console.log(e)
+        reject(e)
+      })
+    })
+  }
+}
+export const applyForSgroup = (userId, groupId) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/sgroups/apply`,
+        data: {
+          userId: userId,
+          groupId: groupId
+        }
+      }).then((res) => {
+        let sgroups = getState().sgroups.groups
+        let members = res.data.members
+        sgroups = sgroups.map((sgroup, index) => {
+          if (sgroup._id === groupId) {
+            sgroup.members = members
+            return sgroup
+          }
+          return sgroup
+        })
+        dispatch({
+          type: GET_ALL_GROUPS,
+          payload: {
+            groups: sgroups
           }
         })
         resolve(res)
