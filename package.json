@@ -1,5 +1,5 @@
 {
-  "name": "sums-generator",
+  "name": "ums",
   "version": "1.0.0",
   "description": "command line tool to generate sums",
   "scripts": {
@@ -15,7 +15,7 @@
   "author": "rovinglight",
   "license": "ISC",
   "dependencies": {
-    "antd": "^2.13.13",
+    "antd": "^3.4.1",
     "axios": "^0.17.1",
     "classnames": "^2.2.5",
     "history": "^4.7.2",
