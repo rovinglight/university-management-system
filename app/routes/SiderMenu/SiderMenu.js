@@ -75,7 +75,7 @@ export default class SiderMenu extends Component {
                   <Menu.Item key="3">项目库</Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" title={<span><Icon type="solution" />学生组织</span>}>
-                  <Menu.Item key="studentgroups"><Link to='/studentgroups'>所有社团</Link></Menu.Item>
+                  <Menu.Item key="studentgroups"><Link to='/studentgroups'>全部社团</Link></Menu.Item>
                   <Menu.Item key="6">新社团申请</Menu.Item>
                   <Menu.Item key="7">社团管理</Menu.Item>
                   <Menu.Item key="8">option8</Menu.Item>
