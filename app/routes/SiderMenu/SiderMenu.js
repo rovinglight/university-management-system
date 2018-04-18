@@ -32,6 +32,7 @@ export default class SiderMenu extends Component {
   //   this.props.history.push(path)
   // }
   render () {
+    let currentPath = this.props.routing.location.pathname.split('/')[1]
     let loggedIn = this.props.userInfo.role === 'visitor' ? false : true
     const menu = (
       <Menu>
@@ -66,7 +67,7 @@ export default class SiderMenu extends Component {
                 theme="light"
                 mode="inline"
                 defaultOpenKeys={['sub1', 'sub2', 'sub3']}
-                selectedKeys={['quiz']}
+                selectedKeys={[currentPath]}
               >
                 <SubMenu key="sub1" title={<span><Icon type="user" />学科竞赛</span>}>
                   <Menu.Item key="1">全部竞赛</Menu.Item>
@@ -74,7 +75,7 @@ export default class SiderMenu extends Component {
                   <Menu.Item key="3">项目库</Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" title={<span><Icon type="solution" />学生组织</span>}>
-                  <Menu.Item key="5"><Link to='/studentgroups'>所有社团</Link></Menu.Item>
+                  <Menu.Item key="studentgroups"><Link to='/studentgroups'>所有社团</Link></Menu.Item>
                   <Menu.Item key="6">新社团申请</Menu.Item>
                   <Menu.Item key="7">社团管理</Menu.Item>
                   <Menu.Item key="8">option8</Menu.Item>
