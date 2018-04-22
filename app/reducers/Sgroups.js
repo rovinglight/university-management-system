@@ -34,10 +34,9 @@ export const applyForSgroup = (userId, groupId) => {
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
-        url: `http://${config.ums_web.host}:${config.ums_web.port}/sgroups/apply`,
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/sgroups/${groupId}/apply`,
         data: {
-          userId: userId,
-          groupId: groupId
+          userId: userId
         }
       }).then((res) => {
         let sgroups = getState().sgroups.groups

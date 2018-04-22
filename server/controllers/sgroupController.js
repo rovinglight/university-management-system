@@ -12,7 +12,7 @@ module.exports = {
   },
   applyForSgroup: (req, res) => {
     let userId = req.body.userId
-    let groupId = req.body.groupId
+    let groupId = req.params.groupId
     sgroupService.applyForSgroup(userId, groupId).then((result) => {
       res.status(200).send(result)
     }).catch((e) => {
