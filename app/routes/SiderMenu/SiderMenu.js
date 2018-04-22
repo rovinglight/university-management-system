@@ -28,9 +28,9 @@ export default class SiderMenu extends Component {
       message.success('已登出')
     })
   }
-  // jumpTo () {
-  //   this.props.history.push(path)
-  // }
+  jumpTo (path) {
+    this.props.history.push(path)
+  }
   render () {
     let currentPath = this.props.routing.location.pathname.split('/')[1]
     let loggedIn = this.props.userInfo.role === 'visitor' ? false : true

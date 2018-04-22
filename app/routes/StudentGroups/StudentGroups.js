@@ -9,10 +9,12 @@ export default class StudentGroups extends Component {
     super(props)
     props.getAllGroups()
   }
+  jumpTo (path) {
+    this.props.history.push(path)
+  }
   render () {
     let groups = this.props.sgroups.groups
     let userId = _.get(this.props, 'userInfo._id')
-    console.log(userId)
     return (
       <div className="studentgroups">
         <Row className="page-title">
@@ -24,8 +26,12 @@ export default class StudentGroups extends Component {
           {
             groups.map((group, index) => {
               return (
-                <Col key="index" span={24} xl={12}>
-                  <GroupCard group={group} userId={userId} applyForSgroup={this.props.applyForSgroup} />
+                <Col key={index} span={24} xxl={12}>
+                  <GroupCard
+                    group={group}
+                    userId={userId}
+                    applyForSgroup={this.props.applyForSgroup}
+                    jumpTo={this.jumpTo.bind(this)} />
                 </Col>
               )
             })

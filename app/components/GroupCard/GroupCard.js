@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Row, Col, Button, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
+import classnames from 'classnames'
 
 import './GroupCard.scss'
 
@@ -17,6 +18,9 @@ export default class GroupCard extends Component {
   applyForSgroup () {
     let userId = this.props.userId
     let groupId = this.props.group._id
+    if (!userId) {
+      return this.props.jumpTo('/login')
+    }
     this.setState({applyButtonLoading: true})
     this.props.applyForSgroup(userId, groupId).then((res) => {
       this.setState({applyButtonLoading: false})
@@ -26,8 +30,10 @@ export default class GroupCard extends Component {
     })
   }
   render () {
+    let userId = this.props.userId
     let group = this.props.group
     let memberCount = group.members.length
+    let groupMemberInfo = _.find(group.members, _.matchesProperty('studentId', userId))
     return (
         <div className="group-card shadow-box">
           <Row type="flex">
@@ -51,14 +57,20 @@ export default class GroupCard extends Component {
                 <Col>简介：{group.desc}</Col>
               </Row>
               <Row type="flex" justify="end" gutter={16}>
-                <Col>
+                <Col className={classnames({hide: !(_.get(groupMemberInfo, 'status') === 'active')})}>
                   <Link to={`/studentgroups/${group._id}`}>
                     <Button type="default">社团管理</Button>
                   </Link>
                 </Col>
                 <Col>
-                  <Button loading={this.state.applyButtonLoading} onClick={this.applyForSgroup.bind(this)} type="default">申请加入</Button>
-                  <span className='hide'>
+                  <Button
+                    className={classnames({hide: groupMemberInfo})}
+                    loading={this.state.applyButtonLoading}
+                    onClick={this.applyForSgroup.bind(this)}
+                    type="default">
+                    申请加入
+                  </Button>
+                  <span className={classnames({hide: !(_.get(groupMemberInfo, 'status') === 'waitForPermission')})}>
                     <Icon className='icon-gap' type="clock-circle-o" />
                     申请状态：等待通过
                   </span>

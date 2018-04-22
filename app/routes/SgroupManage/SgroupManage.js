@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Row, Col, Table, Button, Divider, Icon } from 'antd'
 import _ from 'lodash'
+import classnames from 'classnames'
 
 import './SgroupManage.scss'
 
@@ -17,6 +18,10 @@ export default class SgroupManage extends Component {
       {
         status: 'active',
         display: '活跃'
+      },
+      {
+        status: 'waitForPermission',
+        display: '等待通过'
       }
     ]
     const roleConverter = [
@@ -27,8 +32,10 @@ export default class SgroupManage extends Component {
     ]
     let group = _.find(this.props.sgroups.groups, _.matchesProperty('_id', this.props.match.params.groupId))
     let members = group && group.members.map((member, index) => {
-      let role = _.find(roleConverter, _.matchesProperty('role', member.role)).display || member.role
-      let status = _.find(statusConverter, _.matchesProperty('status', member.status)).display || member.status
+      let roleDisplayRules = _.find(roleConverter, _.matchesProperty('role', member.role))
+      let statusDisplayRules = _.find(statusConverter, _.matchesProperty('status', member.status))
+      let role = roleDisplayRules && roleDisplayRules.display || member.role
+      let status = statusDisplayRules && statusDisplayRules.display || member.status
       return{
         key: member.studentId,
         name: member.name,
@@ -60,7 +67,8 @@ export default class SgroupManage extends Component {
       key: 'action',
       render: (text, record) => (
         <span>
-          <a href="javascript:;">接受该新成员</a>
+          <a className={classnames()}
+            href="javascript:;">接受该新成员</a>
           <Divider type="vertical" />
           <a href="javascript:;">进行年审</a>
           <Divider type="vertical" />
