@@ -6,6 +6,8 @@ import { configureStore, history } from './store/configureStore'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'react-router-redux'
 import axios from 'axios'
+import NProgress from 'nprogress/nprogress.js'
+import 'nprogress/nprogress.css'
 
 const store = configureStore({})
 
@@ -28,4 +30,19 @@ axios.interceptors.request.use((config) => {
     config.headers.sessionkey = sessionKey
   }
   return config
+})
+
+NProgress.configure({
+    easing: 'linear',
+    speed: 350
+})
+
+axios.defaults.transformRequest.push(function (data, headers) {
+    NProgress.start();
+    return data;
+})
+
+axios.defaults.transformResponse.push(function (data, headers) {
+    NProgress.done();
+    return data;
 })
