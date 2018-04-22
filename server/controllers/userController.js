@@ -3,6 +3,25 @@ const userService = require('../services/userService')
 const _ = require('lodash')
 
 module.exports = {
+  attachUserInfo: (req, res, next) => {
+    let sessionKey = req.headers.sessionkey
+    if (!sessionKey) {
+      return next()
+    }
+    userService.searchBySessionKey(sessionKey).then((user) => {
+      req.userInfo = user
+      next()
+    }).catch((e) => {
+      console.log(e)
+      next()
+    })
+  },
+  loginCheck: (req, res, next) => {
+    if (!req.userInfo) {
+      return res.status(401).send('Please login')
+    }
+    next()
+  },
   loginWithSessionKey: (req, res) => {
     let sessionKey = req.body.sessionKey
     if (!sessionKey) {
@@ -17,6 +36,7 @@ module.exports = {
     })
   },
   login: (req, res) => {
+    console.log(req.userInfo)
     let userName = req.body.user
     let pwd = req.body.pwd
     if (!userName || !pwd) {
