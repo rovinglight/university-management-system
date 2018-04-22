@@ -36,7 +36,6 @@ module.exports = {
     })
   },
   login: (req, res) => {
-    console.log(req.userInfo)
     let userName = req.body.user
     let pwd = req.body.pwd
     if (!userName || !pwd) {

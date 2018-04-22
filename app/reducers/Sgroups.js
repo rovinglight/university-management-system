@@ -33,11 +33,8 @@ export const applyForSgroup = (userId, groupId) => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios({
-        method: 'post',
-        url: `http://${config.ums_web.host}:${config.ums_web.port}/sgroups/${groupId}/apply`,
-        data: {
-          userId: userId
-        }
+        method: 'get',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/sgroups/${groupId}/apply`
       }).then((res) => {
         let sgroups = getState().sgroups.groups
         let members = res.data.members
@@ -58,6 +55,30 @@ export const applyForSgroup = (userId, groupId) => {
       }).catch((e) => {
         console.log(e)
         reject(e)
+      })
+    })
+  }
+}
+export const acceptNewMember = (userId, groupId) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/sgroups/${groupId}/accept`,
+        data: {
+          userId: userId
+        }
+      }).then((res) => {
+        let sgroups = getState().sgroups.groups
+        let group = res.data
+        let targetGroup = _.find(sgroups, {'_id': group._id.toString()})
+        targetGroup.members = group.members
+        dispatch({
+          type: GET_ALL_GROUPS,
+          payload: {
+            groups: sgroups
+          }
+        })
       })
     })
   }

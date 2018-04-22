@@ -38,5 +38,26 @@ module.exports = {
         reject(e)
       })
     })
+  },
+  acceptNewMember : (userId, groupId) => {
+    return new Promise((resolve, reject) => {
+      SgroupModel.findById(groupId).then((sgroup) => {
+        let memberInfo = _.find(sgroup.members, {'studentId': userId})
+        if (!memberInfo) {
+          reject('not applied yet')
+        }
+        if (memberInfo.status === 'active') {
+          reject('already a member')
+        }
+        memberInfo.status = 'active'
+        memberInfo.role = 'member'
+        memberInfo.joinTime = new Date()
+        sgroup.save().then((group) => {
+          resolve(group)
+        })
+      }).catch((e) => {
+        reject(e)
+      })
+    })
   }
 }

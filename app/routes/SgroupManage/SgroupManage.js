@@ -41,7 +41,8 @@ export default class SgroupManage extends Component {
         name: member.name,
         status: status,
         role: role,
-        joinTime: member.joinTime
+        joinTime: member.joinTime,
+        member: member
       }
     })
     return members
@@ -50,6 +51,7 @@ export default class SgroupManage extends Component {
     this.setState({ selectedRowKeys })
   }
   render () {
+    let groupInfo = _.find(this.props.sgroups.groups, {'_id': this.props.match.params.groupId})
     const columns = [{
       title: '姓名',
       dataIndex: 'name',
@@ -67,11 +69,18 @@ export default class SgroupManage extends Component {
       key: 'action',
       render: (text, record) => (
         <span>
-          <a className={classnames()}
-            href="javascript:;">接受该新成员</a>
-          <Divider type="vertical" />
-          <a href="javascript:;">进行年审</a>
-          <Divider type="vertical" />
+          <a
+            className={classnames({hide: !(record.member.status === 'waitForPermission')})}
+            onClick={this.props.acceptNewMember.bind(this, record.key, groupInfo._id)}
+            href="javascript:;">
+            接受该新成员
+            <Divider type="vertical" />
+          </a>
+
+          <a href="javascript:;">
+            进行年审
+            <Divider type="vertical" />
+          </a>
           <a href="javascript:;">年度评价</a>
         </span>
       )
@@ -81,7 +90,7 @@ export default class SgroupManage extends Component {
       onChange: this.onSelectChange.bind(this),
       hideDefaultSelections: true,
       selections: false
-    };
+    }
     let members = this.memberTableConverter()
     return (
       <div className="sgroupmanage">
