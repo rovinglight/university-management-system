@@ -21,8 +21,8 @@ module.exports = {
   },
   acceptNewMember: (req, res) => {
     let groupId = req.params.groupId
-    let userId = req.body.userId
-    sgroupService.acceptNewMember(userId, groupId).then((group) => {
+    let userIdList = req.body.userId
+    sgroupService.acceptNewMember(userIdList, groupId).then((group) => {
       res.status(200).send(group)
     }).catch((e) => {
       console.error(e)

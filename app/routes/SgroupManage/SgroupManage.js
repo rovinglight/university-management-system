@@ -35,10 +35,10 @@ export default class SgroupManage extends Component {
         display: '成员'
       }
     ]
-    let group = _.find(this.props.sgroups.groups, _.matchesProperty('_id', this.props.match.params.groupId))
+    let group = _.find(this.props.sgroups.groups, {'_id': this.props.match.params.groupId})
     let members = group && group.members.map((member, index) => {
-      let roleDisplayRules = _.find(roleConverter, _.matchesProperty('role', member.role))
-      let statusDisplayRules = _.find(statusConverter, _.matchesProperty('status', member.status))
+      let roleDisplayRules = _.find(roleConverter, {'role': member.role})
+      let statusDisplayRules = _.find(statusConverter, {'status': member.status})
       let role = roleDisplayRules && roleDisplayRules.display || member.role
       let status = statusDisplayRules && statusDisplayRules.display || member.status
       return{
@@ -74,9 +74,8 @@ export default class SgroupManage extends Component {
           return
         }
         let showFromNow = now - record.joinTime
-        console.log(showFromNow)
         return(
-          <Moment locale="zh-cn" format="MMMM Do YYYY, a" fromNow>{record.joinTime}</Moment>
+          <Moment locale="zh-cn" format="MMMDo YYYY，a" fromNow>{record.joinTime}</Moment>
         )
       }
     }, {
@@ -86,7 +85,7 @@ export default class SgroupManage extends Component {
         <span>
           <a
             className={classnames({hide: !(record.member.status === 'waitForPermission')})}
-            onClick={this.props.acceptNewMember.bind(this, record.key, groupInfo._id)}
+            onClick={this.props.acceptNewMember.bind(this, [record.key], groupInfo._id)}
             href="javascript:;">
             接受该新成员
             <Divider type="vertical" />
@@ -130,6 +129,12 @@ export default class SgroupManage extends Component {
               <h2 className="margin-bottom-25">成员信息</h2>
               <Row>
                 <Col>
+                  <Row className='margin-bottom-10'>
+                    <Col>
+                      <Button className='icon-gap' onClick={this.props.getAllGroups}>刷新</Button>
+                      <Button>接受新成员</Button>
+                    </Col>
+                  </Row>
                   <Table
                     rowSelection={rowSelection}
                     columns={columns}

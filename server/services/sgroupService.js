@@ -39,19 +39,25 @@ module.exports = {
       })
     })
   },
-  acceptNewMember : (userId, groupId) => {
+  acceptNewMember : (userIdList, groupId) => {
     return new Promise((resolve, reject) => {
       SgroupModel.findById(groupId).then((sgroup) => {
-        let memberInfo = _.find(sgroup.members, {'studentId': userId})
-        if (!memberInfo) {
-          reject('not applied yet')
+        let noneSaved = _.every(userIdList, (userId) => {
+          let memberInfo = _.find(sgroup.members, {studentId: userId})
+          if (!memberInfo) {
+            return true
+          }
+          if (memberInfo.status === 'active') {
+            return true
+          }
+          memberInfo.status = 'active'
+          memberInfo.role = 'member'
+          memberInfo.joinTime = new Date()
+          return false
+        })
+        if (noneSaved) {
+          return reject('no match')
         }
-        if (memberInfo.status === 'active') {
-          reject('already a member')
-        }
-        memberInfo.status = 'active'
-        memberInfo.role = 'member'
-        memberInfo.joinTime = new Date()
         sgroup.save().then((group) => {
           resolve(group)
         })
