@@ -54,7 +54,6 @@ export default class Login extends Component {
     this.setState({loginBtnLoading:true})
     this.props.login(form.user, form.pwd).then((res) => {
       message.success('登录成功')
-      this.setState({loginBtnLoading:false})
     }).catch((err) => {
       message.error('登录失败')
       this.setState({loginBtnLoading:false})
