@@ -79,6 +79,9 @@ export const acceptNewMember = (userId, groupId) => {
             groups: sgroups
           }
         })
+        resolve(group)
+      }).catch((e) => {
+        reject(e)
       })
     })
   }
