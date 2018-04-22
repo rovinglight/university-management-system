@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Row, Col, Table, Button, Divider, Icon } from 'antd'
 import _ from 'lodash'
 import classnames from 'classnames'
+import Moment from 'react-moment'
+import 'moment/locale/zh-cn'
 
 import './SgroupManage.scss'
 
@@ -28,6 +30,9 @@ export default class SgroupManage extends Component {
       {
         role: 'president',
         display: '主席'
+      }, {
+        role: 'member',
+        display: '成员'
       }
     ]
     let group = _.find(this.props.sgroups.groups, _.matchesProperty('_id', this.props.match.params.groupId))
@@ -51,6 +56,7 @@ export default class SgroupManage extends Component {
     this.setState({ selectedRowKeys })
   }
   render () {
+    let now = new Date()
     let groupInfo = _.find(this.props.sgroups.groups, {'_id': this.props.match.params.groupId})
     const columns = [{
       title: '姓名',
@@ -63,7 +69,16 @@ export default class SgroupManage extends Component {
       dataIndex: 'role'
     }, {
       title: '加入时间',
-      dataIndex: 'joinTime'
+      render: (text, record) => {
+        if (!record.joinTime) {
+          return
+        }
+        let showFromNow = now - record.joinTime
+        console.log(showFromNow)
+        return(
+          <Moment locale="zh-cn" format="MMMM Do YYYY, a" fromNow>{record.joinTime}</Moment>
+        )
+      }
     }, {
       title: '操作',
       key: 'action',
