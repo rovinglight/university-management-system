@@ -1,10 +1,9 @@
 version: '2.2'
 services:
   ums_web:
-    image: node:carbon
+    build: ./server
+    image: ums_web:v0.1
     container_name: ums_web_container
-    build:
-      context: .
     ports:
       - "3000:3000"
     volumes:
@@ -13,10 +12,9 @@ services:
       - ums_db
     tty: true
   ums_app:
-    image: node:carbon
+    build: ./
+    image: ums_app:v0.1
     container_name: ums_app_container
-    build:
-      context: .
     ports:
       - "8080:8080"
     volumes:
