@@ -31,6 +31,7 @@ module.exports = {
           joinTime: '',
           audit: []
         })
+        UserService.addAuth(userId, {role: 'studentGroupApplicant', groupId: groupId})
         sgroup.save().then((result) => {
           resolve(result)
         })
@@ -42,7 +43,7 @@ module.exports = {
   acceptNewMember : (userIdList, groupId) => {
     return new Promise((resolve, reject) => {
       SgroupModel.findById(groupId).then((sgroup) => {
-        let noneSaved = _.every(userIdList, (userId) => {
+        _.every(userIdList, (userId) => {
           let memberInfo = _.find(sgroup.members, {studentId: userId})
           if (!memberInfo) {
             return true
@@ -50,14 +51,12 @@ module.exports = {
           if (memberInfo.status === 'active') {
             return true
           }
+          UserService.addAuth(userId, {role:'studentGroupMember', groupId: groupId})
           memberInfo.status = 'active'
           memberInfo.role = 'member'
           memberInfo.joinTime = new Date()
-          return false
+          return true
         })
-        if (noneSaved) {
-          return reject('no match')
-        }
         sgroup.save().then((group) => {
           resolve(group)
         })

@@ -2,7 +2,7 @@ const axios = require('axios')
 const UserModel = require('../model/userModel')
 const mongoose = require('mongoose')
 
-module.exports = {
+const UserService = {
   searchByPwd : (userName, pwd) => {
     return new Promise((resolve, reject) => {
       UserModel.findOne({
@@ -52,5 +52,20 @@ module.exports = {
         resolve(updated)
       })
     })
+  },
+  addAuth : (userId, auth) => {
+    return new Promise((resolve, reject) => {
+      UserService.searchById(userId).then((user) => {
+        user.auth.push(auth)
+        user.save().then((user) => {
+          resolve(user)
+        })
+      }).catch((e) => {
+        console.log(e)
+        reject(e)
+      })
+    })
   }
 }
+
+module.exports = UserService

@@ -6,7 +6,11 @@ const userSchema = new mongoose.Schema({
   'pwd': String,
   'role': String,
   'lastLogin': Date,
-  'sessionKey': String
+  'sessionKey': String,
+  'auth': [{
+    'role': String,
+    'groupId': String
+  }]
 })
 
 const UserModel = DB.model('user', userSchema)
