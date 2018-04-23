@@ -29,6 +29,13 @@ export default class SgroupManage extends Component {
       message.error('删除失败')
     })
   }
+  rejectMembers (userIdList, groupId) {
+    this.props.rejectMembers(userIdList, groupId).then((result) => {
+      message.success('拒绝成功')
+    }).catch((e) => {
+      message.error('拒绝失败')
+    })
+  }
   memberTableConverter () {
     const statusConverter = [
       {
@@ -147,7 +154,7 @@ export default class SgroupManage extends Component {
                       <Button className='icon-gap' onClick={this.props.getAllGroups}>刷新</Button>
                       <Button className='icon-gap' onClick={this.acceptNewMembers.bind(this, this.state.selectedRowKeys, groupId)}>接受加入申请</Button>
                       <Button className='icon-gap' onClick={this.deleteMembers.bind(this, this.state.selectedRowKeys, groupId)} >删除成员</Button>
-                      <Button >拒绝加入申请</Button>
+                      <Button onClick={this.rejectMembers.bind(this, this.state.selectedRowKeys, groupId)}>拒绝加入申请</Button>
                     </Col>
                   </Row>
                   <Table

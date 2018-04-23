@@ -75,14 +75,25 @@ const SgroupService = {
           AuthService.removeUserAuthOfGroup(userId, groupId).catch((e) => {
             reject(e)
           })
-          let memberInfo = _.find(sgroup.members, {'studentId': userId})
-          memberInfo.remove()
+          let memberInfos = _.filter(sgroup.members, {'studentId': userId})
+          memberInfos.forEach((memberInfo, i) => {
+            memberInfo.remove()
+          })
         })
         sgroup.save().then((sgroup) => {
           resolve(sgroup)
         }).catch((e) => {
           reject(e)
         })
+      })
+    })
+  },
+  rejectNewMembers : (userIdList, groupId) => {
+    return new Promise((resolve, reject) => {
+      SgroupService.deleteMembers(userIdList, groupId).then((sgroup) => {
+        resolve(sgroup)
+      }).catch((e) => {
+        reject(e)
       })
     })
   }

@@ -38,5 +38,15 @@ module.exports = {
       console.log(e)
       res.status(400).send(e)
     })
+  },
+  rejectNewMembers : (req, res) => {
+    let groupId = req.params.groupId
+    let userIdList = req.body.userId
+    sgroupService.rejectNewMembers(userIdList, groupId).then((group) => {
+      res.status(200).send(group)
+    }).catch((e) => {
+      console.log(e)
+      res.status(400).send(e)
+    })
   }
 }
