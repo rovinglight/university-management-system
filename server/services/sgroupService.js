@@ -4,7 +4,7 @@ const UserService = require('./UserService')
 const mongoose = require('mongoose')
 const _ = require('lodash')
 
-module.exports = {
+SgroupService = {
   getAll : () => {
     return new Promise((resolve, reject) => {
       SgroupModel.find().then((sgroups) => {
@@ -34,6 +34,8 @@ module.exports = {
         UserService.addAuth(userId, {role: 'studentGroupApplicant', groupId: groupId})
         sgroup.save().then((result) => {
           resolve(result)
+        }).catch((e) => {
+          reject(e)
         })
       }).catch((e) => {
         reject(e)
@@ -51,7 +53,7 @@ module.exports = {
           if (memberInfo.status === 'active') {
             return true
           }
-          UserService.addAuth(userId, {role:'studentGroupMember', groupId: groupId})
+          SgroupService.changeUserAuthOfGroup(userId, groupId, 'studentGroupMember')
           memberInfo.status = 'active'
           memberInfo.role = 'member'
           memberInfo.joinTime = new Date()
@@ -64,5 +66,22 @@ module.exports = {
         reject(e)
       })
     })
+  },
+  changeUserAuthOfGroup : (userId, groupId, newRole) => {
+    return new Promise((resolve, reject) => {
+      UserService.searchById(userId).then((user) => {
+        let authToChange = _.find(user.auth, {groupId: groupId})
+        authToChange.role = newRole
+        user.save().then((user) => {
+          resolve(user)
+        }).catch((e) => {
+          reject(e)
+        })
+      }).catch((e) => {
+        reject(e)
+      })
+    })
   }
 }
+
+module.exports = SgroupService
