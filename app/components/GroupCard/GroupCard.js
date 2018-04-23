@@ -3,6 +3,7 @@ import { Row, Col, Button, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import classnames from 'classnames'
+import AuthService from '../../service/authService'
 
 import './GroupCard.scss'
 
@@ -34,6 +35,9 @@ export default class GroupCard extends Component {
     let group = this.props.group
     let memberCount = (_.filter(group.members, {status: 'active'})).length
     let groupMemberInfo = _.find(group.members, _.matchesProperty('studentId', userId))
+    let userAuths = _.get(this.props, 'userInfo.auth')
+    let isAuthorized = AuthService.isAuthorized(userAuths)
+    console.log(isAuthorized([{role: 'studentGroupMember', groupId: group._id}]))
     return (
         <div className="group-card shadow-box">
           <Row type="flex">
@@ -57,20 +61,20 @@ export default class GroupCard extends Component {
                 <Col>简介：{group.desc}</Col>
               </Row>
               <Row type="flex" justify="end" gutter={16}>
-                <Col className={classnames({hide: !(_.get(groupMemberInfo, 'status') === 'active')})}>
+                <Col className={classnames({hide: !(isAuthorized([{role: 'studentGroupMember', groupId: group._id}]))})}>
                   <Link to={`/studentgroups/${group._id}`}>
                     <Button type="default">社团管理</Button>
                   </Link>
                 </Col>
                 <Col>
                   <Button
-                    className={classnames({hide: groupMemberInfo})}
+                    className={classnames({hide: isAuthorized([{role: 'studentGroupMember', groupId: group._id}, {role: 'studentGroupApplicant', groupId: group._id}])})}
                     loading={this.state.applyButtonLoading}
                     onClick={this.applyForSgroup.bind(this)}
                     type="default">
                     申请加入
                   </Button>
-                  <span className={classnames({hide: !(_.get(groupMemberInfo, 'status') === 'waitForPermission')})}>
+                  <span className={classnames({hide: !(isAuthorized([{role: 'studentGroupApplicant', groupId: group._id}]))})}>
                     <Icon className='icon-gap' type="clock-circle-o" />
                     申请状态：等待通过
                   </span>

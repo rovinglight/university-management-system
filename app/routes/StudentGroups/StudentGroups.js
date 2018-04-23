@@ -30,6 +30,7 @@ export default class StudentGroups extends Component {
                   <GroupCard
                     group={group}
                     userId={userId}
+                    userInfo={this.props.userInfo}
                     applyForSgroup={this.props.applyForSgroup}
                     jumpTo={this.jumpTo.bind(this)} />
                 </Col>
