@@ -21,7 +21,12 @@ const AuthService = {
   removeUserAuthOfGroup : (userId, groupId) => {
     return new Promise((resolve, reject) => {
       UserService.searchById(userId).then((user) => {
-        user.auth = _.dropWhile(user.auth, {groupId: groupId})
+        user.auth = _.filter(user.auth, (auth) => {
+          if (auth.groupId === groupId) {
+            return false
+          }
+          return true
+        })
         user.save().then((user) => {
           resolve(user)
         }).catch((e) => {

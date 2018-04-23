@@ -70,7 +70,6 @@ export default class SgroupManage extends Component {
     this.setState({ selectedRowKeys })
   }
   render () {
-    console.log(this.state)
     let groupInfo = _.find(this.props.sgroups.groups, {'_id': this.props.match.params.groupId})
     let groupId = _.get(groupInfo, '_id')
     const columns = [{
