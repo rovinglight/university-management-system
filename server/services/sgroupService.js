@@ -1,10 +1,11 @@
 const axios = require('axios')
 const SgroupModel = require('../model/sgroupModel')
-const UserService = require('./UserService')
+const UserService = require('./userService')
+const AuthService = require('./authService')
 const mongoose = require('mongoose')
 const _ = require('lodash')
 
-SgroupService = {
+const SgroupService = {
   getAll : () => {
     return new Promise((resolve, reject) => {
       SgroupModel.find().then((sgroups) => {
@@ -31,7 +32,7 @@ SgroupService = {
           joinTime: '',
           audit: []
         })
-        UserService.addAuth(userId, {role: 'studentGroupApplicant', groupId: groupId})
+        AuthService.addAuth(userId, {role: 'studentGroupApplicant', groupId: groupId})
         sgroup.save().then((result) => {
           resolve(result)
         }).catch((e) => {
@@ -53,9 +54,9 @@ SgroupService = {
           if (memberInfo.status === 'active') {
             return true
           }
-          SgroupService.changeUserAuthOfGroup(userId, groupId, 'studentGroupMember')
+          AuthService.changeUserAuthOfGroup(userId, groupId, 'studentGroupMember')
           memberInfo.status = 'active'
-          memberInfo.role = 'member'
+          memberInfo.role = 'studentGroupMember'
           memberInfo.joinTime = new Date()
           return true
         })
@@ -67,18 +68,21 @@ SgroupService = {
       })
     })
   },
-  changeUserAuthOfGroup : (userId, groupId, newRole) => {
+  deleteMembers : (userIdList, groupId) => {
     return new Promise((resolve, reject) => {
-      UserService.searchById(userId).then((user) => {
-        let authToChange = _.find(user.auth, {groupId: groupId})
-        authToChange.role = newRole
-        user.save().then((user) => {
-          resolve(user)
+      SgroupModel.findById(groupId).then((sgroup) => {
+        _.forEach(userIdList, (userId) => {
+          AuthService.removeUserAuthOfGroup(userId, groupId).catch((e) => {
+            reject(e)
+          })
+          let memberInfo = _.find(sgroup.members, {'studentId': userId})
+          memberInfo.remove()
+        })
+        sgroup.save().then((sgroup) => {
+          resolve(sgroup)
         }).catch((e) => {
           reject(e)
         })
-      }).catch((e) => {
-        reject(e)
       })
     })
   }

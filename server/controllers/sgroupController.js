@@ -28,5 +28,15 @@ module.exports = {
       console.error(e)
       res.status(400).send(e)
     })
+  },
+  deleteMembers: (req, res) => {
+    let groupId = req.params.groupId
+    let userIdList = req.body.userId
+    sgroupService.deleteMembers(userIdList, groupId).then((group) => {
+      res.status(200).send(group)
+    }).catch((e) => {
+      console.log(e)
+      res.status(400).send(e)
+    })
   }
 }

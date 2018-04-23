@@ -52,19 +52,6 @@ const UserService = {
         resolve(updated)
       })
     })
-  },
-  addAuth : (userId, auth) => {
-    return new Promise((resolve, reject) => {
-      UserService.searchById(userId).then((user) => {
-        user.auth.push(auth)
-        user.save().then((user) => {
-          resolve(user)
-        })
-      }).catch((e) => {
-        console.log(e)
-        reject(e)
-      })
-    })
   }
 }
 

@@ -32,7 +32,7 @@ export default class GroupCard extends Component {
   render () {
     let userId = this.props.userId
     let group = this.props.group
-    let memberCount = group.members.length
+    let memberCount = (_.filter(group.members, {status: 'active'})).length
     let groupMemberInfo = _.find(group.members, _.matchesProperty('studentId', userId))
     return (
         <div className="group-card shadow-box">
