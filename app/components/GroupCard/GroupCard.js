@@ -37,7 +37,6 @@ export default class GroupCard extends Component {
     let groupMemberInfo = _.find(group.members, _.matchesProperty('studentId', userId))
     let userAuths = _.get(this.props, 'userInfo.auth')
     let isAuthorized = AuthService.isAuthorized(userAuths)
-    console.log(isAuthorized([{role: 'studentGroupMember', groupId: group._id}]))
     return (
         <div className="group-card shadow-box">
           <Row type="flex">

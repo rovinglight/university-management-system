@@ -4,6 +4,7 @@ import _ from 'lodash'
 import classnames from 'classnames'
 import Moment from 'react-moment'
 import 'moment/locale/zh-cn'
+import AuthService from '../../service/authService'
 
 import './SgroupManage.scss'
 
@@ -103,14 +104,6 @@ export default class SgroupManage extends Component {
       key: 'action',
       render: (text, record) => (
         <span>
-          <a
-            className={classnames({hide: !(record.member.status === 'waitForPermission')})}
-            onClick={this.acceptNewMembers.bind(this, [record.key], groupInfo._id)}
-            href="javascript:;">
-            接受该新成员
-            <Divider type="vertical" />
-          </a>
-
           <a href="javascript:;">
             进行年审
             <Divider type="vertical" />
@@ -126,6 +119,8 @@ export default class SgroupManage extends Component {
       selections: false
     }
     let members = this.memberTableConverter()
+    let userAuths = _.get(this.props, 'userInfo.auth')
+    let isAuthorized = AuthService.isAuthorized(userAuths)
     return (
       <div className="sgroupmanage">
         <Row className="page-title">
@@ -152,9 +147,27 @@ export default class SgroupManage extends Component {
                   <Row className='margin-bottom-10'>
                     <Col>
                       <Button className='icon-gap' onClick={this.props.getAllGroups}>刷新</Button>
-                      <Button className='icon-gap' onClick={this.acceptNewMembers.bind(this, this.state.selectedRowKeys, groupId)}>接受加入申请</Button>
-                      <Button className='icon-gap' onClick={this.deleteMembers.bind(this, this.state.selectedRowKeys, groupId)} >删除成员</Button>
-                      <Button onClick={this.rejectMembers.bind(this, this.state.selectedRowKeys, groupId)}>拒绝加入申请</Button>
+                      <Button
+                        className={classnames('icon-gap', {
+                          hide: !isAuthorized([{role: 'studentGroupPresident', groupId: groupId}])
+                        })}
+                        onClick={this.acceptNewMembers.bind(this, this.state.selectedRowKeys, groupId)}>
+                        接受加入申请
+                      </Button>
+                      <Button
+                        className={classnames('icon-gap', {
+                          hide: !isAuthorized([{role: 'studentGroupPresident', groupId: groupId}])
+                        })}
+                        onClick={this.deleteMembers.bind(this, this.state.selectedRowKeys, groupId)} >
+                        删除成员
+                      </Button>
+                      <Button
+                        className={classnames({
+                          hide: !isAuthorized([{role: 'studentGroupPresident', groupId: groupId}])
+                        })}
+                        onClick={this.rejectMembers.bind(this, this.state.selectedRowKeys, groupId)}>
+                        拒绝加入申请
+                      </Button>
                     </Col>
                   </Row>
                   <Table
