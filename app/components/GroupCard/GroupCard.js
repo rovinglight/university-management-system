@@ -73,7 +73,10 @@ export default class GroupCard extends Component {
                     type="default">
                     申请加入
                   </Button>
-                  <span className={classnames({hide: !(isAuthorized([{role: 'studentGroupApplicant', groupId: group._id}]))})}>
+                  <span
+                    className={classnames({
+                      hide: !(isAuthorized([{role: 'studentGroupApplicant', groupId: group._id}], false))
+                    })}>
                     <Icon className='icon-gap' type="clock-circle-o" />
                     申请状态：等待通过
                   </span>

@@ -2,9 +2,9 @@ import _ from 'lodash'
 
 const authService = {
   isAuthorized: (userAuths) => {
-    return (requiredAuths) => {
+    return (requiredAuths, shouldAdminAbleToSee = true) => {
       if (_.find(userAuths, {role: 'administrator'})) {
-        return true
+        return shouldAdminAbleToSee
       }
       let result = _.find(requiredAuths, (requiedAuth) => {
         return _.find(userAuths, (userAuth) => {

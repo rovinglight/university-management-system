@@ -16,6 +16,15 @@ export default class SgroupManage extends Component {
     }
     props.getAllGroups()
   }
+  componentDidUpdate () {
+    let userInfo = _.get(this.props, 'userInfo')
+    if (userInfo.role && userInfo.role === 'visitor') {
+      this.jumpTo('/')
+    }
+  }
+  jumpTo (path) {
+    this.props.history.push(path)
+  }
   acceptNewMembers (userIdList, groupId) {
     this.props.acceptNewMember(userIdList, groupId).then((result) => {
       message.success('新成员接受成功')
