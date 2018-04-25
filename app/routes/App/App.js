@@ -5,6 +5,7 @@ import SiderMenu from '../SiderMenu/SiderMenuContainer'
 import Login from '../Login/LoginContainer'
 import StudentGroups from '../StudentGroups/StudentGroupsContainer'
 import SgroupManage from '../SgroupManage/SgroupManageContainer'
+import SgroupAdmin from '../SgroupAdmin/SgroupAdminContainer'
 import classnames from 'classnames'
 
 import './App.scss'
@@ -36,7 +37,8 @@ export default class App extends Component {
         <div className={classnames("main-container", {side: this.state.sideShow})}>
           <Route path='/login' component={Login}/>
           <Route exact path='/studentgroups' component={StudentGroups}/>
-          <Route path={`/studentgroups/:groupId`} component={SgroupManage} />
+          <Route exact path={`/studentgroups/admin`} component={SgroupAdmin} />
+          <Route exact path={`/studentgroups/manage/:groupId`} component={SgroupManage} />
         </div>
       </div>
     )
