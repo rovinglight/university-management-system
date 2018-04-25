@@ -31,8 +31,20 @@ export default class SiderMenu extends Component {
   jumpTo (path) {
     this.props.history.push(path)
   }
+  menuSelectedConverter () {
+    let urlPath = this.props.routing.location.pathname
+    const keyConverter = {
+      adminGroup: '/studentgroups/admin',
+      allGroup: '/studentgroups'
+    }
+    for (let key in keyConverter) {
+      if (_.includes(urlPath, keyConverter[key])) {
+        return key
+      }
+    }
+  }
   render () {
-    let currentPath = this.props.routing.location.pathname.split('/')[1]
+    let currentPath = this.menuSelectedConverter()
     let loggedIn = this.props.userInfo.role === 'visitor' ? false : true
     const menu = (
       <Menu>
@@ -75,10 +87,9 @@ export default class SiderMenu extends Component {
                   <Menu.Item key="3">项目库</Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" title={<span><Icon type="solution" />学生组织</span>}>
-                  <Menu.Item key="studentgroups"><Link to='/studentgroups'>全部社团</Link></Menu.Item>
+                  <Menu.Item key="allGroup"><Link to='/studentgroups'>全部社团</Link></Menu.Item>
                   <Menu.Item key="6">新社团申请</Menu.Item>
-                  <Menu.Item key="7">社团管理</Menu.Item>
-                  <Menu.Item key="8">option8</Menu.Item>
+                  <Menu.Item key="adminGroup"><Link to='/studentgroups/admin'>社团管理</Link></Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub3" title={<span><Icon type="notification" />管理员功能</span>}>
                   <Menu.Item key="9">学生信息统计</Menu.Item>

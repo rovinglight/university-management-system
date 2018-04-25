@@ -241,7 +241,9 @@ export default class SgroupManage extends Component {
               <h2>
                 基本信息
                 <Button
-                  className='float-right vertical-middle'
+                  className={classnames('float-right vertical-middle', {
+                    hide: !isAuthorized([{role: 'studentGroupPresident', groupId: groupId}])
+                  })}
                   shape="circle"
                   icon='edit'
                   onClick={this.toggleInfoModal.bind(this)}

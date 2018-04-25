@@ -63,7 +63,7 @@ export default class GroupCard extends Component {
               </Row>
               <Row type="flex" justify="end" gutter={16}>
                 <Col className={classnames({hide: !(isAuthorized([{role: 'studentGroupMember', groupId: group._id}]))})}>
-                  <Link to={`/studentgroups/${group._id}`}>
+                  <Link to={`/studentgroups/manage/${group._id}`}>
                     <Button type="default">社团管理</Button>
                   </Link>
                 </Col>
