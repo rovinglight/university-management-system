@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { Row, Col, Table, Button, Divider, Icon, message } from 'antd'
+import { Row, Col, Table, Button, Divider, Icon, message, Modal, DatePicker, Input } from 'antd'
 import _ from 'lodash'
 import classnames from 'classnames'
 import Moment from 'react-moment'
 import 'moment/locale/zh-cn'
+import moment from 'moment';
 import AuthService from '../../service/authService'
+const { TextArea } = Input
 
 import './SgroupManage.scss'
 
@@ -12,15 +14,34 @@ export default class SgroupManage extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      selectedRowKeys: []
+      selectedRowKeys: [],
+      infoModal: {
+        show: false,
+        loading: false,
+        fields: {
+          foundTime: '',
+          desc: ''
+        }
+      }
     }
-    props.getAllGroups()
+    props.getAllGroups().then((groups) => {
+      let group = _.find(groups, {'_id': props.match.params.groupId})
+      this.setState({
+        infoModal: {
+          ...this.state.infoModal,
+          fields: {
+            foundTime: group.foundTime,
+            desc: group.desc
+          }
+        }
+      })
+    })
   }
   componentDidUpdate () {
     let userInfo = _.get(this.props, 'userInfo')
-    if (userInfo.role && userInfo.role === 'visitor') {
-      this.jumpTo('/')
-    }
+    // if (userInfo.role && userInfo.role === 'visitor') {
+    //   this.jumpTo('/')
+    // }
   }
   jumpTo (path) {
     this.props.history.push(path)
@@ -86,7 +107,84 @@ export default class SgroupManage extends Component {
   onSelectChange (selectedRowKeys) {
     this.setState({ selectedRowKeys })
   }
+  refreshMemberList () {
+    this.props.getAllGroups().then((groups) => {
+      message.success('成员信息刷新成功')
+    })
+  }
+  toggleInfoModal () {
+    this.setState({
+      infoModal: {
+        ...this.state.infoModal,
+        show: !this.state.infoModal.show
+      }
+    })
+  }
+  cancelInfoModal () {
+    console.log('cancel')
+    let group = _.find(this.props.sgroups.groups, {'_id': this.props.match.params.groupId})
+    this.setState({
+      infoModal: {
+        ...this.state.infoModal,
+        show: false,
+        fields: {
+          foundTime: group.foundTime,
+          desc: group.desc
+        }
+      }
+    })
+  }
+  submitInfoModal () {
+    let groupId = this.props.match.params.groupId
+    this.setState({
+      infoModal: {
+        ...this.state.infoModal,
+        loading: true
+      }
+    })
+    this.props.updateSgroupInfo(this.state.infoModal.fields, groupId).then((group) => {
+      this.setState({
+        infoModal: {
+          ...this.state.infoModal,
+          loading: false,
+          show: false
+        }
+      })
+      message.success('更新成功')
+    }).catch((e) => {
+      this.setState({
+        infoModal: {
+          ...this.state.infoModal,
+          loading: false
+        }
+      })
+      message.error('更新失败')
+    })
+  }
+  infoDateChange (date) {
+    this.setState({
+      infoModal: {
+        ...this.state.infoModal,
+        fields: {
+          ...this.state.infoModal.fields,
+          foundTime: date ? date.format() : null
+        }
+      }
+    })
+  }
+  infoDescChange (e) {
+    this.setState({
+      infoModal: {
+        ...this.state.infoModal,
+        fields: {
+          ...this.state.infoModal.fields,
+          desc: e.target.value
+        }
+      }
+    })
+  }
   render () {
+    console.log(this.state)
     let groupInfo = _.find(this.props.sgroups.groups, {'_id': this.props.match.params.groupId})
     let groupId = _.get(groupInfo, '_id')
     const columns = [{
@@ -140,10 +238,27 @@ export default class SgroupManage extends Component {
         <Row>
           <Col>
             <div className="shadow-box bg-white padding-20 margin-bottom-25">
-              <h2>基本信息</h2>
-              <Row>
-                <Col>
-
+              <h2>
+                基本信息
+                <Button
+                  className='float-right vertical-middle'
+                  shape="circle"
+                  icon='edit'
+                  onClick={this.toggleInfoModal.bind(this)}
+                  size='large' />
+              </h2>
+              <Row className='align-center'>
+                <Col lg={12} span={24}>
+                  <Divider>社团名称</Divider>
+                  <h2>{_.get(groupInfo, 'name')}</h2>
+                </Col>
+                <Col lg={12} span={24}>
+                  <Divider>成立时间</Divider>
+                  <Moment className={classnames({hide: !_.get(groupInfo, 'foundTime')})} locale="zh-cn" format="YYYY年MMMDo" fromNow>{_.get(groupInfo, 'foundTime')}</Moment>
+                </Col>
+                <Col span={24}>
+                  <Divider>社团简介</Divider>
+                  {_.get(groupInfo, 'desc')}
                 </Col>
               </Row>
             </div>
@@ -155,7 +270,7 @@ export default class SgroupManage extends Component {
                 <Col>
                   <Row className='margin-bottom-10'>
                     <Col>
-                      <Button className='icon-gap' onClick={this.props.getAllGroups}>刷新</Button>
+                      <Button className='icon-gap' onClick={this.refreshMemberList.bind(this)}>刷新</Button>
                       <Button
                         className={classnames('icon-gap', {
                           hide: !isAuthorized([{role: 'studentGroupPresident', groupId: groupId}])
@@ -188,6 +303,21 @@ export default class SgroupManage extends Component {
             </div>
           </Col>
         </Row>
+        <Modal
+          visible={this.state.infoModal.show}
+          title='社团基本信息修改'
+          onCancel={this.cancelInfoModal.bind(this)}
+          footer={[
+            <Button key="back" onClick={this.cancelInfoModal.bind(this)}>放弃修改</Button>,
+            <Button key="submit" onClick={this.submitInfoModal.bind(this)} type="primary" loading={this.state.infoModal.loading}>
+              提交修改
+            </Button>,
+          ]}>
+          <Divider orientation="left">成立时间</Divider>
+          <DatePicker allowClear={false} value={moment(this.state.infoModal.fields.foundTime)} placeholder="选择日期" onChange={this.infoDateChange.bind(this)} />
+          <Divider orientation="left">社团简介</Divider>
+          <TextArea autosize={{ minRows: 2, maxRows: 6 }} maxLength='200' onChange={this.infoDescChange.bind(this)} value={this.state.infoModal.fields.desc} />
+        </Modal>
       </div>
     )
   }

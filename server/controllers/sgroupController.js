@@ -48,5 +48,14 @@ module.exports = {
       console.log(e)
       res.status(400).send(e)
     })
+  },
+  updateGroupInfo : (req, res) => {
+    let groupId = req.params.groupId
+    let infoToUpdate = req.body.infoToUpdate
+    sgroupService.updateGroupInfo(infoToUpdate, groupId).then((group) => {
+      res.status(200).send(group)
+    }).catch((e) => {
+      res.status(400).send(e)
+    })
   }
 }

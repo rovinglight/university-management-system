@@ -21,7 +21,7 @@ export const getAllGroups = () => {
             groups: res.data
           }
         })
-        resolve(res)
+        resolve(res.data)
       }).catch((e) => {
         console.log(e)
         reject(e)
@@ -127,6 +127,33 @@ export const rejectMembers = (userId, groupId) => {
         let group = res.data
         let targetGroup = _.find(sgroups, {'_id': group._id.toString()})
         targetGroup.members = group.members
+        dispatch({
+          type: GET_ALL_GROUPS,
+          payload: {
+            groups: sgroups
+          }
+        })
+        resolve(group)
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  }
+}
+export const updateSgroupInfo = (infoToUpdate, groupId) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/sgroups/${groupId}/update`,
+        data: {
+          infoToUpdate: infoToUpdate
+        }
+      }).then((res) => {
+        let sgroups = getState().sgroups.groups
+        let group = res.data
+        let targetGroup = _.find(sgroups, {'_id': groupId})
+        targetGroup = _.assign(targetGroup, group)
         dispatch({
           type: GET_ALL_GROUPS,
           payload: {

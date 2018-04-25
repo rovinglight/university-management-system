@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Row, Col, Button, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
+import Moment from 'react-moment'
+import 'moment/locale/zh-cn'
 import classnames from 'classnames'
 import AuthService from '../../service/authService'
 
@@ -51,7 +53,7 @@ export default class GroupCard extends Component {
             </Col>
             <Col className="padding-20 group-card-right" xs={24} sm={18}>
               <Row>
-                <Col>成立时间：{group.foundTime}</Col>
+                <Col>成立时间：<Moment className={classnames({hide: !group.foundTime})} locale="zh-cn" format="YYYY年MMMDo" fromNow>{group.foundTime}</Moment></Col>
               </Row>
               <Row>
                 <Col>成员数：{memberCount}</Col>

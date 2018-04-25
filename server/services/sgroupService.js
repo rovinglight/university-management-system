@@ -96,6 +96,19 @@ const SgroupService = {
         reject(e)
       })
     })
+  },
+  updateGroupInfo : (infoToUpdate, groupId) => {
+    return new Promise((resolve, reject) => {
+      SgroupModel.findById(groupId).then((sgroup) => {
+        sgroup = _.assign(sgroup, infoToUpdate)
+        sgroup.save().then((group) => {
+          resolve(group)
+        })
+      }).catch((e) => {
+        console.log(e)
+        reject(e)
+      })
+    })
   }
 }
 

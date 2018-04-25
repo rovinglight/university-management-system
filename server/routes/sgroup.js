@@ -7,4 +7,5 @@ module.exports = (app) => {
   app.post('/sgroups/:groupId/accept', userController.loginCheck, sgroupController.acceptNewMember)
   app.post('/sgroups/:groupId/delete', userController.loginCheck, sgroupController.deleteMembers)
   app.post('/sgroups/:groupId/reject', userController.loginCheck, sgroupController.rejectNewMembers)
+  app.post('/sgroups/:groupId/update', userController.loginCheck, sgroupController.updateGroupInfo)
 }
