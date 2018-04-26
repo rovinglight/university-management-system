@@ -1,7 +1,7 @@
 
 module.exports = {
   ums_web: {
-    host: "localhost",
+    host: process.env.UMS_WEB_HOST || "localhost",
     port: 3000
   }
 }
