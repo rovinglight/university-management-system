@@ -4,6 +4,9 @@ const mongoose = require('mongoose')
 const sgroupSchema = new mongoose.Schema({
   'name': String,
   'desc': String,
+  'foundTime': Date,
+  'acceptionStatus': Boolean,
+  'status': String,
   'members': [{
     studentId: String,
     name: String,
@@ -11,9 +14,7 @@ const sgroupSchema = new mongoose.Schema({
     role: String,
     joinTime: Date,
     audit: Array
-  }],
-  'foundTime': Date,
-  'acceptionStatus': Boolean
+  }]
 })
 
 const SgroupModel = DB.model('sgroup', sgroupSchema)
