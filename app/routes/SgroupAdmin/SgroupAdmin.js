@@ -4,7 +4,11 @@ import _ from 'lodash'
 import classnames from 'classnames'
 import { isAuthorized } from '../../service/authService'
 const FormItem = Form.Item
-const TabPane = Tabs.TabPane;
+const TabPane = Tabs.TabPane
+import Moment from 'react-moment'
+import 'moment/locale/zh-cn'
+import moment from 'moment';
+const ButtonGroup = Button.Group;
 
 import './SgroupAdmin.scss'
 
@@ -24,9 +28,47 @@ export default class SgroupAdmin extends Component {
       message.success('刷新成功')
     })
   }
+  isNoneSelected () {
+    if (this.state.selectedRowKeys.length === 0) {
+      return true
+    }
+    return false
+  }
+  toggleAcceptionStatus (newStatus) {
+    if (this.isNoneSelected()) {
+      return message.error('未选中社团')
+    }
+    this.props.changeAcceptionStatus(this.state.selectedRowKeys, newStatus).then(() => {
+      message.success('纳新状态修改成功')
+    }).catch((e) => {
+      console.log(e)
+      message.error('纳新状态修改失败')
+    })
+  }
+  groupDataConverter (groups) {
+    const acceptionStatusConverter = [{
+      status: true,
+      desc: '正在进行'
+    }, {
+      status: false,
+      desc: '停止纳新'
+    }]
+    groups = groups.map((group, index) => {
+      let acceptionStatus = _.find(acceptionStatusConverter, {status: group.acceptionStatus})
+      return({
+        key: group._id,
+        name: group.name,
+        status: group.status,
+        auditStatus: group.auditStatus,
+        foundTime: group.foundTime,
+        acceptionStatus: acceptionStatus.desc
+      })
+    })
+    return groups
+  }
   render () {
-    let groups = this.props.sgroups.groups
-    console.log(this.props.sgroups)
+    console.log(this.state)
+    let groups = this.groupDataConverter(this.props.sgroups.groups)
     const columns = [{
       title: '名称',
       dataIndex: 'name',
@@ -35,29 +77,20 @@ export default class SgroupAdmin extends Component {
       dataIndex: 'status',
     }, {
       title: '年审',
-      dataIndex: 'role'
+      dataIndex: 'auditStatus'
+    }, {
+      title: '纳新',
+      dataIndex: 'acceptionStatus'
     }, {
       title: '成立时间',
       render: (text, record) => {
-        if (!record.joinTime) {
+        if (!record.foundTime) {
           return
         }
         return(
-          <Moment locale="zh-cn" format="MMMDo YYYY，a" fromNow>{record.joinTime}</Moment>
+          <Moment locale="zh-cn" format="MMMDo YYYY，a" fromNow>{record.foundTime}</Moment>
         )
       }
-    }, {
-      title: '操作',
-      key: 'action',
-      render: (text, record) => (
-        <span>
-          <a href="javascript:;">
-            进行年审
-            <Divider type="vertical" />
-          </a>
-          <a href="javascript:;">年度评价</a>
-        </span>
-      )
     }]
     const rowSelection = {
       selectedRowKeys: this.state.selectedRowKeys,
@@ -95,6 +128,22 @@ export default class SgroupAdmin extends Component {
                         onClick={console.log} >
                         发起年审
                       </Button>
+                      <ButtonGroup>
+                        <Button
+                          className={classnames({
+                            hide: false
+                          })}
+                          onClick={this.toggleAcceptionStatus.bind(this, true)} >
+                          开启纳新
+                        </Button>
+                        <Button
+                          className={classnames({
+                            hide: false
+                          })}
+                          onClick={this.toggleAcceptionStatus.bind(this, false)} >
+                          关闭纳新
+                        </Button>
+                      </ButtonGroup>
                     </Col>
                   </Row>
                   <Table

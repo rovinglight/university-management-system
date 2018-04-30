@@ -109,6 +109,19 @@ const SgroupService = {
         reject(e)
       })
     })
+  },
+  acceptionStatusChange : (groupIdList, newStatus) => {
+    return new Promise((resolve, reject) => {
+      if (groupIdList.length === 0) {
+        return reject('empty groupId List')
+      }
+      SgroupModel.update({_id: {$in: groupIdList}}, {acceptionStatus: newStatus}, { multi: true }).then((res) => {
+        resolve(res)
+      }).catch((e) => {
+        console.log(e)
+        reject(e)
+      })
+    })
   }
 }
 

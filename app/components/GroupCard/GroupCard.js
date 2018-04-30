@@ -69,7 +69,9 @@ export default class GroupCard extends Component {
                 </Col>
                 <Col>
                   <Button
-                    className={classnames({hide: isAuthorized([{role: 'studentGroupMember', groupId: group._id}, {role: 'studentGroupApplicant', groupId: group._id}])})}
+                    className={classnames({
+                      hide: isAuthorized([{role: 'studentGroupMember', groupId: group._id}, {role: 'studentGroupApplicant', groupId: group._id}]) || !group.acceptionStatus
+                    })}
                     loading={this.state.applyButtonLoading}
                     onClick={this.applyForSgroup.bind(this)}
                     type="default">

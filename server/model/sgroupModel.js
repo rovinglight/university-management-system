@@ -12,7 +12,8 @@ const sgroupSchema = new mongoose.Schema({
     joinTime: Date,
     audit: Array
   }],
-  'foundTime': Date
+  'foundTime': Date,
+  'acceptionStatus': Boolean
 })
 
 const SgroupModel = DB.model('sgroup', sgroupSchema)

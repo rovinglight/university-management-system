@@ -57,5 +57,15 @@ module.exports = {
     }).catch((e) => {
       res.status(400).send(e)
     })
+  },
+  acceptionStatusChange : (req, res) => {
+    let groupIdList = req.body.groupIdList
+    let newStatus = req.body.newStatus
+    sgroupService.acceptionStatusChange(groupIdList, newStatus).then((result) => {
+      res.status(200).send(result)
+    }).catch((e) => {
+      console.log(e)
+      res.status(400).send(e)
+    })
   }
 }

@@ -8,6 +8,25 @@ const GET_ALL_GROUPS = 'GET_ALL_GROUPS'
 // ------------------------------------
 // Actions
 // ------------------------------------
+const replaceGroupInfo = (oldGroups, groupToReplace) => {
+  let newGroups = _.cloneDeep(oldGroups)
+  if (groupToReplace) {
+    groupToReplace.forEach((group) => {
+      let groupId = group._id
+      let targetGroup = _.find(newGroups, {'_id': groupId})
+      targetGroup = _.assign(targetGroup, group)
+    })
+  }
+  return newGroups
+}
+const replaceGroupProps = (oldGroups, groupIdList, propsToReplace) => {
+  let newGroups = _.cloneDeep(oldGroups)
+  groupIdList.forEach((groupId) => {
+    let targetGroup = _.find(newGroups, {'_id': groupId})
+    targetGroup = _.assign(targetGroup, propsToReplace)
+  })
+  return newGroups
+}
 export const getAllGroups = () => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
@@ -152,8 +171,7 @@ export const updateSgroupInfo = (infoToUpdate, groupId) => {
       }).then((res) => {
         let sgroups = getState().sgroups.groups
         let group = res.data
-        let targetGroup = _.find(sgroups, {'_id': groupId})
-        targetGroup = _.assign(targetGroup, group)
+        sgroups = replaceGroupInfo(sgroups, [group])
         dispatch({
           type: GET_ALL_GROUPS,
           payload: {
@@ -161,6 +179,32 @@ export const updateSgroupInfo = (infoToUpdate, groupId) => {
           }
         })
         resolve(group)
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  }
+}
+export const changeAcceptionStatus = (groupIdList, newStatus) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/sgroups/acceptionStatus`,
+        data: {
+          groupIdList: groupIdList,
+          newStatus: newStatus
+        }
+      }).then((res) => {
+        let sgroups = getState().sgroups.groups
+        sgroups = replaceGroupProps(sgroups, groupIdList, {acceptionStatus: newStatus})
+        dispatch({
+          type: GET_ALL_GROUPS,
+          payload: {
+            groups: sgroups
+          }
+        })
+        resolve(res.data)
       }).catch((e) => {
         reject(e)
       })
