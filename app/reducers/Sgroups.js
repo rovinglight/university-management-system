@@ -1,5 +1,6 @@
 import axios from 'axios'
 import _ from 'lodash'
+import { loginWithSessionKey } from './UserInfo'
 const config = require('../config/config')
 // ------------------------------------
 // Constants
@@ -70,7 +71,12 @@ export const applyForSgroup = (userId, groupId) => {
             groups: sgroups
           }
         })
-        resolve(res)
+        loginWithSessionKey(localStorage.getItem("sessionKey"))(dispatch, getState).then(() => {
+          resolve(res)
+        }).catch((e) => {
+          console.log(e)
+          reject(e)
+        })
       }).catch((e) => {
         console.log(e)
         reject(e)
