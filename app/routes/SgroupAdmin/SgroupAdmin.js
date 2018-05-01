@@ -18,7 +18,6 @@ export default class SgroupAdmin extends Component {
     this.state = {
       selectedRowKeys: []
     }
-    props.getAllGroups()
   }
   onSelectChange (selectedRowKeys) {
     this.setState({ selectedRowKeys })

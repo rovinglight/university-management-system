@@ -17,6 +17,7 @@ export default class App extends Component {
     this.state = {
       sideShow : true
     }
+    props.getAllGroups()
   }
   componentDidMount () {
     let sessionKey = localStorage.getItem('sessionKey')

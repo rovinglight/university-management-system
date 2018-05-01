@@ -35,7 +35,6 @@ export default class AuthManage extends Component {
         readOnly: true
       }
     }
-    props.getAllGroups()
   }
   searchForUser (value) {
     this.setState({searchButtonLoading: true, searchResults: []})
