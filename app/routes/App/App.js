@@ -6,6 +6,7 @@ import Login from '../Login/LoginContainer'
 import StudentGroups from '../StudentGroups/StudentGroupsContainer'
 import SgroupManage from '../SgroupManage/SgroupManageContainer'
 import SgroupAdmin from '../SgroupAdmin/SgroupAdminContainer'
+import AuthManage from '../AuthManage/AuthManageContainer'
 import classnames from 'classnames'
 
 import './App.scss'
@@ -39,6 +40,7 @@ export default class App extends Component {
           <Route exact path='/studentgroups' component={StudentGroups}/>
           <Route exact path={`/studentgroups/admin`} component={SgroupAdmin} />
           <Route exact path={`/studentgroups/manage/:groupId`} component={SgroupManage} />
+          <Route exact path={`/auth/manage`} component={AuthManage} />
         </div>
       </div>
     )

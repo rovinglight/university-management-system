@@ -47,6 +47,19 @@ const AuthService = {
         reject(e)
       })
     })
+  },
+  updateAuth : (userId, auth) => {
+    return new Promise((resolve, reject) => {
+      UserService.searchById(userId).then((user) => {
+        user.auth = auth
+        user.save().then((user) => {
+          resolve(user)
+        })
+      }).catch((e) => {
+        console.log(e)
+        reject(e)
+      })
+    })
   }
 }
 

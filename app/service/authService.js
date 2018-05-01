@@ -1,4 +1,6 @@
 import _ from 'lodash'
+import axios from 'axios'
+const config = require('../config/config')
 
 const authService = {
   isAuthorized: (userAuths) => {
@@ -15,6 +17,37 @@ const authService = {
       })
       return Boolean(result)
     }
+  },
+  searchUser: (keyword) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/search`,
+        data: {
+          kw: keyword
+        }
+      }).then((res) => {
+        resolve(res.data)
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  },
+  updateUserAuthById: (userId, auth) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/auth/update`,
+        data: {
+          userId: userId,
+          auth: auth
+        }
+      }).then((res) => {
+        resolve(res.data)
+      }).catch((e) => {
+        reject(e)
+      })
+    })
   }
 }
 

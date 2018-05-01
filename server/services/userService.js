@@ -44,6 +44,17 @@ const UserService = {
       })
     })
   },
+  searchBystudentIdOrUsername : (keyword) => {
+    return new Promise((resolve, reject) => {
+      UserModel.find({
+        $or: [{'user': keyword}, {'name': keyword}]
+      }).select('-pwd -sessionKey').then((result) => {
+        resolve(result)
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  },
   refreshSessionKey : (user) => {
     return new Promise((resolve, reject) => {
       user.lastLogin = new Date()

@@ -35,7 +35,8 @@ export default class SiderMenu extends Component {
     let urlPath = this.props.routing.location.pathname
     const keyConverter = {
       adminGroup: '/studentgroups/admin',
-      allGroup: '/studentgroups'
+      allGroup: '/studentgroups',
+      authManage: '/auth/manage'
     }
     for (let key in keyConverter) {
       if (_.includes(urlPath, keyConverter[key])) {
@@ -94,7 +95,7 @@ export default class SiderMenu extends Component {
                 <SubMenu key="sub3" title={<span><Icon type="notification" />管理员功能</span>}>
                   <Menu.Item key="9">学生信息统计</Menu.Item>
                   <Menu.Item key="10">动态审核设置</Menu.Item>
-                  <Menu.Item key="11">权限设置</Menu.Item>
+                  <Menu.Item key="authManage"><Link to='/auth/manage'>权限设置</Link></Menu.Item>
                 </SubMenu>
               </Menu>
             </Sider>
