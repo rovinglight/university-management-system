@@ -6,6 +6,7 @@ const sgroupSchema = new mongoose.Schema({
   'desc': String,
   'foundTime': Date,
   'acceptionStatus': Boolean,
+  'auditStatus': String,
   'status': String,
   'members': [{
     studentId: String,
@@ -13,7 +14,12 @@ const sgroupSchema = new mongoose.Schema({
     status: String,
     role: String,
     joinTime: Date,
-    audit: Array
+    audit: [{
+      startTime: Date,
+      status: String,
+      comment: String,
+      rate: Number
+    }]
   }]
 })
 

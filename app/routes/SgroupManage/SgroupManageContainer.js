@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import SgroupManage from './SgroupManage'
-import { getAllGroups, acceptNewMember, deleteMembers, rejectMembers, updateSgroupInfo } from '../../reducers/Sgroups'
+import { getAllGroups, acceptNewMember, deleteMembers, rejectMembers, updateSgroupInfo, performAudit } from '../../reducers/Sgroups'
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -9,6 +9,7 @@ const mapDispatchToProps = (dispatch) => {
     deleteMembers: (userId, groupId) => dispatch(deleteMembers(userId, groupId)),
     rejectMembers: (userId, groupId) => dispatch(rejectMembers(userId, groupId)),
     updateSgroupInfo: (infoToUpdate, groupId) => dispatch(updateSgroupInfo(infoToUpdate, groupId)),
+    performAudit: (studentId, groupId, auditInfo) => dispatch(performAudit(studentId, groupId, auditInfo))
   }
 }
 

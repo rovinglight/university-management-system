@@ -61,7 +61,28 @@ module.exports = {
   acceptionStatusChange : (req, res) => {
     let groupIdList = req.body.groupIdList
     let newStatus = req.body.newStatus
-    sgroupService.acceptionStatusChange(groupIdList, newStatus).then((result) => {
+    sgroupService.propsChange(groupIdList, {acceptionStatus: newStatus}).then((result) => {
+      res.status(200).send(result)
+    }).catch((e) => {
+      console.log(e)
+      res.status(400).send(e)
+    })
+  },
+  auditStatusChange : (req, res) => {
+    let groupIdList = req.body.groupIdList
+    let newStatus = req.body.newStatus
+    sgroupService.auditStatusChange(groupIdList, newStatus).then((result) => {
+      res.status(200).send(result)
+    }).catch((e) => {
+      console.log(e)
+      res.status(400).send(e)
+    })
+  },
+  performAudit : (req, res) => {
+    let groupId = req.params.groupId
+    let studentId = req.body.studentId
+    let auditInfo = req.body.auditInfo
+    sgroupService.performAudit(groupId, studentId, auditInfo).then((result) => {
       res.status(200).send(result)
     }).catch((e) => {
       console.log(e)

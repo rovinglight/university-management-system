@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Table, Button, Divider, Icon, message, Modal, DatePicker, Input } from 'antd'
+import { Row, Col, Table, Button, Divider, Icon, message, Modal, DatePicker, Input, Rate } from 'antd'
 import _ from 'lodash'
 import classnames from 'classnames'
 import Moment from 'react-moment'
@@ -21,6 +21,15 @@ export default class SgroupManage extends Component {
         fields: {
           foundTime: '',
           desc: ''
+        }
+      },
+      auditModal: {
+        show: false,
+        loading: false,
+        studentId: '',
+        fields: {
+          rate: 5,
+          comment: ''
         }
       }
     }
@@ -93,13 +102,16 @@ export default class SgroupManage extends Component {
       let statusDisplayRules = _.find(statusConverter, {'status': member.status})
       let role = roleDisplayRules && roleDisplayRules.display || member.role
       let status = statusDisplayRules && statusDisplayRules.display || member.status
+      let lastAudit = (member.audit.length === 0) ? {} : member.audit[member.audit.length - 1]
       return{
         key: member.studentId,
         name: member.name,
         status: status,
         role: role,
         joinTime: member.joinTime,
-        member: member
+        member: member,
+        lastAudit: lastAudit,
+        studentId: member.studentId
       }
     })
     return members
@@ -183,8 +195,40 @@ export default class SgroupManage extends Component {
       }
     })
   }
+  toggleAuditModal (studentId, auditInfo) {
+    let newState = _.cloneDeep(this.state)
+    if (studentId && auditInfo) {
+      newState.auditModal = {...newState.auditModal, show: true, studentId: studentId, fields: auditInfo}
+    } else {
+      newState.auditModal.show = !newState.auditModal.show
+    }
+    this.setState(newState)
+  }
+  submitAuditModal (groupId) {
+    let auditModal = _.get(this.state, 'auditModal')
+    this.state.auditModal.loading = true
+    this.setState(this.state)
+    this.props.performAudit(auditModal.studentId, groupId, auditModal.fields).then(() => {
+      this.state.auditModal.loading = false
+      this.setState(this.state)
+      message.success('年审信息提交成功')
+    }).catch(() => {
+      this.state.auditModal.loading = false
+      this.setState(this.state)
+      message.error('年审信息提交失败')
+    })
+  }
+  handleChange (path, result) {
+    if (_.get(result, 'target')) {
+      result = result.target.value
+    }
+    let newState = _.cloneDeep(this.state)
+    _.set(newState, path, result)
+    this.setState(newState)
+  }
   render () {
     console.log(this.state)
+    let auditModalField = _.get(this.state, 'auditModal.fields')
     let groupInfo = _.find(this.props.sgroups.groups, {'_id': this.props.match.params.groupId})
     let groupId = _.get(groupInfo, '_id')
     const columns = [{
@@ -211,11 +255,21 @@ export default class SgroupManage extends Component {
       key: 'action',
       render: (text, record) => (
         <span>
-          <a href="javascript:;">
+          <a
+            className={classnames({
+              hide: !(record.lastAudit.status === 'waiting')
+            })}
+            onClick={this.props.performAudit.bind(this, record.studentId, groupId, {...record.lastAudit, status: 'signedIn'})}>
             进行年审
             <Divider type="vertical" />
           </a>
-          <a href="javascript:;">年度评价</a>
+          <a
+            onClick={this.toggleAuditModal.bind(this, record.studentId, record.lastAudit)}
+            className={classnames({
+              hide: !_.includes(['waiting', 'signedIn'], record.lastAudit.status)
+            })}>
+            {(record.lastAudit.comment || record.lastAudit.rate !== 5) ? '重新评价' : '年度评价'}
+          </a>
         </span>
       )
     }]
@@ -311,7 +365,7 @@ export default class SgroupManage extends Component {
           onCancel={this.cancelInfoModal.bind(this)}
           footer={[
             <Button key="back" onClick={this.cancelInfoModal.bind(this)}>放弃修改</Button>,
-            <Button key="submit" onClick={this.submitInfoModal.bind(this)} type="primary" loading={this.state.infoModal.loading}>
+            <Button key="submit" onClick={this.submitInfoModal.bind(this)} type="primary" loading={this.state.auditModal.loading}>
               提交修改
             </Button>,
           ]}>
@@ -319,6 +373,21 @@ export default class SgroupManage extends Component {
           <DatePicker allowClear={false} value={moment(this.state.infoModal.fields.foundTime)} placeholder="选择日期" onChange={this.infoDateChange.bind(this)} />
           <Divider orientation="left">社团简介</Divider>
           <TextArea autosize={{ minRows: 2, maxRows: 6 }} maxLength='200' onChange={this.infoDescChange.bind(this)} value={this.state.infoModal.fields.desc} />
+        </Modal>
+        <Modal
+          visible={this.state.auditModal.show}
+          title='年度评价'
+          onCancel={this.toggleAuditModal.bind(this)}
+          footer={[
+            <Button key="back" onClick={this.toggleAuditModal.bind(this)}>放弃评价</Button>,
+            <Button key="submit" onClick={this.submitAuditModal.bind(this, groupId)} type="primary" loading={this.state.auditModal.loading}>
+              提交评价
+            </Button>,
+          ]}>
+          <Divider orientation="left">星级评价</Divider>
+          <Rate onChange={this.handleChange.bind(this, 'auditModal.fields.rate')} value={auditModalField.rate}/>
+          <Divider orientation="left">年度评语</Divider>
+          <TextArea autosize={{ minRows: 2, maxRows: 6 }} maxLength='200' onChange={this.handleChange.bind(this, 'auditModal.fields.comment')} value={this.state.auditModal.fields.comment} />
         </Modal>
       </div>
     )

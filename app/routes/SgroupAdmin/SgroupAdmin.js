@@ -45,23 +45,50 @@ export default class SgroupAdmin extends Component {
       message.error('纳新状态修改失败')
     })
   }
+  changeAuditStatus (newStatus) {
+    if (this.isNoneSelected()) {
+      return message.error('未选中社团')
+    }
+    this.props.changeAuditStatus(this.state.selectedRowKeys, newStatus).then(() => {
+      message.success('年审状态修改成功')
+    }).catch((e) => {
+      console.log(e)
+      message.error('年审状态修改失败')
+    })
+  }
   groupDataConverter (groups) {
     const acceptionStatusConverter = [{
       status: true,
-      desc: '正在进行'
+      display: '正在进行'
     }, {
       status: false,
-      desc: '停止纳新'
+      display: '停止纳新'
+    }]
+    const statusConverter = [{
+      status: 'active',
+      display: '存续'
+    }, {
+      status: 'inactive',
+      display: '注销'
+    }]
+    const auditStatusConverter = [{
+      status: 'processing',
+      display: '进行中'
+    }, {
+      status: 'finish',
+      display: '已完成'
     }]
     groups = groups.map((group, index) => {
       let acceptionStatus = _.find(acceptionStatusConverter, {status: group.acceptionStatus})
+      let groupStatus = _.find(statusConverter, {status: group.status})
+      let auditStatus = _.find(auditStatusConverter, {status: group.auditStatus})
       return({
         key: group._id,
         name: group.name,
-        status: group.status,
-        auditStatus: group.auditStatus,
+        status: _.get(groupStatus, 'display'),
+        auditStatus: _.get(auditStatus, 'display'),
         foundTime: group.foundTime,
-        acceptionStatus: acceptionStatus.desc
+        acceptionStatus: _.get(acceptionStatus, 'display')
       })
     })
     return groups
@@ -114,20 +141,22 @@ export default class SgroupAdmin extends Component {
                   <Row className='margin-bottom-10'>
                     <Col>
                       <Button className='icon-gap' onClick={this.refreshMemberList.bind(this)}>刷新</Button>
-                      <Button
-                        className={classnames('icon-gap', {
-                          hide: false
-                        })}
-                        onClick={console.log}>
-                        解散社团
-                      </Button>
-                      <Button
-                        className={classnames('icon-gap', {
-                          hide: false
-                        })}
-                        onClick={console.log} >
-                        发起年审
-                      </Button>
+                      <ButtonGroup className="icon-gap">
+                        <Button
+                          className={classnames({
+                            hide: false
+                          })}
+                          onClick={this.changeAuditStatus.bind(this, 'processing')} >
+                          发起年审
+                        </Button>
+                        <Button
+                          className={classnames({
+                            hide: false
+                          })}
+                          onClick={this.changeAuditStatus.bind(this, 'finish')} >
+                          结束年审
+                        </Button>
+                      </ButtonGroup>
                       <ButtonGroup>
                         <Button
                           className={classnames({
@@ -141,7 +170,7 @@ export default class SgroupAdmin extends Component {
                             hide: false
                           })}
                           onClick={this.toggleAcceptionStatus.bind(this, false)} >
-                          关闭纳新
+                          停止纳新
                         </Button>
                       </ButtonGroup>
                     </Col>

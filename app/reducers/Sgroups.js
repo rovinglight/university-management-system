@@ -217,6 +217,55 @@ export const changeAcceptionStatus = (groupIdList, newStatus) => {
     })
   }
 }
+export const changeAuditStatus = (groupIdList, newStatus) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/sgroups/auditStatus`,
+        data: {
+          groupIdList: groupIdList,
+          newStatus: newStatus
+        }
+      }).then((res) => {
+        getAllGroups()(dispatch, getState).then(() => {
+          resolve()
+        }).catch((e) => {
+          reject(e)
+        })
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  }
+}
+export const performAudit = (studentId, groupId, auditInfo) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/sgroups/${groupId}/performAudit`,
+        data: {
+          studentId: studentId,
+          auditInfo: auditInfo
+        }
+      }).then((res) => {
+        let sgroups = getState().sgroups.groups
+        let group = res.data
+        sgroups = replaceGroupInfo(sgroups, [group])
+        dispatch({
+          type: GET_ALL_GROUPS,
+          payload: {
+            groups: sgroups
+          }
+        })
+        resolve()
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  }
+}
 // ------------------------------------
 // Action Handlers
 // ------------------------------------

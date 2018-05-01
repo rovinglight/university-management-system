@@ -110,15 +110,71 @@ const SgroupService = {
       })
     })
   },
-  acceptionStatusChange : (groupIdList, newStatus) => {
+  propsChange : (groupIdList, propsToChange) => {
     return new Promise((resolve, reject) => {
-      if (groupIdList.length === 0) {
-        return reject('empty groupId List')
-      }
-      SgroupModel.update({_id: {$in: groupIdList}}, {acceptionStatus: newStatus}, { multi: true }).then((res) => {
+      SgroupModel.update({_id: {$in: groupIdList}}, propsToChange, { multi: true }).then((res) => {
         resolve(res)
       }).catch((e) => {
         console.log(e)
+        reject(e)
+      })
+    })
+  },
+  auditStatusChange : (groupIdList, newStatus) => {
+    return new Promise((resolve, reject) => {
+      SgroupService.propsChange(groupIdList, {'auditStatus': newStatus}).then(() => {
+        groupIdList.forEach((groupId) => {
+          SgroupModel.findById(groupId).then((sgroup) => {
+            sgroup.members.forEach((member) => {
+              if (newStatus === 'processing') {
+                member.audit.push({
+                  startTime: new Date(),
+                  status: 'waiting',
+                  comment: '',
+                  rate: 0
+                })
+              } else if (newStatus === 'finish') {
+                let auditLength = member.audit.length
+                if (auditLength === 0 || !_.includes(['signedIn', 'waiting'], member.audit[auditLength - 1].status)) {
+                  return
+                }
+                const statusConverter = [{
+                  prev: 'signedIn',
+                  next: 'active'
+                }, {
+                  prev: 'waiting',
+                  next: 'inactive'
+                }]
+                member.audit[auditLength - 1].status = _.find(statusConverter, {prev: member.audit[auditLength - 1].status}).next
+              }
+            })
+            sgroup.save().then(() => {
+              resolve()
+            }).catch((e) => {
+              console.log('error', e)
+            })
+          }).catch((e) => {
+            reject(e)
+          })
+        })
+      }).catch((e) => {
+        console.log(e)
+        reject(e)
+      })
+    })
+  },
+  performAudit : (groupId, studentId, auditInfo) => {
+    return new Promise((resolve, reject) => {
+      SgroupModel.findById(groupId).then((sgroup) => {
+        let targetMember = _.find(sgroup.members, {'studentId': studentId})
+        targetMember.audit.pop()
+        targetMember.audit.push(auditInfo)
+        sgroup.save().then((sgroup) => {
+          resolve(sgroup)
+        }).catch((e) => {
+          reject(e)
+        })
+      }).catch((e) => {
         reject(e)
       })
     })
