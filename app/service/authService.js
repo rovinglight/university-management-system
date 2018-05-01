@@ -48,6 +48,12 @@ const authService = {
         reject(e)
       })
     })
+  },
+  redirectIfNotAuth: function (userAuths, requiredAuths) {
+    let isAuthorized = authService.isAuthorized(userAuths)
+    if (!isAuthorized(requiredAuths)) {
+      this.props.history.push('/')
+    }
   }
 }
 

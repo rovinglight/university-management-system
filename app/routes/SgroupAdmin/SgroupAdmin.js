@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Row, Col, Button, Form, Input, Icon, Checkbox, Tabs, message, Table, Divider } from 'antd'
 import _ from 'lodash'
 import classnames from 'classnames'
-import { isAuthorized } from '../../service/authService'
+import authService from '../../service/authService'
 const FormItem = Form.Item
 const TabPane = Tabs.TabPane
 import Moment from 'react-moment'
@@ -18,6 +18,10 @@ export default class SgroupAdmin extends Component {
     this.state = {
       selectedRowKeys: []
     }
+  }
+  componentDidUpdate () {
+    let userAuths = _.get(this.props, 'userInfo.auth')
+    authService.redirectIfNotAuth.bind(this, userAuths, [])()
   }
   onSelectChange (selectedRowKeys) {
     this.setState({ selectedRowKeys })

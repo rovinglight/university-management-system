@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import Moment from 'react-moment'
 import 'moment/locale/zh-cn'
 import moment from 'moment';
-import AuthService from '../../service/authService'
+import authService from '../../service/authService'
 const { TextArea } = Input
 
 import './SgroupManage.scss'
@@ -47,10 +47,10 @@ export default class SgroupManage extends Component {
     })
   }
   componentDidUpdate () {
-    let userInfo = _.get(this.props, 'userInfo')
-    // if (userInfo.role && userInfo.role === 'visitor') {
-    //   this.jumpTo('/')
-    // }
+    let groupInfo = _.find(this.props.sgroups.groups, {'_id': this.props.match.params.groupId})
+    let groupId = _.get(groupInfo, '_id')
+    let userAuths = _.get(this.props, 'userInfo.auth')
+    authService.redirectIfNotAuth.bind(this, userAuths, [{role: 'studentGroupMember', groupId: groupId}, {role: 'studentGroupPresident', groupId: groupId}])()
   }
   jumpTo (path) {
     this.props.history.push(path)
@@ -281,7 +281,7 @@ export default class SgroupManage extends Component {
     }
     let members = this.memberTableConverter()
     let userAuths = _.get(this.props, 'userInfo.auth')
-    let isAuthorized = AuthService.isAuthorized(userAuths)
+    let isAuthorized = authService.isAuthorized(userAuths)
     return (
       <div className="sgroupmanage">
         <Row className="page-title">

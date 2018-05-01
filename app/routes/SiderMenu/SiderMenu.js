@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import { Icon, Row, Col, Menu, Layout, Dropdown, Avatar, message } from 'antd'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
+import authService from '../../service/authService'
 const { SubMenu } = Menu;
 const { Sider } = Layout;
 
@@ -45,6 +46,8 @@ export default class SiderMenu extends Component {
     }
   }
   render () {
+    let userAuths = _.get(this.props, 'userInfo.auth')
+    let isAuthorized = authService.isAuthorized(userAuths)
     let currentPath = this.menuSelectedConverter()
     let loggedIn = this.props.userInfo.role === 'visitor' ? false : true
     const menu = (
@@ -90,9 +93,20 @@ export default class SiderMenu extends Component {
                 <SubMenu key="sub2" title={<span><Icon type="solution" />学生组织</span>}>
                   <Menu.Item key="allGroup"><Link to='/studentgroups'>全部社团</Link></Menu.Item>
                   <Menu.Item key="6">新社团申请</Menu.Item>
-                  <Menu.Item key="adminGroup"><Link to='/studentgroups/admin'>社团管理</Link></Menu.Item>
+                  <Menu.Item
+                    className={classnames({
+                      hide: !isAuthorized()
+                    })}
+                    key="adminGroup">
+                    <Link to='/studentgroups/admin'>社团管理</Link>
+                  </Menu.Item>
                 </SubMenu>
-                <SubMenu key="sub3" title={<span><Icon type="notification" />管理员功能</span>}>
+                <SubMenu
+                  className={classnames({
+                    hide: !isAuthorized()
+                  })}
+                  key="sub3"
+                  title={<span><Icon type="notification" />管理员功能</span>}>
                   <Menu.Item key="9">学生信息统计</Menu.Item>
                   <Menu.Item key="10">动态审核设置</Menu.Item>
                   <Menu.Item key="authManage"><Link to='/auth/manage'>权限设置</Link></Menu.Item>

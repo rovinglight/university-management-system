@@ -83,6 +83,7 @@ export default class Login extends Component {
                             help={validation.user ? "账号不可为空" : ""}
                             validateStatus={validation.user ? "error" : ""}>
                             <Input
+                              autoFocus
                               value={this.state.form.user}
                               onChange={this.handleChange.bind(this, 'form.user')}
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}

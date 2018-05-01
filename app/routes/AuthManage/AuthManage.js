@@ -36,6 +36,10 @@ export default class AuthManage extends Component {
       }
     }
   }
+  componentDidUpdate () {
+    let userAuths = _.get(this.props, 'userInfo.auth')
+    authService.redirectIfNotAuth.bind(this, userAuths, [])()
+  }
   searchForUser (value) {
     this.setState({searchButtonLoading: true, searchResults: []})
     authService.searchUser(value).then((result) => {
