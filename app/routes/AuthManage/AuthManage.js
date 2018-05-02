@@ -210,7 +210,7 @@ export default class AuthManage extends Component {
           <Divider orientation="left">其他信息</Divider>
             <Select
               className={classnames({
-                hide: !(_.includes(['studentGroupPresident', 'studentGroupMember'], authModal.authInfo.role))
+                hide: !(_.includes(['studentGroupPresident', 'studentGroupMember', 'studentGroupApplicant'], authModal.authInfo.role))
               })}
               onChange={this.handleChange.bind(this, 'authModal.authInfo.groupId')}
               style={{ minWidth: 120 }}
