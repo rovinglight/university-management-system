@@ -1,12 +1,6 @@
 /*-------------- App -------------*/
 body {
   font-family: Montserrat, sans-serif;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-   -khtml-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
 }
 .min-width-200 {
   min-width: 200px;
@@ -48,6 +42,14 @@ body {
 }
 /*-------------- App -------------*/
 /*-------------- template ------------*/
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+   -khtml-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
 .font-20 {
   font-size: 20px;
 }

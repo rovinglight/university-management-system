@@ -37,7 +37,10 @@ export default class SiderMenu extends Component {
     const keyConverter = {
       adminGroup: '/studentgroups/admin',
       allGroup: '/studentgroups',
-      authManage: '/auth/manage'
+      authManage: '/auth/manage',
+      approvalManage: '/approval/manage',
+      approvalCompetition: '/approval/competitions',
+      competitions: '/competitions'
     }
     for (let key in keyConverter) {
       if (_.includes(urlPath, keyConverter[key])) {
@@ -85,9 +88,9 @@ export default class SiderMenu extends Component {
                 defaultOpenKeys={['sub1', 'sub2', 'sub3']}
                 selectedKeys={[currentPath]}
               >
-                <SubMenu key="sub1" title={<span><Icon type="user" />学科竞赛</span>}>
-                  <Menu.Item key="1">全部竞赛</Menu.Item>
-                  <Menu.Item key="2">竞赛申办</Menu.Item>
+                <SubMenu key="sub1" title={<span><Icon type="rocket" />学科竞赛</span>}>
+                  <Menu.Item key="competitions"><Link to='/competitions'>全部竞赛</Link></Menu.Item>
+                  <Menu.Item key="approvalCompetition">竞赛申办</Menu.Item>
                   <Menu.Item key="3">项目库</Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" title={<span><Icon type="solution" />学生组织</span>}>
@@ -106,9 +109,9 @@ export default class SiderMenu extends Component {
                     hide: !isAuthorized()
                   })}
                   key="sub3"
-                  title={<span><Icon type="notification" />管理员功能</span>}>
+                  title={<span><Icon type="tool" />管理员功能</span>}>
                   <Menu.Item key="9">学生信息统计</Menu.Item>
-                  <Menu.Item key="10">动态审核设置</Menu.Item>
+                  <Menu.Item key="approvalManage"><Link to='/approval/manage'>动态审核设置</Link></Menu.Item>
                   <Menu.Item key="authManage"><Link to='/auth/manage'>权限设置</Link></Menu.Item>
                 </SubMenu>
               </Menu>

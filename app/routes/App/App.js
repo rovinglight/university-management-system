@@ -7,6 +7,9 @@ import StudentGroups from '../StudentGroups/StudentGroupsContainer'
 import SgroupManage from '../SgroupManage/SgroupManageContainer'
 import SgroupAdmin from '../SgroupAdmin/SgroupAdminContainer'
 import AuthManage from '../AuthManage/AuthManageContainer'
+import Approval from '../Approval/ApprovalContainer'
+import ApprovalManage from '../ApprovalManage/ApprovalManageContainer'
+import Competitions from '../Competitions/CompetitionsContainer'
 import classnames from 'classnames'
 
 import './App.scss'
@@ -18,6 +21,7 @@ export default class App extends Component {
       sideShow : true
     }
     props.getAllGroups()
+    props.getAllCompetitions()
   }
   componentDidMount () {
     let sessionKey = localStorage.getItem('sessionKey')
@@ -42,6 +46,9 @@ export default class App extends Component {
           <Route exact path={`/studentgroups/admin`} component={SgroupAdmin} />
           <Route exact path={`/studentgroups/manage/:groupId`} component={SgroupManage} />
           <Route exact path={`/auth/manage`} component={AuthManage} />
+          <Route exact path={`/competitions`} component={Competitions} />
+          <Route exact path={`/approval/manage`} component={ApprovalManage} />
+          <Route exact path={`/approval/competitions/:approvalId`} component={Approval} />
         </div>
       </div>
     )

@@ -1,6 +1,7 @@
 const express = require('express')
 const userRoute = require('./routes/user')
 const sgroupRoute = require('./routes/sgroup')
+const competitionRoute = require('./routes/competition')
 const userController = require('./controllers/userController')
 const cors = require('cors')
 const bodyParser = require('body-parser')
@@ -15,5 +16,6 @@ app.use(userController.attachUserInfo)
 
 userRoute(app)
 sgroupRoute(app)
+competitionRoute(app)
 
 app.listen(3000)
