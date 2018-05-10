@@ -10,7 +10,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => ({
   userInfo: state.userInfo,
-  sgroups: state.sgroups
+  sgroups: state.sgroups,
+  static: state.static
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthManage)

@@ -1,0 +1,24 @@
+{
+  "allroles" : [{
+    "role": "administrator",
+    "display": "管理员"
+  }, {
+    "role": "studentGroupPresident",
+    "display": "学生组织主席"
+  }, {
+    "role": "studentGroupMember",
+    "display": "学生组织成员"
+  }, {
+    "role": "studentGroupApplicant",
+    "display": "学生组织申请者"
+  }, {
+    "role": "SecretaryOfYouthLeaguecommittee",
+    "display": "团委书记"
+  }, {
+    "role": "DeputySecretaryOfYouthLeaguecommittee",
+    "display": "团委副书记"
+  }, {
+    "role": "teacher",
+    "display": "教师"
+  }]
+}

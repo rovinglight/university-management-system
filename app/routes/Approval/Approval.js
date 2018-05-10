@@ -14,6 +14,8 @@ export default class Approval extends Component {
     this.props.history.push(path)
   }
   render () {
+    console.log(this.props.match.params.schemaId)
+    console.log(this.props.match.params.approvalId)
     return (
       <div className="approval">
         <Row className="page-title">
