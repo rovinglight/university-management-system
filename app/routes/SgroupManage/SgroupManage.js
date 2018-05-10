@@ -211,11 +211,11 @@ export default class SgroupManage extends Component {
     this.props.performAudit(auditModal.studentId, groupId, auditModal.fields).then(() => {
       this.state.auditModal.loading = false
       this.setState(this.state)
-      message.success('年审信息提交成功')
+      message.success('注册信息提交成功')
     }).catch(() => {
       this.state.auditModal.loading = false
       this.setState(this.state)
-      message.error('年审信息提交失败')
+      message.error('注册信息提交失败')
     })
   }
   handleChange (path, result) {
@@ -260,7 +260,7 @@ export default class SgroupManage extends Component {
               hide: !(record.lastAudit.status === 'waiting')
             })}
             onClick={this.props.performAudit.bind(this, record.studentId, groupId, {...record.lastAudit, status: 'signedIn'})}>
-            进行年审
+            进行注册
             <Divider type="vertical" />
           </a>
           <a

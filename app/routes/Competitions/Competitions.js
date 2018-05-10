@@ -106,14 +106,12 @@ export default class Competitions extends Component {
                       </Popconfirm>,
                       <a onClick={this.toggleCpModal.bind(this, item)}>编辑</a>,
                       <a
-                        className={classnames({
-                          hide: !item.officialSite
-                        })}
+                        disabled={!item.officialSite}
                         target='_blank'
                         href={item.officialSite}>
                         官网
                       </a>,
-                      <Link to='/approval/competitions'>申办竞赛</Link>
+                      <Link to='/approval/competitions/test'>申办竞赛</Link>
                     ]}
                   >
                     <List.Item.Meta

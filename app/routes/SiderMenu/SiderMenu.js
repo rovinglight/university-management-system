@@ -40,6 +40,7 @@ export default class SiderMenu extends Component {
       authManage: '/auth/manage',
       approvalManage: '/approval/manage',
       approvalCompetition: '/approval/competitions',
+      approvalCompetition: '/competitions/approval',
       competitions: '/competitions'
     }
     for (let key in keyConverter) {
@@ -90,7 +91,7 @@ export default class SiderMenu extends Component {
               >
                 <SubMenu key="sub1" title={<span><Icon type="rocket" />学科竞赛</span>}>
                   <Menu.Item key="competitions"><Link to='/competitions'>全部竞赛</Link></Menu.Item>
-                  <Menu.Item key="approvalCompetition">竞赛申办</Menu.Item>
+                  <Menu.Item key="approvalCompetition"><Link to='/competitions/approval'>竞赛申办</Link></Menu.Item>
                   <Menu.Item key="3">项目库</Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" title={<span><Icon type="solution" />学生组织</span>}>
