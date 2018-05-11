@@ -12,5 +12,14 @@ module.exports = {
     })
     _.assign(result, staticSchema, {approvalSchema: approvalSchema})
     res.status(200).send(result)
+  },
+  updateApprovalSchema: async (req, res) => {
+    let newSchema = req.body.approvalSchema
+    let updatedSchemaId = req.body.updatedSchemaId
+    schemaService.updateApprovalSchema(newSchema, updatedSchemaId).then((result) => {
+      res.status(200).send(result)
+    }).catch((e) => {
+      res.status(400).send(e)
+    })
   }
 }

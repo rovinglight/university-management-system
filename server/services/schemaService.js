@@ -12,6 +12,17 @@ const SchemaService = {
         reject(e)
       })
     })
+  },
+  updateApprovalSchema: (newSchema, updatedSchemaId) => {
+    return new Promise(async (resolve, reject) => {
+      let schemaToUpdate = _.filter(newSchema, schema => _.includes(updatedSchemaId, schema._id))
+      for (let i = 0; i  < schemaToUpdate.length; i++) {
+        approvalSchemaModel.update({_id: schemaToUpdate[i]._id}, schemaToUpdate[i]).catch((e) => {
+          reject(e)
+        })
+      }
+      resolve(newSchema)
+    })
   }
 }
 

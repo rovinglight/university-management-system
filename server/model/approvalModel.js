@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const approvalSchema = new mongoose.Schema({
   sponsorId: String,
   status: String,
+  schemaId: String,
   approvalProcess: Array
 })
 
