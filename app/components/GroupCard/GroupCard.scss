@@ -1,13 +1,13 @@
 .group-card {
   width: 100%;
   background-color: white;
-  overflow: hidden;
-  margin-bottom: 24px;
+  overflow: hidden;//overflow属性规定当内容溢出元素框时发生的事情。hidden内容会被修剪，并且其余内容是不可见的。
+  margin-bottom: 24px;//margin-bottom 属性设置元素的下外边距。
   .group-card-left {
     height: 100%;
     color: white;
     font-size: 24px;
-    padding: 20px;
+    padding: 20px;//设置上下左右四个内边距的宽度
   }
   .group-card-right {
     text-align: left;

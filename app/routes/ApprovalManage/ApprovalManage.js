@@ -14,6 +14,9 @@ export default class ApprovalManage extends Component {
   render () {
     let groups = this.props.sgroups.groups
     let userId = _.get(this.props, 'userInfo._id')
+    //根据 object对象的path路径获取值
+    //_.get(object, path, [defaultValue])
+    //object (Object): 要检索的对象。path (Array|string): 要获取属性的路径。
     return (
       <div className="approval-manage">
         <Row className="page-title">

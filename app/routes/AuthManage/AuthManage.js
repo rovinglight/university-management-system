@@ -37,8 +37,14 @@ export default class AuthManage extends Component {
     }
   }
   componentDidUpdate () {
+    //componentDidUpdate 在组件完成更新后立即调用。在初始化时不会被调用。
     let userAuths = _.get(this.props, 'userInfo.auth')
     authService.redirectIfNotAuth.bind(this, userAuths, [])()
+    //bind() 方法为被选元素添加一个或多个事件处理程序，并规定事件发生时运行的函数。
+    //$(selector).bind(event,data,function)
+    //event必需。规定添加到元素的一个或多个事件。由空格分隔多个事件。必须是有效的事件。
+    //data可选。规定传递到函数的额外数据。
+    //function必需。规定当事件发生时运行的函数。
   }
   searchForUser (value) {
     this.setState({searchButtonLoading: true, searchResults: []})

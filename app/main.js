@@ -8,6 +8,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import axios from 'axios'
 import NProgress from 'nprogress/nprogress.js'
 import 'nprogress/nprogress.css'
+//import语句用于导入由另一个模块导出的绑定。
 
 const store = configureStore({})
 

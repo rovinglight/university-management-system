@@ -9,6 +9,7 @@ export default class Approval extends Component {
   }
   jumpTo (path) {
     this.props.history.push(path)
+    //push(path, [state]) 在历史堆栈信息里加入一个新条目。
   }
   render () {
     return (
