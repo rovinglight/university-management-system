@@ -1,3 +1,10 @@
 .DS_Store
 node_modules/
 data/
+*.local
+.idea/misc.xml
+.idea/modules.xml
+.idea/ums.iml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/dictionaries/wensenzhasi.xml
