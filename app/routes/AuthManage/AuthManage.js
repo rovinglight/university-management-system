@@ -8,20 +8,6 @@ const Option = Select.Option
 
 import './AuthManage.scss'
 
-const allAuths = [{
-  role: 'administrator',
-  display: '管理员'
-}, {
-  role: 'studentGroupPresident',
-  display: '学生组织主席'
-}, {
-  role: 'studentGroupMember',
-  display: '学生组织成员'
-}, {
-  role: 'studentGroupApplicant',
-  display: '学生组织申请者'
-}]
-
 export default class AuthManage extends Component {
   constructor (props) {
     super(props)
@@ -131,6 +117,7 @@ export default class AuthManage extends Component {
     })
   }
   render () {
+    let allAuths = this.props.static.allroles
     let authModal = this.state.authModal
     let sgroups = this.props.sgroups.groups
     return (

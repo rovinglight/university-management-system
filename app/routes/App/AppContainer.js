@@ -3,12 +3,14 @@ import App from './App'
 import { loginWithSessionKey } from '../../reducers/UserInfo'
 import { getAllGroups } from '../../reducers/Sgroups'
 import { getAllCompetitions } from '../../reducers/Competitions'
+import { getAllStatic } from '../../reducers/Static'
 
 const mapDispatchToProps = (dispatch) => {
   return {
     loginWithSessionKey: (sessionKey) => dispatch(loginWithSessionKey(sessionKey)),
     getAllGroups: () => dispatch(getAllGroups()),
-    getAllCompetitions: () => dispatch(getAllCompetitions())
+    getAllCompetitions: () => dispatch(getAllCompetitions()),
+    getAllStatic: () => dispatch(getAllStatic())
   }
 }
 

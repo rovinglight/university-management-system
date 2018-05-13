@@ -53,10 +53,10 @@ export default class SgroupAdmin extends Component {
       return message.error('未选中社团')
     }
     this.props.changeAuditStatus(this.state.selectedRowKeys, newStatus).then(() => {
-      message.success('年审状态修改成功')
+      message.success('注册状态修改成功')
     }).catch((e) => {
       console.log(e)
-      message.error('年审状态修改失败')
+      message.error('注册状态修改失败')
     })
   }
   groupDataConverter (groups) {
@@ -106,7 +106,7 @@ export default class SgroupAdmin extends Component {
       title: '状态',
       dataIndex: 'status',
     }, {
-      title: '年审',
+      title: '注册',
       dataIndex: 'auditStatus'
     }, {
       title: '纳新',
@@ -150,14 +150,14 @@ export default class SgroupAdmin extends Component {
                             hide: false
                           })}
                           onClick={this.changeAuditStatus.bind(this, 'processing')} >
-                          发起年审
+                          发起注册
                         </Button>
                         <Button
                           className={classnames({
                             hide: false
                           })}
                           onClick={this.changeAuditStatus.bind(this, 'finish')} >
-                          结束年审
+                          结束注册
                         </Button>
                       </ButtonGroup>
                       <ButtonGroup>

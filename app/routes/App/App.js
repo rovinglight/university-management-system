@@ -10,6 +10,7 @@ import AuthManage from '../AuthManage/AuthManageContainer'
 import Approval from '../Approval/ApprovalContainer'
 import ApprovalManage from '../ApprovalManage/ApprovalManageContainer'
 import Competitions from '../Competitions/CompetitionsContainer'
+import CompetitionsApproval from '../CompetitionsApproval/CompetitionsApprovalContainer'
 import classnames from 'classnames'
 
 import './App.scss'//代码仅仅执行App.scss模块，但是不输入任何值。
@@ -24,6 +25,7 @@ export default class App extends Component {
     } 
     props.getAllGroups()
     props.getAllCompetitions()
+    props.getAllStatic()
   }
   componentDidMount () {
     //在第一次渲染后调用，只在客户端。之后组件已经生成了对应的DOM结构，可以通过this.getDOMNode()来进行访问。
@@ -52,8 +54,9 @@ export default class App extends Component {
           <Route exact path={`/studentgroups/manage/:groupId`} component={SgroupManage} />
           <Route exact path={`/auth/manage`} component={AuthManage} />
           <Route exact path={`/competitions`} component={Competitions} />
+          <Route exact path={`/competitions/approval`} component={CompetitionsApproval} />
           <Route exact path={`/approval/manage`} component={ApprovalManage} />
-          <Route exact path={`/approval/competitions/:approvalId`} component={Approval} />
+          <Route exact path={`/approval/:schemaId/:approvalId`} component={Approval} />
           {/* 当一个路由的path匹配成功后，路由用来确定渲染结果的参数有三种。只需要提供其中一个即可。
           component ：一个React组件。当带有component参数的route匹配成功后，route会返回一个新的元素，
           其为component参数所对应的React组件（使用React.createElement创建）。 */}
