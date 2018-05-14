@@ -141,7 +141,7 @@ export default class ApprovalManage extends Component {
                     <Button onClick={this.removeProcess.bind(this, index)} shape="circle" icon="delete" />
                   ]}>
                     <List.Item.Meta
-                      avatar={<Avatar>{index + 1}</Avatar>}
+                      avatar={<Avatar className='bg-gradient-5'>{index + 1}</Avatar>}
                       title={<a>审批人</a>}
                       description={
                         <Select value={item.role} style={{ width: 120 }} onChange={this.handleChange.bind(this, `processToEdit.approvalStack[${index}].role`)}>
