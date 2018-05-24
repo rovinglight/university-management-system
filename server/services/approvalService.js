@@ -12,7 +12,7 @@ const ApprovalService = {
         status: 'notSubmit'
       }
       newApproval.approvalProcess = approvalSchema.approvalStack.map((step, index) => {
-        reutrn ({
+        return ({
           approver: '',
           status: 'waiting',
           role: step.role
@@ -20,7 +20,13 @@ const ApprovalService = {
       })
       newApproval = new approvalModel(newApproval)
       newApproval.save().then((result) => {
-        resolve(result)
+        let approvalId = result._id
+        approvalModel.find().then((result) => {
+          resolve({
+            approvals: result,
+            approvalId: approvalId
+          })
+        })
       }).catch((e) => {
         reject(e)
       })

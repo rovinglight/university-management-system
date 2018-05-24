@@ -49,7 +49,7 @@ export default class CompetitionsApproval extends Component {
       title: '操作',
       render: (text, record) => {
         return(
-          <Link to='/approval/competitions/test'>管理</Link>
+          <Link to='/approval/5af450afe72327010df04c80'>管理</Link>
         )
       }
     }]
@@ -62,7 +62,9 @@ export default class CompetitionsApproval extends Component {
       <div className="competition-approval">
         <Row className="page-title">
           <Col>
-            <h1>竞赛申办</h1>
+            <h1>
+              竞赛申办
+            </h1>
           </Col>
         </Row>
         <Row>
@@ -70,7 +72,18 @@ export default class CompetitionsApproval extends Component {
             <div className="shadow-box bg-white padding-20 margin-bottom-25">
               <h2>
                 申办历史
+                <Link to='/competitions'>
+                  <Button
+                    className='float-right vertical-middle'
+                    shape="circle"
+                    icon='plus'
+                    size='large' />
+                </Link>
               </h2>
+              <Row className='margin-bottom-10'>
+                <Button className='icon-gap'>刷新</Button>
+                <Button className='icon-gap'>删除</Button>
+              </Row>
               <Table
                 rowSelection={rowSelection}
                 columns={columns}

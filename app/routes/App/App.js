@@ -51,7 +51,7 @@ export default class App extends Component {
           <Route exact path={`/competitions`} component={Competitions} />
           <Route exact path={`/competitions/approval`} component={CompetitionsApproval} />
           <Route exact path={`/approval/manage`} component={ApprovalManage} />
-          <Route exact path={`/approval/:schemaId/:approvalId`} component={Approval} />
+          <Route exact path={`/approval/:approvalId`} component={Approval} />
         </div>
       </div>
     )

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col, Button, Tabs, Timeline, Input, Icon, Upload } from 'antd'
+import _ from 'lodash'
 const TabPane = Tabs.TabPane
 const { TextArea } = Input
 const Dragger = Upload.Dragger
@@ -14,8 +15,9 @@ export default class Approval extends Component {
     this.props.history.push(path)
   }
   render () {
-    console.log(this.props.match.params.schemaId)
     console.log(this.props.match.params.approvalId)
+    let schema = _.find(this.props.static.approvalSchema, {_id: this.props.match.params.schemaId})
+    console.log(schema)
     return (
       <div className="approval">
         <Row className="page-title">
@@ -56,8 +58,6 @@ export default class Approval extends Component {
                           <Button type='danger'>不予通过</Button>
                         </Col>
                       </Row>
-
-
                     </Col>
                   </Row>
                 </TabPane>
