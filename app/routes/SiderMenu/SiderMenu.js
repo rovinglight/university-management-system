@@ -40,8 +40,9 @@ export default class SiderMenu extends Component {
       authManage: '/auth/manage',
       approvalManage: '/approval/manage',
       approvalCompetition: '/approval/competitions',
+      competitions: '/competitions',
       approvalCompetition: '/competitions/approval',
-      competitions: '/competitions'
+      applyForCompetition: '/competitions/apply'
     }
     for (let key in keyConverter) {
       if (_.includes(urlPath, keyConverter[key])) {
@@ -57,7 +58,7 @@ export default class SiderMenu extends Component {
     const menu = (
       <Menu>
         <Menu.Item>
-          <a href="">个人设置</a>
+          <a href="/">个人设置</a>
         </Menu.Item>
         <Menu.Item>
           <a onClick={this.logout.bind(this)}>登出</a>
@@ -92,6 +93,7 @@ export default class SiderMenu extends Component {
                 <SubMenu key="sub1" title={<span><Icon type="rocket" />学科竞赛</span>}>
                   <Menu.Item key="competitions"><Link to='/competitions'>全部竞赛</Link></Menu.Item>
                   <Menu.Item key="approvalCompetition"><Link to='/competitions/approval'>竞赛申办</Link></Menu.Item>
+                  <Menu.Item key="applyForCompetition">申请参赛</Menu.Item>
                   <Menu.Item key="3">项目库</Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" title={<span><Icon type="solution" />学生组织</span>}>
@@ -125,13 +127,16 @@ export default class SiderMenu extends Component {
                 <Icon className="side-trigger font-20" type={!this.state.sideShow ? "menu-unfold" : "menu-fold"} />
               </Col>
               <Row type="flex"></Row>
-              <Col>
+              <Col style={{display: 'flex'}}>
+                <Link className='header-item font-20' to='/question'>
+                  <Icon type="question-circle-o" />
+                </Link>
                 <Link to='/login'>
-                <span className={classnames('header-item', 'font-14', {hide: loggedIn})}>
-                  <Icon className="icon-gap" type="login" />
-                  登录/注册
-                </span>
-              </Link>
+                  <span className={classnames('font-14 header-item', {hide: loggedIn})}>
+                    <Icon className="icon-gap" type="login" />
+                    登录/注册
+                  </span>
+                </Link>
                 <Dropdown overlay={menu}>
                   <span className={classnames("ant-dropdown-link font-14 header-item", {hide: !loggedIn})} href="#">
                      <Avatar className={`vertical-middle icon-gap bg-gradient-${this.state.randomNum}`} icon="user" />
