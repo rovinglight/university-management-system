@@ -13,7 +13,7 @@ import Competitions from '../Competitions/CompetitionsContainer'
 import CompetitionsApproval from '../CompetitionsApproval/CompetitionsApprovalContainer'
 import classnames from 'classnames'
 
-import './App.scss'//代码仅仅执行App.scss模块，但是不输入任何值。
+import './App.scss'
 
 // 路由器组件无法接受两个及以上的子元素。基于这种限制的存在，创建一个<App>组件来渲染应用其余部分是一个有效的方法
 // （对于服务端渲染，将应用从router组件中分离也是重要的）。
@@ -28,7 +28,7 @@ export default class App extends Component {
     props.getAllStatic()
   }
   componentDidMount () {
-    //在第一次渲染后调用，只在客户端。之后组件已经生成了对应的DOM结构，可以通过this.getDOMNode()来进行访问。
+    //在第一次渲染后调用，只在客户端。
     let sessionKey = localStorage.getItem('sessionKey') //获取sessionKey本地存储的值，
     //localStorage用于持久化的本地存储，除非主动删除数据，否则数据是永远不会过期的。
     if (sessionKey) {

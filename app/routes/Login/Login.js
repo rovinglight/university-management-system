@@ -24,26 +24,26 @@ export default class Login extends Component {
     }
   }
   componentDidUpdate () {
-    //componentDidUpdate 在组件完成更新后立即调用。在初始化时不会被调用。
+    //componentDidUpdate在组件完成更新后立即调用。在初始化时不会被调用。
     if (this.props.userInfo.sessionKey) {
         this.props.history.push('/')
         //push(path, [state]) 在历史堆栈信息里加入一个新条目。
-        // history是RR4的两大重要依赖之一，另一个是React。
+        //history是RR4的两大重要依赖之一，另一个是React。
     }
   }
   handleChange (path, e) {
     _.set(this.state, path, e.target.value)
     // _.set(object, path, value)
-    // 设置 object对象中对应 path 属性路径上的值，如果path不存在，则创建。 
-    // 缺少的索引属性会创建为数组，而缺少的属性会创建为对象。 使用 _.setWith 定制path创建。 
+    // 设置 object对象中对应 path属性路径上的值，如果path不存在，则创建。 
+    // 缺少的索引属性会创建为数组，而缺少的属性会创建为对象。使用 _.setWith定制path创建。 
     this.setState(this.state)
   }
-  validation () {//不懂这个key的作用是什么
+  validation () {
     let flag = true
     let validation = {}
     let form = this.state.form
     for (let key in form) {
-      if (!form[key]) {
+      if (!form[key]) {//为空
         flag = false
         validation[key] = true
       } else {
