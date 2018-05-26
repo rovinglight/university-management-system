@@ -12,7 +12,8 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => ({
   sgroups: state.sgroups,
   userInfo: state.userInfo,
-  static: state.static
+  static: state.static,
+  approval: state.approval
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Approval)

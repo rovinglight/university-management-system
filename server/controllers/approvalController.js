@@ -12,5 +12,13 @@ module.exports = {
       console.log(e)
       res.status(400).send(e)
     })
+  },
+  getAllApproval: (req, res) => {
+    approvalService.getAllApproval().then((result) => {
+      res.status(200).send(result)
+    }).catch((e) => {
+      console.log(e)
+      res.status(400).send(e)
+    })
   }
 }

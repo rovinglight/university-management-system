@@ -24,6 +24,7 @@ export default class App extends Component {
     props.getAllGroups()
     props.getAllCompetitions()
     props.getAllStatic()
+    props.getAllApproval()
   }
   componentDidMount () {
     let sessionKey = localStorage.getItem('sessionKey')
@@ -51,7 +52,7 @@ export default class App extends Component {
           <Route exact path={`/competitions`} component={Competitions} />
           <Route exact path={`/competitions/approval`} component={CompetitionsApproval} />
           <Route exact path={`/approval/manage`} component={ApprovalManage} />
-          <Route exact path={`/approval/:approvalId`} component={Approval} />
+          <Route exact path={`/approval/detail/:approvalId`} component={Approval} />
         </div>
       </div>
     )

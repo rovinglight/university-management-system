@@ -20,5 +20,14 @@
   }, {
     "role": "teacher",
     "display": "教师"
-  }]
+  }],
+  "approvalSchema": {
+    "type": [{
+      "type": "submit",
+      "display": "提交阶段"
+    }, {
+      "type": "approval",
+      "display": "审核阶段"
+    }]
+  }
 }

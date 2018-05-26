@@ -129,7 +129,7 @@ export default class ApprovalManage extends Component {
               </Row>
               <List
                 className="demo-loadmore-list"
-                itemLayout="horizontal"
+                itemLayout="vertical"
                 dataSource={approvalStack}
                 renderItem={(item, index) => (
                   <List.Item actions={[
@@ -139,7 +139,7 @@ export default class ApprovalManage extends Component {
                   ]}>
                     <List.Item.Meta
                       avatar={<Avatar className='bg-gradient-5'>{index + 1}</Avatar>}
-                      title={<a>审批人</a>}
+                      title={<Avatar className='bg-gradient-5'>{index + 1}</Avatar>}
                       description={
                         <Select value={item.role} style={{ width: 120 }} onChange={this.handleChange.bind(this, `processToEdit.approvalStack[${index}].role`)}>
                           {
@@ -152,6 +152,15 @@ export default class ApprovalManage extends Component {
                         </Select>
                       }
                     />
+                    <Select value={item.role} style={{ width: 120 }} onChange={this.handleChange.bind(this, `processToEdit.approvalStack[${index}].role`)}>
+                      {
+                        allroles.map((role, i) => {
+                          return (
+                            <Option key={i} value={role.role}>{role.display}</Option>
+                          )
+                        })
+                      }
+                    </Select>
                   </List.Item>
                 )}
               />

@@ -11,7 +11,20 @@ const GET_ALL_APPROVAL = 'GET_ALL_APPROVAL'
 export const getAllApproval = (approvalId) => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-
+      axios({
+        method: 'get',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/approval/all`,
+      }).then((res) => {
+        dispatch({
+          type: GET_ALL_APPROVAL,
+          payload: {
+            approvals: res.data
+          }
+        })
+        resolve(res.data)
+      }).catch((e) => {
+        reject(e)
+      })
     })
   }
 }

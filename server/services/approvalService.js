@@ -31,6 +31,15 @@ const ApprovalService = {
         reject(e)
       })
     })
+  },
+  getAllApproval: () => {
+    return new Promise((resolve, reject) => {
+      approvalModel.find().then((result) => {
+        resolve(result)
+      }).catch((e) => {
+        reject(e)
+      })
+    })
   }
 }
 

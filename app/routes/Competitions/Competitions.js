@@ -63,7 +63,7 @@ export default class Competitions extends Component {
   createApproval () {
     let competitionSchema = _.find(this.props.static.approvalSchema, {name: '竞赛申办'})
     this.props.createApproval(competitionSchema).then((approvalId) => {
-      this.jumpTo(`/approval/${approvalId}`)
+      this.jumpTo(`/approval/detail/${approvalId}`)
       message.success('申请创建成功')
     }).catch((e) => {
       message.error('无法创建申请')

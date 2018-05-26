@@ -15,9 +15,12 @@ export default class Approval extends Component {
     this.props.history.push(path)
   }
   render () {
-    console.log(this.props.match.params.approvalId)
-    let schema = _.find(this.props.static.approvalSchema, {_id: this.props.match.params.schemaId})
-    console.log(schema)
+    let approvalId = this.props.match.params.approvalId
+    let approval = _.find(this.props.approval.approvals, {_id: approvalId})
+    let approvalProcess = _.get(approval, 'approvalProcess')
+    let staticSchema = this.props.static
+    let previousStep, allroles = staticSchema.allroles
+    console.log(approval)
     return (
       <div className="approval">
         <Row className="page-title">
@@ -42,10 +45,16 @@ export default class Approval extends Component {
                   <Row>
                     <Col className='padding-20' span={8}>
                       <Timeline>
-                        <Timeline.Item color='green'>校团委书记审批</Timeline.Item>
-                        <Timeline.Item color='green'>校团委副书记</Timeline.Item>
-                        <Timeline.Item dot={<Icon type="clock-circle-o"/>}>校团委副书记</Timeline.Item>
-                        <Timeline.Item>活动结束</Timeline.Item>
+                        {
+                          approvalProcess && approvalProcess.map((step, index) => {
+                          let convertedRole = _.get(_.find(allroles, {role: step.role}), 'display') || step.role
+                          let color = step.status === 'passed' && 'green' || step.status === 'rejected' && 'red' || step.status === 'waiting' && 'blue'
+                          let dot = step.status === 'waiting' && (!previousStep || previousStep.status === 'passed') ? (<Icon type="clock-circle-o"/>) : ''
+                          previousStep = step
+                          return(
+                            <Timeline.Item key={index} color={color} dot={dot}>{`${convertedRole}审批`}</Timeline.Item>
+                          )
+                        })}
                       </Timeline>
                     </Col>
                     <Col span={16}>
