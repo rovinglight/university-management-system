@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Button, Tabs, Timeline, Input, Icon, Upload, message, Card } from 'antd'
+import { Row, Col, Button, Tabs, Timeline, Input, Icon, Upload, message, Card, Divider, Avatar } from 'antd'
 import _ from 'lodash'
 import classnames from 'classnames'
 import Moment from 'react-moment'
@@ -15,7 +15,10 @@ export default class Approval extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      comment: ''
+      comment: '',
+      showStepHistory: false,
+      stepHistoryIndex: '',
+      stepHistory: {}
     }
   }
   jumpTo (path) {
@@ -71,9 +74,24 @@ export default class Approval extends Component {
       'commenter': this.props.userInfo.name
     })
     this.props.updateApproval(approval).then(() => {
+      this.setState({
+        comment: ''
+      })
       message.success('提交成功')
     }).catch((e) => {
       message.error('提交失败')
+    })
+  }
+  showStepHistory (step, index) {
+    this.setState({
+      showStepHistory: true,
+      stepHistoryIndex: index,
+      stepHistory: step
+    })
+  }
+  toggleStepHistory () {
+    this.setState({
+      showStepHistory: !this.state.showStepHistory
     })
   }
   render () {
@@ -84,7 +102,8 @@ export default class Approval extends Component {
     let previousStep, allroles = staticSchema.allroles
     let currentStep = _.find(approvalProcess, {status: 'waiting'})
     let approvalComment = _.get(currentStep, 'comment')
-    console.log(currentStep)
+    let stepHistory = this.state.stepHistory
+    console.log(this.state)
     return (
       <div className="approval">
         <Row className="page-title">
@@ -134,15 +153,33 @@ export default class Approval extends Component {
                           previousStep = step
                           let str = step.stepType === 'submit' ? '文件提交' : `${convertedRole}审批`
                           return(
-                            <Timeline.Item key={index} color={color} dot={dot}>{str}</Timeline.Item>
+                            <Timeline.Item key={index} color={color} dot={dot}>
+                              {str}
+                              <Divider type="vertical" />
+                              <a
+                                className={classnames({hide: step.status === 'waiting'})}
+                                onClick={this.showStepHistory.bind(this, step, index)}>
+                                <Icon type="eye-o" />
+                              </a>
+                            </Timeline.Item>
                           )
                         })}
                       </Timeline>
                     </Col>
-                    <Col className={classnames({hide: _.includes(['rejected', 'complete', 'notSubmit'], _.get(approval, 'status'))})} span={16}>
+                    <Col span={16}>
                       <Row>
-                        <Col>
-                          {approvalComment && approvalComment.map((comment, index) => {
+                        <Card
+                          className={classnames('margin-bottom-25', {hide: !this.state.showStepHistory})}
+                          title={<span><Avatar className='bg-gradient-5 icon-gap'>{this.state.stepHistoryIndex + 1}</Avatar>历史信息</span>}
+                          extra={
+                            <a onClick={this.toggleStepHistory.bind(this)}>
+                            <Icon type="close" />
+                            </a>
+                          }>
+                          <p>执行人员: {stepHistory.operatorName}</p>
+                          <p>执行日期: {<Moment locale="zh-cn" format="YYYY年MMMDo，a hh:mm" fromNow>{stepHistory.performDate}</Moment>}</p>
+                          <p>审批意见: </p>
+                          {stepHistory.comment && stepHistory.comment.map((comment, index) => {
                             return (
                               <Card
                                 className='margin-bottom-10'
@@ -156,30 +193,50 @@ export default class Approval extends Component {
                               </Card>
                             )
                           })}
-                        </Col>
-                        <Col>
-                          <TextArea
-                            value={this.state.comment}
-                            onChange={this.handleChange.bind(this, 'comment')}
-                            className='margin-bottom-10'
-                            autosize={{ minRows: 2, maxRows: 6 }}
-                            placeholder='意见' />
-                        </Col>
+                        </Card>
                       </Row>
-                      <Row type='flex' justify='center'>
-                        <Col>
-                          <Button onClick={this.submitComment.bind(this, approval)} className='icon-gap'>
-                            提交意见
-                          </Button>
-                          <Button className='icon-gap' onClick={this.grantStep.bind(this, approval)}>
-                            通过审批
-                          </Button>
-                        </Col>
-                        <Col>
-                          <Button type='danger' onClick={this.rejectStep.bind(this, approval)}>
-                            不予通过
-                          </Button>
-                        </Col>
+                      <Row className={classnames({hide: _.includes(['rejected', 'complete', 'notSubmit'], _.get(approval, 'status'))})} >
+                        <Row>
+                          <Col>
+                            {approvalComment && approvalComment.map((comment, index) => {
+                              return (
+                                <Card
+                                  className='margin-bottom-10'
+                                  hoverable
+                                  key={index}
+                                  type="inner"
+                                  title={comment.commenter}
+                                  extra={<Moment locale="zh-cn" format="MMMDo YYYY，a" fromNow>{comment.commentDate}</Moment>}
+                                >
+                                  {comment.content}
+                                </Card>
+                              )
+                            })}
+                          </Col>
+                          <Col>
+                            <TextArea
+                              value={this.state.comment}
+                              onChange={this.handleChange.bind(this, 'comment')}
+                              className='margin-bottom-10'
+                              autosize={{ minRows: 2, maxRows: 6 }}
+                              placeholder='意见' />
+                          </Col>
+                        </Row>
+                        <Row type='flex' justify='center'>
+                          <Col>
+                            <Button onClick={this.submitComment.bind(this, approval)} className='icon-gap'>
+                              提交意见
+                            </Button>
+                            <Button className='icon-gap' onClick={this.grantStep.bind(this, approval)}>
+                              通过审批
+                            </Button>
+                          </Col>
+                          <Col>
+                            <Button type='danger' onClick={this.rejectStep.bind(this, approval)}>
+                              不予通过
+                            </Button>
+                          </Col>
+                        </Row>
                       </Row>
                     </Col>
                   </Row>
