@@ -4,7 +4,7 @@ import _ from 'lodash'
 import classnames from 'classnames'
 import Moment from 'react-moment'
 import 'moment/locale/zh-cn'
-import moment from 'moment';
+import moment from 'moment'
 const TabPane = Tabs.TabPane
 const { TextArea } = Input
 const Dragger = Upload.Dragger

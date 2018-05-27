@@ -28,13 +28,15 @@ export const getAllApproval = (approvalId) => {
     })
   }
 }
-export const createApproval = (schema) => {
+export const createApproval = (schema, name) => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
+      console.log('test',name)
       axios({
         method: 'post',
         url: `http://${config.ums_web.host}:${config.ums_web.port}/approval/new`,
         data: {
+          name: name,
           approvalSchema: schema
         }
       }).then((res) => {

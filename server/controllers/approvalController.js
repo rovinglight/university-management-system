@@ -5,8 +5,10 @@ const _ = require('lodash')
 module.exports = {
   createApproval: (req, res) => {
     let userId = req.userInfo._id.toString()
+    let userName = req.userInfo.name
     let approvalSchema = req.body.approvalSchema
-    approvalService.createApproval(userId, approvalSchema).then((result) => {
+    let approvalName = req.body.name
+    approvalService.createApproval(userId, approvalSchema, approvalName, userName).then((result) => {
       res.status(200).send(result)
     }).catch((e) => {
       console.log(e)

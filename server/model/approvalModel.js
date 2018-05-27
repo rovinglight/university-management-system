@@ -3,7 +3,10 @@ const mongoose = require('mongoose')
 
 //记录审批进度以及内容的collection
 const approvalSchema = new mongoose.Schema({
+  name: String,
   sponsorId: String,
+  sponsorName: String,
+  startDate: Date,
   status: String,
   schemaId: String,  //对应approvalSchemaModel即审核模板的id
   approvalProcess: [{

@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Row, Col, Button, List, Avatar, Modal, Divider, Input, message, Select, Popconfirm, Table } from 'antd'
+import { Row, Col, Button, List, Badge, Avatar, Modal, Divider, Input, message, Select, Popconfirm, Table } from 'antd'
 import classnames from 'classnames'
 import authService from '../../service/authService'
+import Moment from 'react-moment'
+import 'moment/locale/zh-cn'
+import moment from 'moment';
 const { TextArea } = Input
 const Option = Select.Option
 
@@ -29,8 +32,50 @@ export default class CompetitionsApproval extends Component {
   onSelectChange (selectedRowKeys) {
     this.setState({ selectedRowKeys })
   }
-  tableDateGenerator () {
+  todoCount (approval) {
+    let badgeCount = 0
+    let user = this.props.userInfo
+    approval.status === 'processing' && _.find(approval.approvalProcess, (step, index) => {
+      if (step.status === 'waiting' && _.find(user.auth, {role: step.role}) && approval.approvalProcess[index - 1].status === 'passed') {
+        badgeCount ++
+        for (let i = step.comment.length - 1; i >= 0; i--) {
+          if (step.comment[i].commenter === user.name) {
+            break
+          }
+          badgeCount ++
+        }
+        return true
+      }
+    })
 
+    return badgeCount
+  }
+  tableDateGenerator (schemaId) {
+    let user = this.props.userInfo
+    let userId = this.props.userInfo._id
+    let approvals = _.filter(this.props.approval.approvals, (approval) => {
+      if (approval.sponsorId === userId && approval.schemaId === schemaId) {
+        return true
+      }
+      for (let i = 0; i < approval.approvalProcess.length; i++) {
+        if (_.find(user.auth, {role: approval.approvalProcess[i].role})) {
+          return true
+        }
+      }
+    })
+    let schemas = this.props.static
+    return approvals.map((approval, index) => {
+      let status = _.get(_.find(schemas.approvalStep.status, {status: approval.status}), 'display') || approval.status
+      let todoCount = this.todoCount(approval)
+      return {
+        key: approval._id,
+        name: approval.name,
+        status: status,
+        sponsor: approval.sponsorName,
+        time: approval.startDate,
+        todo: todoCount
+      }
+    })
   }
   render () {
     const rowSelection = {
@@ -39,28 +84,48 @@ export default class CompetitionsApproval extends Component {
       hideDefaultSelections: true,
       selections: false
     }
+    let statusSchema = _.get(this.props.static, 'approvalStep.status')
+    let statusFilter = statusSchema && statusSchema.map((status, i) => {
+      return {
+        text: status.display,
+        value: status.display
+      }
+    })
     const columns = [{
       title: '竞赛名称',
       dataIndex: 'name',
     }, {
+      title: '待办',
+      render: (text, record) => {
+        return (
+          <Badge count={record.todo} />
+        )
+      },
+      sorter: (a, b) => a.todo - b.todo,
+    }, {
+      title: '申请人',
+      dataIndex: 'sponsor'
+    }, {
       title: '状态',
       dataIndex: 'status',
+      filters: statusFilter,
+      onFilter: (value, record) => record.status.indexOf(value) === 0
     }, {
       title: '申请时间',
-      dataIndex: 'time'
+      render: (text, record) => {
+        return (
+          <Moment locale="zh-cn" format="YYYY年MMMDo，a hh:mm" fromNow>{record.time}</Moment>
+        )
+      }
     }, {
       title: '操作',
       render: (text, record) => {
         return(
-          <Link to={`/approval/detail/`}>管理</Link>
+          <Link to={`/approval/detail/${record.key}`}>管理</Link>
         )
       }
     }]
-    let competitions = [{
-      name: '“互联网+”大学生创新创业大赛',
-      status: '申请中',
-      time: '三天前'
-    }]
+    let tableData = this.tableDateGenerator('5af450afe72327010df04c80')
     return (
       <div className="competition-approval">
         <Row className="page-title">
@@ -80,7 +145,7 @@ export default class CompetitionsApproval extends Component {
                     className='float-right vertical-middle'
                     shape="circle"
                     icon='plus'
-                    size='large' />
+                    size='large'/>
                 </Link>
               </h2>
               <Row className='margin-bottom-10'>
@@ -90,7 +155,7 @@ export default class CompetitionsApproval extends Component {
               <Table
                 rowSelection={rowSelection}
                 columns={columns}
-                dataSource={competitions} />
+                dataSource={tableData} />
             </div>
           </Col>
         </Row>

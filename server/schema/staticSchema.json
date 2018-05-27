@@ -28,6 +28,21 @@
     }, {
       "type": "approval",
       "display": "审核阶段"
-    }]
+    }],
+    "status": [
+      {
+        "status": "notSubmit",
+        "display": "未提交"
+      }, {
+        "status": "processing",
+        "display": "进行中"
+      }, {
+        "status": "rejected",
+        "display": "已否决"
+      }, {
+        "status": "complete",
+        "display": "已完成"
+      }
+    ]
   }
 }

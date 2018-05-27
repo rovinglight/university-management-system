@@ -4,10 +4,13 @@ const mongoose = require('mongoose')
 const _ = require('lodash')
 
 const ApprovalService = {
-  createApproval: (userId, approvalSchema) => {
+  createApproval: (userId, approvalSchema, approvalName, userName) => {
     return new Promise((resolve, reject) => {
       let newApproval = {
+        name: approvalName,
         sponsorId: userId,
+        sponsorName: userName,
+        startDate: new Date(),
         schemaId: approvalSchema._id,
         status: 'notSubmit'
       }

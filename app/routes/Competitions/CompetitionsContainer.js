@@ -10,7 +10,7 @@ const mapDispatchToProps = (dispatch) => {
     applyForSgroup: (userId, groupId) => dispatch(applyForSgroup(userId, groupId)),
     upsertCompetition: (competition) => dispatch(upsertCompetition(competition)),
     removeCompetition: (competitionId) => dispatch(removeCompetition(competitionId)),
-    createApproval: (schema) => dispatch(createApproval(schema))
+    createApproval: (schema, name) => dispatch(createApproval(schema, name))
   }
 }
 
