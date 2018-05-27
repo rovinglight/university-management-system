@@ -196,47 +196,50 @@ export default class Approval extends Component {
                         </Card>
                       </Row>
                       <Row className={classnames({hide: _.includes(['rejected', 'complete', 'notSubmit'], _.get(approval, 'status'))})} >
-                        <Row>
-                          <Col>
-                            {approvalComment && approvalComment.map((comment, index) => {
-                              return (
-                                <Card
-                                  className='margin-bottom-10'
-                                  hoverable
-                                  key={index}
-                                  type="inner"
-                                  title={comment.commenter}
-                                  extra={<Moment locale="zh-cn" format="MMMDo YYYY，a" fromNow>{comment.commentDate}</Moment>}
-                                >
-                                  {comment.content}
-                                </Card>
-                              )
-                            })}
-                          </Col>
-                          <Col>
-                            <TextArea
-                              value={this.state.comment}
-                              onChange={this.handleChange.bind(this, 'comment')}
-                              className='margin-bottom-10'
-                              autosize={{ minRows: 2, maxRows: 6 }}
-                              placeholder='意见' />
-                          </Col>
-                        </Row>
-                        <Row type='flex' justify='center'>
-                          <Col>
-                            <Button onClick={this.submitComment.bind(this, approval)} className='icon-gap'>
-                              提交意见
-                            </Button>
-                            <Button className='icon-gap' onClick={this.grantStep.bind(this, approval)}>
-                              通过审批
-                            </Button>
-                          </Col>
-                          <Col>
-                            <Button type='danger' onClick={this.rejectStep.bind(this, approval)}>
-                              不予通过
-                            </Button>
-                          </Col>
-                        </Row>
+                        <Card
+                          title="审批操作">
+                          <Row>
+                            <Col>
+                              {approvalComment && approvalComment.map((comment, index) => {
+                                return (
+                                  <Card
+                                    className='margin-bottom-10'
+                                    hoverable
+                                    key={index}
+                                    type="inner"
+                                    title={comment.commenter}
+                                    extra={<Moment locale="zh-cn" format="MMMDo YYYY，a" fromNow>{comment.commentDate}</Moment>}
+                                  >
+                                    {comment.content}
+                                  </Card>
+                                )
+                              })}
+                            </Col>
+                            <Col>
+                              <TextArea
+                                value={this.state.comment}
+                                onChange={this.handleChange.bind(this, 'comment')}
+                                className='margin-bottom-10'
+                                autosize={{ minRows: 2, maxRows: 6 }}
+                                placeholder='意见' />
+                            </Col>
+                          </Row>
+                          <Row type='flex' justify='center'>
+                            <Col>
+                              <Button onClick={this.submitComment.bind(this, approval)} className='icon-gap'>
+                                提交意见
+                              </Button>
+                              <Button className='icon-gap' onClick={this.grantStep.bind(this, approval)}>
+                                通过审批
+                              </Button>
+                            </Col>
+                            <Col>
+                              <Button type='danger' onClick={this.rejectStep.bind(this, approval)}>
+                                不予通过
+                              </Button>
+                            </Col>
+                          </Row>
+                        </Card>
                       </Row>
                     </Col>
                   </Row>
