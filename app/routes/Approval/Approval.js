@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
-import { Row, Col, Button, Tabs, Timeline, Input, Icon, Upload, message } from 'antd'
+import { Row, Col, Button, Tabs, Timeline, Input, Icon, Upload, message, Card } from 'antd'
 import _ from 'lodash'
 import classnames from 'classnames'
+import Moment from 'react-moment'
+import 'moment/locale/zh-cn'
+import moment from 'moment';
 const TabPane = Tabs.TabPane
 const { TextArea } = Input
 const Dragger = Upload.Dragger
@@ -12,11 +15,19 @@ export default class Approval extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      approval: {}
+      comment: ''
     }
   }
   jumpTo (path) {
     this.props.history.push(path)
+  }
+  handleChange (path, result) {
+    if (_.get(result, 'target')) {
+      result = result.target.value
+    }
+    let newState = _.cloneDeep(this.state)
+    _.set(newState, path, result)
+    this.setState(newState)
   }
   grantStep (approval) {
     approval = _.cloneDeep(approval)
@@ -26,6 +37,9 @@ export default class Approval extends Component {
     }
     let currentStep = _.find(approval.approvalProcess, {status: 'waiting'})
     currentStep.status = 'passed'
+    currentStep.operatorName = this.props.userInfo.name
+    currentStep.operatorId = this.props.userInfo._id
+    currentStep.performDate = new Date()
     let approvalId = this.props.match.params.approvalId
     this.props.updateApproval(approval).then(() => {
       message.success('提交成功')
@@ -38,7 +52,24 @@ export default class Approval extends Component {
     approval.status = 'rejected'
     let currentStep = _.find(approval.approvalProcess, {status: 'waiting'})
     currentStep.status = 'rejected'
+    currentStep.operatorName = this.props.userInfo.name
+    currentStep.operatorId = this.props.userInfo._id
+    currentStep.performDate = new Date()
     let approvalId = this.props.match.params.approvalId
+    this.props.updateApproval(approval).then(() => {
+      message.success('提交成功')
+    }).catch((e) => {
+      message.error('提交失败')
+    })
+  }
+  submitComment (approval) {
+    approval = _.cloneDeep(approval)
+    let currentStep = _.find(approval.approvalProcess, {status: 'waiting'})
+    currentStep.comment.push({
+      'commentDate': new Date(),
+      'content': this.state.comment,
+      'commenter': this.props.userInfo.name
+    })
     this.props.updateApproval(approval).then(() => {
       message.success('提交成功')
     }).catch((e) => {
@@ -52,6 +83,7 @@ export default class Approval extends Component {
     let staticSchema = this.props.static
     let previousStep, allroles = staticSchema.allroles
     let currentStep = _.find(approvalProcess, {status: 'waiting'})
+    let approvalComment = _.get(currentStep, 'comment')
     console.log(currentStep)
     return (
       <div className="approval">
@@ -107,10 +139,38 @@ export default class Approval extends Component {
                         })}
                       </Timeline>
                     </Col>
-                    <Col span={16}>
-                      <TextArea className='margin-bottom-10' autosize={{ minRows: 2, maxRows: 6 }} placeholder='意见' />
-                      <Row className={classnames({hide: _.includes(['rejected', 'complete', 'notSubmit'], _.get(approval, 'status'))})} type='flex' justify='center'>
+                    <Col className={classnames({hide: _.includes(['rejected', 'complete', 'notSubmit'], _.get(approval, 'status'))})} span={16}>
+                      <Row>
                         <Col>
+                          {approvalComment && approvalComment.map((comment, index) => {
+                            return (
+                              <Card
+                                className='margin-bottom-10'
+                                hoverable
+                                key={index}
+                                type="inner"
+                                title={comment.commenter}
+                                extra={<Moment locale="zh-cn" format="MMMDo YYYY，a" fromNow>{comment.commentDate}</Moment>}
+                              >
+                                {comment.content}
+                              </Card>
+                            )
+                          })}
+                        </Col>
+                        <Col>
+                          <TextArea
+                            value={this.state.comment}
+                            onChange={this.handleChange.bind(this, 'comment')}
+                            className='margin-bottom-10'
+                            autosize={{ minRows: 2, maxRows: 6 }}
+                            placeholder='意见' />
+                        </Col>
+                      </Row>
+                      <Row type='flex' justify='center'>
+                        <Col>
+                          <Button onClick={this.submitComment.bind(this, approval)} className='icon-gap'>
+                            提交意见
+                          </Button>
                           <Button className='icon-gap' onClick={this.grantStep.bind(this, approval)}>
                             通过审批
                           </Button>

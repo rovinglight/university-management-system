@@ -10,6 +10,14 @@ const approvalSchema = new mongoose.Schema({
     'stepType': String,
     'status': String,
     'role': String,
+    'operatorName': String,
+    'operatorId': String,
+    'performDate': Date,
+    'comment': [{
+      'commentDate': Date,
+      'content': String,
+      'commenter': String
+    }],
     'requiredFiles': Array,
     'uploadedFile': Array
   }]
