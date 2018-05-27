@@ -58,7 +58,7 @@ export default class SiderMenu extends Component {
     const menu = (
       <Menu>
         <Menu.Item>
-          <a href="/">个人设置</a>
+          <Link to="/user">个人设置</Link>
         </Menu.Item>
         <Menu.Item>
           <a onClick={this.logout.bind(this)}>登出</a>

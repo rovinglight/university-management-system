@@ -29,6 +29,9 @@ export default class CompetitionsApproval extends Component {
   onSelectChange (selectedRowKeys) {
     this.setState({ selectedRowKeys })
   }
+  tableDateGenerator () {
+
+  }
   render () {
     const rowSelection = {
       selectedRowKeys: this.state.selectedRowKeys,
@@ -49,11 +52,11 @@ export default class CompetitionsApproval extends Component {
       title: '操作',
       render: (text, record) => {
         return(
-          <Link to='/approval/5af450afe72327010df04c80'>管理</Link>
+          <Link to={`/approval/detail/`}>管理</Link>
         )
       }
     }]
-    const competitions = [{
+    let competitions = [{
       name: '“互联网+”大学生创新创业大赛',
       status: '申请中',
       time: '三天前'
