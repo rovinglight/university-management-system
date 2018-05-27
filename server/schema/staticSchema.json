@@ -21,7 +21,7 @@
     "role": "teacher",
     "display": "教师"
   }],
-  "approvalSchema": {
+  "approvalStep": {
     "type": [{
       "type": "submit",
       "display": "提交阶段"

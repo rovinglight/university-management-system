@@ -51,6 +51,29 @@ export const createApproval = (schema) => {
     })
   }
 }
+export const updateApproval = (approval) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/approval/update`,
+        data: {
+          approval: approval
+        }
+      }).then((res) => {
+        dispatch({
+          type: GET_ALL_APPROVAL,
+          payload: {
+            approvals: res.data
+          }
+        })
+        resolve(res.data.approvalId)
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  }
+}
 // ------------------------------------
 // Action Handlers
 // ------------------------------------

@@ -13,9 +13,9 @@ const ApprovalService = {
       }
       newApproval.approvalProcess = approvalSchema.approvalStack.map((step, index) => {
         return ({
+          ...step,
           approver: '',
-          status: 'waiting',
-          role: step.role
+          status: 'waiting'
         })
       })
       newApproval = new approvalModel(newApproval)
@@ -38,6 +38,21 @@ const ApprovalService = {
         resolve(result)
       }).catch((e) => {
         reject(e)
+      })
+    })
+  },
+  updateApproval: (approval) => {
+    return new Promise((resolve, reject) => {
+      approvalModel.findById(approval._id).then((oldApproval) => {
+        let objectId = oldApproval._id
+        _.assign(oldApproval, approval, {_id: objectId})
+        oldApproval.save().then(() => {
+          ApprovalService.getAllApproval().then((allApproval) => {
+            resolve(allApproval)
+          })
+        }).catch((e) => {
+          reject(e)
+        })
       })
     })
   }

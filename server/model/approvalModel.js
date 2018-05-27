@@ -7,6 +7,7 @@ const approvalSchema = new mongoose.Schema({
   status: String,
   schemaId: String,  //对应approvalSchemaModel即审核模板的id
   approvalProcess: [{
+    'stepType': String,
     'status': String,
     'role': String,
     'requiredFiles': Array,

@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Row, Col, Button, Divider, Select, Tooltip, List, Avatar, message } from 'antd'
+import { Row, Col, Button, Divider, Select, Tooltip, List, Avatar, message, Form, Upload, Icon } from 'antd'
 import GroupCard from '../../components/GroupCard/GroupCard'
 import classnames from 'classnames'
 import authService from '../../service/authService'
 const Option = Select.Option
+const FormItem = Form.Item;
 
 import './ApprovalManage.scss'
 
@@ -78,6 +79,7 @@ export default class ApprovalManage extends Component {
     let processToEdit = this.state.processToEdit
     let approvalStack = _.get(this.state, 'processToEdit.approvalStack') || []
     let allroles = this.props.static.allroles
+    let stepTypes = _.get(this.props, 'static.approvalStep.type')
     return (
       <div className="approval-manage">
         <Row className="page-title">
@@ -129,7 +131,7 @@ export default class ApprovalManage extends Component {
               </Row>
               <List
                 className="demo-loadmore-list"
-                itemLayout="vertical"
+                itemLayout="horizontal"
                 dataSource={approvalStack}
                 renderItem={(item, index) => (
                   <List.Item actions={[
@@ -139,28 +141,41 @@ export default class ApprovalManage extends Component {
                   ]}>
                     <List.Item.Meta
                       avatar={<Avatar className='bg-gradient-5'>{index + 1}</Avatar>}
-                      title={<Avatar className='bg-gradient-5'>{index + 1}</Avatar>}
+                      title={<span>步骤设置</span>}
                       description={
-                        <Select value={item.role} style={{ width: 120 }} onChange={this.handleChange.bind(this, `processToEdit.approvalStack[${index}].role`)}>
-                          {
-                            allroles.map((role, i) => {
-                              return (
-                                <Option key={i} value={role.role}>{role.display}</Option>
-                              )
-                            })
-                          }
-                        </Select>
+                        <FormItem label='步骤类型'>
+                          <Select value={item.stepType} style={{ width: 120 }} onChange={this.handleChange.bind(this, `processToEdit.approvalStack[${index}].stepType`)}>
+                            {
+                              stepTypes.map((stepType, i) => {
+                                return (
+                                  <Option key={i} value={stepType.type}>{stepType.display}</Option>
+                                )
+                              })
+                            }
+                          </Select>
+                        </FormItem>
                       }
                     />
-                    <Select value={item.role} style={{ width: 120 }} onChange={this.handleChange.bind(this, `processToEdit.approvalStack[${index}].role`)}>
-                      {
-                        allroles.map((role, i) => {
-                          return (
-                            <Option key={i} value={role.role}>{role.display}</Option>
-                          )
-                        })
-                      }
-                    </Select>
+                    <FormItem className={classnames({hide: item.stepType !== 'approval'})} label='审批人'>
+                      <Select
+                        value={item.role} style={{ width: 120 }}
+                        onChange={this.handleChange.bind(this, `processToEdit.approvalStack[${index}].role`)}>
+                        {
+                          allroles.map((role, i) => {
+                            return (
+                              <Option key={i} value={role.role}>{role.display}</Option>
+                            )
+                          })
+                        }
+                      </Select>
+                    </FormItem>
+                    <FormItem className={classnames({hide: item.stepType !== 'submit'})} label='所需文件'>
+                      <Upload>
+                        <Button>
+                          <Icon type="upload" /> Upload
+                        </Button>
+                      </Upload>
+                    </FormItem>
                   </List.Item>
                 )}
               />

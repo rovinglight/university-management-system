@@ -20,5 +20,14 @@ module.exports = {
       console.log(e)
       res.status(400).send(e)
     })
+  },
+  updateApproval: (req, res) => {
+    let approval = req.body.approval
+    approvalService.updateApproval(approval).then((result) => {
+      res.status(200).send(result)
+    }).catch((e) => {
+      console.log(e)
+      res.status(400).send(e)
+    })
   }
 }
