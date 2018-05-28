@@ -9,13 +9,19 @@ import moment from 'moment';
 const { TextArea } = Input
 const Option = Select.Option
 
-import './CompetitionsApproval.scss'
+import './SgroupApproval.scss'
 
-export default class CompetitionsApproval extends Component {
+export default class SgroupApproval extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      selectedRowKeys: []
+      selectedRowKeys: [],
+      sgroupModal: {
+        visible: false,
+        fields: {
+          sgroupName: ''
+        }
+      }
     }
   }
   jumpTo (path) {
@@ -80,6 +86,23 @@ export default class CompetitionsApproval extends Component {
       }
     })
   }
+  createApproval () {
+    let sgroupSchema = _.find(this.props.static.approvalSchema, {name: '新社团申请'})
+    this.props.createApproval(sgroupSchema, this.state.sgroupModal.fields.sgroupName).then((approvalId) => {
+      this.jumpTo(`/approval/detail/${approvalId}`)
+      message.success('申请创建成功')
+    }).catch((e) => {
+      message.error('无法创建申请')
+    })
+  }
+  toggleModal (modal) {
+    this.setState({
+      [modal]: {
+        ...this.state[modal],
+        visible: !this.state[modal].visible
+      }
+    })
+  }
   render () {
     const rowSelection = {
       selectedRowKeys: this.state.selectedRowKeys,
@@ -95,7 +118,7 @@ export default class CompetitionsApproval extends Component {
       }
     })
     const columns = [{
-      title: '竞赛名称',
+      title: '社团名称',
       dataIndex: 'name',
     }, {
       title: '待办',
@@ -128,13 +151,13 @@ export default class CompetitionsApproval extends Component {
         )
       }
     }]
-    let tableData = this.tableDateGenerator('5af450afe72327010df04c80')
+    let tableData = this.tableDateGenerator('5af47419e72327010df05cd3')
     return (
-      <div className="competition-approval">
+      <div className="sgroup-approval">
         <Row className="page-title">
           <Col>
             <h1>
-              竞赛申办
+              新社团申请
             </h1>
           </Col>
         </Row>
@@ -142,14 +165,13 @@ export default class CompetitionsApproval extends Component {
           <Col>
             <div className="shadow-box bg-white padding-20 margin-bottom-25">
               <h2>
-                全部申请
-                <Link to='/competitions'>
-                  <Button
-                    className='float-right vertical-middle'
-                    shape="circle"
-                    icon='plus'
-                    size='large'/>
-                </Link>
+                申办历史
+                <Button
+                  className='float-right vertical-middle'
+                  shape="circle"
+                  icon='plus'
+                  onClick={this.toggleModal.bind(this, 'sgroupModal')}
+                  size='large'/>
               </h2>
               <Row className='margin-bottom-10'>
                 <Button className='icon-gap'>刷新</Button>
@@ -162,6 +184,14 @@ export default class CompetitionsApproval extends Component {
             </div>
           </Col>
         </Row>
+        <Modal
+          title="申请新社团"
+          visible={this.state.sgroupModal.visible}
+          onOk={this.createApproval.bind(this)}
+          onCancel={this.toggleModal.bind(this, 'sgroupModal')}
+        >
+          <Input placeholder="社团名称" value={this.state.sgroupModal.fields.sgroupName} onChange={this.handleChange.bind(this, 'sgroupModal.fields.sgroupName')} />
+        </Modal>
       </div>
     )
   }

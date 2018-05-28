@@ -36,6 +36,7 @@ export default class SiderMenu extends Component {
     let urlPath = this.props.routing.location.pathname
     const keyConverter = {
       adminGroup: '/studentgroups/admin',
+      applyForSgroup: '/studentgroups/new/approval',
       allGroup: '/studentgroups',
       authManage: '/auth/manage',
       approvalManage: '/approval/manage',
@@ -98,7 +99,7 @@ export default class SiderMenu extends Component {
                 </SubMenu>
                 <SubMenu key="sub2" title={<span><Icon type="solution" />学生组织</span>}>
                   <Menu.Item key="allGroup"><Link to='/studentgroups'>全部社团</Link></Menu.Item>
-                  <Menu.Item key="6">新社团申请</Menu.Item>
+                  <Menu.Item key="applyForSgroup"><Link to='/studentgroups/new/approval'>新社团申请</Link></Menu.Item>
                   <Menu.Item
                     className={classnames({
                       hide: !isAuthorized()
