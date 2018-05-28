@@ -46,26 +46,26 @@ export default class ToDo extends Component {
           <Col>
             <div className="shadow-box bg-white padding-20 margin-bottom-25">
               <h2>
-                待办概况
+                待办统计
               </h2>
               <Row>
                 <Col className='padding-20'>
                   <Row type='flex' gutter={24}>
                     <Col sm={8} span={24}>
                       <Card onClick={this.jumpTo.bind(this, '/competitions/approval')} bordered={false} className={classnames('bg-light-green box-container hover', {})}>
-                        <span className='count'>1</span>
+                        <span className='count'>5</span>
                         <p>竞赛申办审批</p>
                       </Card>
                     </Col>
                     <Col sm={8} span={24}>
                       <Card onClick={this.jumpTo.bind(this, '/studentgroups/new/approval')} bordered={false} className={classnames('bg-light-blue box-container hover', {})}>
-                        <span className='count'>2</span>
+                        <span className='count'>4</span>
                         <p>新社团申请审批</p>
                       </Card>
                     </Col>
                     <Col sm={8} span={24}>
                       <Card onClick={this.jumpTo.bind(this, '/questions')} bordered={false} className={classnames('bg-light-purple box-container hover', {})}>
-                        <span className='count'>3</span>
+                        <span className='count'>0</span>
                         <p>在线问答</p>
                       </Card>
                     </Col>
