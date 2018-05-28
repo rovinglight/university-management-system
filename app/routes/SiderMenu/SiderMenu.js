@@ -43,7 +43,8 @@ export default class SiderMenu extends Component {
       approvalCompetition: '/approval/competitions',
       competitions: '/competitions',
       approvalCompetition: '/competitions/approval',
-      applyForCompetition: '/competitions/apply'
+      applyForCompetition: '/competitions/apply',
+      projects: '/projects'
     }
     for (let key in keyConverter) {
       if (_.includes(urlPath, keyConverter[key])) {
@@ -60,6 +61,9 @@ export default class SiderMenu extends Component {
       <Menu>
         <Menu.Item>
           <Link to="/user">个人设置</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link to="/user">待办事项</Link>
         </Menu.Item>
         <Menu.Item>
           <a onClick={this.logout.bind(this)}>登出</a>
@@ -95,7 +99,7 @@ export default class SiderMenu extends Component {
                   <Menu.Item key="competitions"><Link to='/competitions'>全部竞赛</Link></Menu.Item>
                   <Menu.Item key="approvalCompetition"><Link to='/competitions/approval'>竞赛申办</Link></Menu.Item>
                   <Menu.Item key="applyForCompetition">申请参赛</Menu.Item>
-                  <Menu.Item key="3">项目库</Menu.Item>
+                  <Menu.Item key="projects"><Link to='/projects'>项目库</Link></Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" title={<span><Icon type="solution" />学生组织</span>}>
                   <Menu.Item key="allGroup"><Link to='/studentgroups'>全部社团</Link></Menu.Item>
