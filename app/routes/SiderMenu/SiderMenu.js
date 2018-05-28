@@ -133,7 +133,7 @@ export default class SiderMenu extends Component {
               </Col>
               <Row type="flex"></Row>
               <Col style={{display: 'flex'}}>
-                <Link className='header-item font-20' to='/question'>
+                <Link className='header-item font-20' to='/questions'>
                   <Icon type="question-circle-o" />
                 </Link>
                 <Link to='/login'>

@@ -14,6 +14,8 @@ import CompetitionsApproval from '../CompetitionsApproval/CompetitionsApprovalCo
 import SgroupApproval from '../SgroupApproval/SgroupApprovalContainer'
 import UserInfo from '../UserInfo/UserInfoContainer'
 import Projects from '../Projects/ProjectsContainer'
+import Questions from '../Questions/QuestionsContainer'
+import QuestionDetail from '../QuestionDetail/QuestionDetailContainer'
 import classnames from 'classnames'
 
 import './App.scss'
@@ -59,6 +61,8 @@ export default class App extends Component {
           <Route exact path={`/approval/detail/:approvalId`} component={Approval} />
           <Route exact path={`/user`} component={UserInfo} />
           <Route exact path={`/projects`} component={Projects} />
+          <Route exact path={`/questions`} component={Questions} />
+          <Route exact path={`/questions/detail/:questionId`} component={QuestionDetail} />
         </div>
       </div>
     )
