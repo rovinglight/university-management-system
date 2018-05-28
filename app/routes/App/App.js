@@ -17,6 +17,7 @@ import Projects from '../Projects/ProjectsContainer'
 import Questions from '../Questions/QuestionsContainer'
 import QuestionDetail from '../QuestionDetail/QuestionDetailContainer'
 import Statistics from '../Statistics/StatisticsContainer'
+import ToDo from '../ToDo/ToDoContainer'
 import classnames from 'classnames'
 
 import './App.scss'
@@ -65,6 +66,7 @@ export default class App extends Component {
           <Route exact path={`/questions`} component={Questions} />
           <Route exact path={`/questions/detail/:questionId`} component={QuestionDetail} />
           <Route exact path={`/statistics`} component={Statistics} />
+          <Route exact path={`/`} component={ToDo} />
         </div>
       </div>
     )

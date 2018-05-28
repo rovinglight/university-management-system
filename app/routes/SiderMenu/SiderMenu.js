@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
-import { Icon, Row, Col, Menu, Layout, Dropdown, Avatar, message } from 'antd'
+import { Icon, Row, Col, Menu, Layout, Dropdown, Avatar, message, Badge } from 'antd'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import authService from '../../service/authService'
@@ -64,7 +64,9 @@ export default class SiderMenu extends Component {
           <Link to="/user">个人设置</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/user">待办事项</Link>
+          <Badge dot={true}>
+            <Link to="/">待办事项 </Link>
+          </Badge>
         </Menu.Item>
         <Menu.Item>
           <a onClick={this.logout.bind(this)}>登出</a>
@@ -145,9 +147,11 @@ export default class SiderMenu extends Component {
                 </Link>
                 <Dropdown overlay={menu}>
                   <span className={classnames("ant-dropdown-link font-14 header-item", {hide: !loggedIn})} href="#">
-                     <Avatar className={`vertical-middle icon-gap bg-gradient-${this.state.randomNum}`} icon="user" />
-                     {this.props.userInfo.name}
-                     <Icon type="down" />
+                     <Badge dot={true}>
+                       <Avatar className={`vertical-middle icon-gap bg-gradient-${this.state.randomNum}`} icon="user" />
+                       {this.props.userInfo.name}
+                       <Icon type="down" />
+                     </Badge>
                   </span>
                 </Dropdown>
               </Col>
