@@ -60,6 +60,15 @@ export default class Competitions extends Component {
       message.error('删除失败')
     })
   }
+  createApproval (competitionName) {
+    let competitionSchema = _.find(this.props.static.approvalSchema, {name: '竞赛申办'})
+    this.props.createApproval(competitionSchema, competitionName).then((approvalId) => {
+      this.jumpTo(`/approval/detail/${approvalId}`)
+      message.success('申请创建成功')
+    }).catch((e) => {
+      message.error('无法创建申请')
+    })
+  }
   render () {
     console.log(this.state)
     let userAuths = _.get(this.props, 'userInfo.auth')
@@ -111,7 +120,7 @@ export default class Competitions extends Component {
                         href={item.officialSite}>
                         官网
                       </a>,
-                      <Link to='/approval/competitions/test'>申办竞赛</Link>
+                      <a onClick={this.createApproval.bind(this, item.name)}>申办竞赛</a>
                     ]}
                   >
                     <List.Item.Meta

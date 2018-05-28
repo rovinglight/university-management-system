@@ -5,6 +5,7 @@ import userInfoReducer from '../reducers/UserInfo'
 import sgroupsReducer from '../reducers/Sgroups'
 import competitionsReducer from '../reducers/Competitions'
 import staticReducer from '../reducers/Static'
+import approvalReducer from '../reducers/Approval'
 import thunk from 'redux-thunk'
 
 export const history = createHistory()
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   sgroups : sgroupsReducer,
   competitions: competitionsReducer,
   static: staticReducer,
+  approval: approvalReducer,
   routing
 })
 

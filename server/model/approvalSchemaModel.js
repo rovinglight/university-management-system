@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const approvalSchemaSchema = new mongoose.Schema({
   name: String,
   approvalStack: [{
+    'stepType': String,
     'status': String,
     'role': String,
     'requiredFiles': Array

@@ -1,5 +1,6 @@
 import axios from 'axios'
-const config = require('../config/config')
+ //为什么需要运行时加载？
+import config from '../config/config'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -10,7 +11,7 @@ const USER_LOGIN = 'USER_LOGIN'
 export const login = (user, pwd) => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
-      axios({
+      axios({ //发起一个post请求
         method: 'post',
         url: `http://${config.ums_web.host}:${config.ums_web.port}/login`,
         data: {
@@ -18,7 +19,7 @@ export const login = (user, pwd) => {
           pwd: pwd
         }
       }).then((res) => {
-        localStorage.setItem('sessionKey', res.data.sessionKey)
+        localStorage.setItem('sessionKey', res.data.sessionKey) //sessionKey的作用是什么？
         dispatch({
           type: USER_LOGIN,
           payload: {
@@ -82,6 +83,6 @@ const ACTION_HANDLERS = {
 const initialState = {role: 'visitor'}
 
 export default function userInfoReducer (state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]
+  const handler = ACTION_HANDLERS[action.type]   //ACTION_HANDLERS[GET_ALL_GROUPS]
   return handler ? handler(state, action) : state
 }
