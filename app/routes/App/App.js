@@ -16,6 +16,7 @@ import UserInfo from '../UserInfo/UserInfoContainer'
 import Projects from '../Projects/ProjectsContainer'
 import Questions from '../Questions/QuestionsContainer'
 import QuestionDetail from '../QuestionDetail/QuestionDetailContainer'
+import Statistics from '../Statistics/StatisticsContainer'
 import classnames from 'classnames'
 
 import './App.scss'
@@ -63,6 +64,7 @@ export default class App extends Component {
           <Route exact path={`/projects`} component={Projects} />
           <Route exact path={`/questions`} component={Questions} />
           <Route exact path={`/questions/detail/:questionId`} component={QuestionDetail} />
+          <Route exact path={`/statistics`} component={Statistics} />
         </div>
       </div>
     )

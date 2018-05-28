@@ -75,6 +75,9 @@ body {
 .margin-bottom-10 {
   margin-bottom: 10px;
 }
+.margin-left-10 {
+  margin-left: 10px;
+}
 .float-right {
   float: right;
 }
@@ -100,6 +103,13 @@ body {
   outline: none;
   position: relative;
   cursor: pointer;
+}
+.hover {
+  transition: all .3s;
+  cursor: pointer;
+}
+.hover:hover {
+  background: #e6f7ff;
 }
 /*-------------- template ------------*/
 /*-------------- gradients ------------*/

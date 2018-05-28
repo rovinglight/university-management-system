@@ -44,7 +44,8 @@ export default class SiderMenu extends Component {
       competitions: '/competitions',
       approvalCompetition: '/competitions/approval',
       applyForCompetition: '/competitions/apply',
-      projects: '/projects'
+      projects: '/projects',
+      statistics: '/statistics'
     }
     for (let key in keyConverter) {
       if (_.includes(urlPath, keyConverter[key])) {
@@ -118,7 +119,7 @@ export default class SiderMenu extends Component {
                   })}
                   key="sub3"
                   title={<span><Icon type="tool" />管理员功能</span>}>
-                  <Menu.Item key="9">学生信息统计</Menu.Item>
+                  <Menu.Item key="statistics"><Link to='/statistics'>学生信息统计</Link></Menu.Item>
                   <Menu.Item key="approvalManage"><Link to='/approval/manage'>动态审核设置</Link></Menu.Item>
                   <Menu.Item key="authManage"><Link to='/auth/manage'>权限设置</Link></Menu.Item>
                 </SubMenu>
