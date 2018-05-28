@@ -47,8 +47,19 @@ export default class Statistics extends Component {
     this.setState({
       targetUser: userInfo,
       sgroupData: this.sgroupDataGenerator(userInfo._id),
-      competitionData: []
+      competitionData: this.competitionDataGenerator()
     })
+  }
+  competitionDataGenerator () {
+    const fakeData = [
+      {
+        key: '1',
+        name: '“互联网+”大学生创新创业大赛',
+        status: '活跃',
+        startTime: '2018-05-03T07:35:06.421Z'
+      }
+    ]
+    return fakeData
   }
   sgroupDataGenerator (studentId) {
     let allroles = this.props.static.allroles
@@ -119,7 +130,10 @@ export default class Statistics extends Component {
         dataIndex: 'status'
       }, {
         title: '参赛时间',
-        dataIndex: 'startTime'
+        dataIndex: 'startTime',
+        render: (text, record) => (
+          <Moment locale="zh-cn" format="YYYY年MMMDD日，a hh:mm" fromNow>{record.startTime}</Moment>
+        )
       }
     ]
     return (
