@@ -1,5 +1,4 @@
 import axios from 'axios'
- //为什么需要运行时加载？
 import config from '../config/config'
 // ------------------------------------
 // Constants
