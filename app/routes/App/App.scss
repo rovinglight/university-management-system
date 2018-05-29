@@ -104,6 +104,13 @@ body {
   position: relative;
   cursor: pointer;
 }
+.hover {
+  transition: all .3s;
+  cursor: pointer;
+}
+.hover:hover {
+  background: #e6f7ff;
+}
 /*-------------- template ------------*/
 /*-------------- gradients ------------*/
 .bg-gradient-1 {
