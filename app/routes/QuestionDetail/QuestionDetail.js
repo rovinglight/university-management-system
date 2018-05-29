@@ -42,6 +42,9 @@ export default class QuestionDetail extends Component {
     question.reply.push(reply)
     this.props.upsertQuestion(question).then((res) => {
       message.success('回复成功')
+      this.setState({
+        reply: ''
+      })
     }).catch((e) => {
       message.error('回复失败')
     })
