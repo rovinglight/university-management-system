@@ -5,6 +5,7 @@ import { getAllGroups } from '../../reducers/Sgroups'
 import { getAllCompetitions } from '../../reducers/Competitions'
 import { getAllStatic } from '../../reducers/Static'
 import { getAllApproval } from '../../reducers/Approval'
+import { getAllQuestions } from '../../reducers/Question'
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -12,7 +13,8 @@ const mapDispatchToProps = (dispatch) => {
     getAllGroups: () => dispatch(getAllGroups()),
     getAllCompetitions: () => dispatch(getAllCompetitions()),
     getAllStatic: () => dispatch(getAllStatic()),
-    getAllApproval: () => dispatch(getAllApproval())
+    getAllApproval: () => dispatch(getAllApproval()),
+    getAllQuestions: () => dispatch(getAllQuestions())
   }
 }
 

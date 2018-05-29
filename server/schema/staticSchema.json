@@ -20,6 +20,9 @@
   }, {
     "role": "teacher",
     "display": "教师"
+  }, {
+    "role": "competitionCommittee",
+    "display": "学科竞赛领导小组"
   }],
   "approvalStep": {
     "type": [{

@@ -15,7 +15,7 @@ export default class QuestionDetail extends Component {
   constructor (props) {
     super(props)
     this.state = {
-
+      reply: ''
     }
   }
   jumpTo (path) {
@@ -29,7 +29,26 @@ export default class QuestionDetail extends Component {
     _.set(newState, path, result)
     this.setState(newState)
   }
+  submitReply () {
+    let user = this.props.userInfo
+    let question = _.find(this.props.question.questions, {_id: this.props.match.params.questionId})
+    let reply = {
+      replierId: user._id,
+      replierName: user.name,
+      content: this.state.reply,
+      replyTime: new Date()
+    }
+    delete question.__v
+    question.reply.push(reply)
+    this.props.upsertQuestion(question).then((res) => {
+      message.success('回复成功')
+    }).catch((e) => {
+      message.error('回复失败')
+    })
+  }
   render () {
+    let question = _.find(this.props.question.questions, {_id: this.props.match.params.questionId})
+    let reply = _.get(question, 'reply') || []
     let fakeData = [
       {
         responsor: '测试学生账户',
@@ -59,13 +78,24 @@ export default class QuestionDetail extends Component {
               </h2>
               <Row>
                 <Col className='padding-20'>
+                  <Row className='margin-bottom-10' type='flex' gutter={6}>
+                    <Col md={2} span={24}>
+                      <Avatar className={`vertical-middle icon-gap bg-gradient-${_.random(1, 10)}`} icon="user" />
+                      <p>{_.get(question, 'questionerName')}</p>
+                    </Col>
+                    <Col md={22} span={24}>
+                      <Card>
+                        <p>{_.get(question, 'question')}</p>
+                      </Card>
+                    </Col>
+                  </Row>
                   {
-                    fakeData.map((item, index) => {
+                    reply.map((item, index) => {
                       return (
                         <Row className='margin-bottom-10' key={index} type='flex' gutter={6}>
                           <Col md={2} span={24}>
                             <Avatar className={`vertical-middle icon-gap bg-gradient-${_.random(1, 10)}`} icon="user" />
-                            <p>{item.responsor}</p>
+                            <p>{item.replierName}</p>
                           </Col>
                           <Col md={22} span={24}>
                             <Card>
@@ -83,12 +113,14 @@ export default class QuestionDetail extends Component {
                       <TextArea
                         className='margin-bottom-10'
                         autosize={{ minRows: 2, maxRows: 6 }}
+                        value={this.state.reply}
+                        onChange={this.handleChange.bind(this, 'reply')}
                         placeholder='意见' />
                     </Col>
                   </Row>
                   <Row type='flex' justify='center'>
                     <Col>
-                      <Button className='icon-gap'>
+                      <Button onClick={this.submitReply.bind(this)} className='icon-gap'>
                         提交
                       </Button>
                     </Col>

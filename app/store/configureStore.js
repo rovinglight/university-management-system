@@ -5,6 +5,8 @@ import userInfoReducer from '../reducers/UserInfo'
 import sgroupsReducer from '../reducers/Sgroups'
 import competitionsReducer from '../reducers/Competitions'
 import staticReducer from '../reducers/Static'
+import projectReducer from '../reducers/Project'
+import questionReducer from '../reducers/Question'
 import approvalReducer from '../reducers/Approval'
 import thunk from 'redux-thunk'
 
@@ -18,6 +20,8 @@ const rootReducer = combineReducers({
   competitions: competitionsReducer,
   static: staticReducer,
   approval: approvalReducer,
+  project: projectReducer,
+  question: questionReducer,
   routing
 })
 
