@@ -32,7 +32,38 @@ export default class ToDo extends Component {
       }
     })
   }
+  approvalCount (approval) {
+    let badgeCount = 0
+    let user = this.props.userInfo
+    approval.status === 'processing' && _.find(approval.approvalProcess, (step, index) => {
+      if (step.status === 'waiting' && _.find(user.auth, {role: step.role}) && approval.approvalProcess[index - 1].status === 'passed') {
+        badgeCount ++
+        for (let i = step.comment.length - 1; i >= 0; i--) {
+          if (step.comment[i].commenter === user.name) {
+            break
+          }
+          badgeCount ++
+        }
+        return true
+      }
+    })
+    return badgeCount
+  }
+  countGenerator (schemaId) {
+    let approvals = this.props.approval.approvals
+    let sgroupApproval = _.filter(approvals, {schemaId: schemaId})
+    let count = 0
+    sgroupApproval.forEach((approval, index) => {
+      count += this.approvalCount(approval)
+    })
+    return count
+  }
+  questionCount () {
+    
+  }
   render () {
+    let sgroupCount = this.countGenerator('5af47419e72327010df05cd3')
+    let competitionCount = this.countGenerator('5af450afe72327010df04c80')
     return (
       <div className="todo">
         <Row className="page-title">
@@ -53,13 +84,13 @@ export default class ToDo extends Component {
                   <Row type='flex' gutter={24}>
                     <Col sm={8} span={24}>
                       <Card onClick={this.jumpTo.bind(this, '/competitions/approval')} bordered={false} className={classnames('bg-light-green box-container', {})}>
-                        <span className='count'>5</span>
+                        <span className='count'>{competitionCount}</span>
                         <p>竞赛申办审批</p>
                       </Card>
                     </Col>
                     <Col sm={8} span={24}>
                       <Card onClick={this.jumpTo.bind(this, '/studentgroups/new/approval')} bordered={false} className={classnames('bg-light-blue box-container', {})}>
-                        <span className='count'>4</span>
+                        <span className='count'>{sgroupCount}</span>
                         <p>新社团申请审批</p>
                       </Card>
                     </Col>

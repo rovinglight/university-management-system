@@ -53,7 +53,6 @@ export default class SgroupApproval extends Component {
         return true
       }
     })
-
     return badgeCount
   }
   tableDateGenerator (schemaId) {

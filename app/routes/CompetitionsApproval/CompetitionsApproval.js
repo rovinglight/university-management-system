@@ -47,7 +47,6 @@ export default class CompetitionsApproval extends Component {
         return true
       }
     })
-
     return badgeCount
   }
   tableDateGenerator (schemaId) {
