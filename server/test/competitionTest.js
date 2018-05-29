@@ -44,25 +44,4 @@ describe('tests', function () {
       })
     })
   })
-  describe('integration', function () {
-    describe('userInfo integration test', function(){
-      it('login with password', function (done) {
-        done()
-      })
-      it('login with sessionKey', function (done) {
-        done()
-      })
-    })
-    describe('competition integration test', function(){
-      it('get all competitions info', function (done) {
-        done()
-      })
-      it('upsert competition', function (done) {
-        done()
-      })
-      it('remove competition', function (done) {
-        done()
-      })
-    })
-  })
 })

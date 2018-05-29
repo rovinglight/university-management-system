@@ -44,25 +44,4 @@ describe('tests', function () {
       })
     })
   })
-  describe('integration', function () {
-    describe('userInfo integration test', function(){
-      it('login with password', function (done) {
-        done()
-      })
-      it('login with sessionKey', function (done) {
-        done()
-      })
-    })
-    describe('student group integration test', function(){
-      it('get all student group info', function (done) {
-        done()
-      })
-      it('apply for student group', function (done) {
-        done()
-      })
-      it('delete members', function (done) {
-        done()
-      })
-    })
-  })
 })
