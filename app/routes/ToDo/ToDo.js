@@ -52,19 +52,19 @@ export default class ToDo extends Component {
                 <Col className='padding-20'>
                   <Row type='flex' gutter={24}>
                     <Col sm={8} span={24}>
-                      <Card onClick={this.jumpTo.bind(this, '/competitions/approval')} bordered={false} className={classnames('bg-light-green box-container hover', {})}>
+                      <Card onClick={this.jumpTo.bind(this, '/competitions/approval')} bordered={false} className={classnames('bg-light-green box-container', {})}>
                         <span className='count'>5</span>
                         <p>竞赛申办审批</p>
                       </Card>
                     </Col>
                     <Col sm={8} span={24}>
-                      <Card onClick={this.jumpTo.bind(this, '/studentgroups/new/approval')} bordered={false} className={classnames('bg-light-blue box-container hover', {})}>
+                      <Card onClick={this.jumpTo.bind(this, '/studentgroups/new/approval')} bordered={false} className={classnames('bg-light-blue box-container', {})}>
                         <span className='count'>4</span>
                         <p>新社团申请审批</p>
                       </Card>
                     </Col>
                     <Col sm={8} span={24}>
-                      <Card onClick={this.jumpTo.bind(this, '/questions')} bordered={false} className={classnames('bg-light-purple box-container hover', {})}>
+                      <Card onClick={this.jumpTo.bind(this, '/questions')} bordered={false} className={classnames('bg-light-purple box-container', {})}>
                         <span className='count'>0</span>
                         <p>在线问答</p>
                       </Card>
