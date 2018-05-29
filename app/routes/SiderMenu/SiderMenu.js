@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
-import { Icon, Row, Col, Menu, Layout, Dropdown, Avatar, message } from 'antd'
+import { Icon, Row, Col, Menu, Layout, Dropdown, Avatar, message, Badge } from 'antd'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import authService from '../../service/authService'
@@ -43,7 +43,9 @@ export default class SiderMenu extends Component {
       approvalCompetition: '/approval/competitions',
       competitions: '/competitions',
       approvalCompetition: '/competitions/approval',
-      applyForCompetition: '/competitions/apply'
+      applyForCompetition: '/competitions/apply',
+      projects: '/projects',
+      statistics: '/statistics'
     }
     for (let key in keyConverter) {
       if (_.includes(urlPath, keyConverter[key])) {
@@ -60,6 +62,11 @@ export default class SiderMenu extends Component {
       <Menu>
         <Menu.Item>
           <Link to="/user">个人设置</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Badge dot={true}>
+            <Link to="/">待办事项 </Link>
+          </Badge>
         </Menu.Item>
         <Menu.Item>
           <a onClick={this.logout.bind(this)}>登出</a>
@@ -95,7 +102,7 @@ export default class SiderMenu extends Component {
                   <Menu.Item key="competitions"><Link to='/competitions'>全部竞赛</Link></Menu.Item>
                   <Menu.Item key="approvalCompetition"><Link to='/competitions/approval'>竞赛申办</Link></Menu.Item>
                   <Menu.Item key="applyForCompetition">申请参赛</Menu.Item>
-                  <Menu.Item key="3">项目库</Menu.Item>
+                  <Menu.Item key="projects"><Link to='/projects'>项目库</Link></Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" title={<span><Icon type="solution" />学生组织</span>}>
                   <Menu.Item key="allGroup"><Link to='/studentgroups'>全部社团</Link></Menu.Item>
@@ -114,7 +121,7 @@ export default class SiderMenu extends Component {
                   })}
                   key="sub3"
                   title={<span><Icon type="tool" />管理员功能</span>}>
-                  <Menu.Item key="9">学生信息统计</Menu.Item>
+                  <Menu.Item key="statistics"><Link to='/statistics'>学生信息统计</Link></Menu.Item>
                   <Menu.Item key="approvalManage"><Link to='/approval/manage'>动态审核设置</Link></Menu.Item>
                   <Menu.Item key="authManage"><Link to='/auth/manage'>权限设置</Link></Menu.Item>
                 </SubMenu>
@@ -129,7 +136,7 @@ export default class SiderMenu extends Component {
               </Col>
               <Row type="flex"></Row>
               <Col style={{display: 'flex'}}>
-                <Link className='header-item font-20' to='/question'>
+                <Link className='header-item font-20' to='/questions'>
                   <Icon type="question-circle-o" />
                 </Link>
                 <Link to='/login'>
@@ -140,9 +147,11 @@ export default class SiderMenu extends Component {
                 </Link>
                 <Dropdown overlay={menu}>
                   <span className={classnames("ant-dropdown-link font-14 header-item", {hide: !loggedIn})} href="#">
-                     <Avatar className={`vertical-middle icon-gap bg-gradient-${this.state.randomNum}`} icon="user" />
-                     {this.props.userInfo.name}
-                     <Icon type="down" />
+                     <Badge dot={true}>
+                       <Avatar className={`vertical-middle icon-gap bg-gradient-${this.state.randomNum}`} icon="user" />
+                       {this.props.userInfo.name}
+                       <Icon type="down" />
+                     </Badge>
                   </span>
                 </Dropdown>
               </Col>
