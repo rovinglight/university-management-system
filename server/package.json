@@ -6,8 +6,7 @@
   "scripts": {
     "dbup": "docker run -d -p 27017:27017 -v mongo_configdb:/data/configdb -v mongo_db:/data/db --name mongo docker.io/mongo --auth",
     "start": "node main.js",
-    "testCompetition": "./node_modules/mocha/bin/mocha test/competitionTest.js",
-    "testSgroup": "./node_modules/mocha/bin/mocha test/sgroupTest.js"
+    "test": "ENV=test ./node_modules/mocha/bin/mocha test/api.js -t 100000"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +19,7 @@
     "mongoose": "^5.0.14"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "mockgoose": "^7.3.5"
   }
 }

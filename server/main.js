@@ -24,4 +24,6 @@ approvalRoute(app)
 
 app.listen(3000)
 
+app.mongoose = mongoose
+
 module.exports = app
