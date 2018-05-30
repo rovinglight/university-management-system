@@ -21,6 +21,9 @@
     "role": "teacher",
     "display": "教师"
   }, {
+    "role": "student",
+    "display": "学生"
+  }, {
     "role": "competitionCommittee",
     "display": "学科竞赛领导小组"
   }],

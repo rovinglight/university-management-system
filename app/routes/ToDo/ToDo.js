@@ -59,11 +59,23 @@ export default class ToDo extends Component {
     return count
   }
   questionCount () {
-    
+    let isAuthorized = this.props.userInfo.isAuthorized
+    let questions = this.props.question.questions
+    let count = 0
+    if (isAuthorized && isAuthorized([{role: 'student'}], false)) {
+      return 0
+    }
+    questions.forEach((question, index) => {
+      if (question.reply.length === 0) {
+        count ++
+      }
+    })
+    return count
   }
   render () {
     let sgroupCount = this.countGenerator('5af47419e72327010df05cd3')
     let competitionCount = this.countGenerator('5af450afe72327010df04c80')
+    let questionCount = this.questionCount()
     return (
       <div className="todo">
         <Row className="page-title">
@@ -96,7 +108,7 @@ export default class ToDo extends Component {
                     </Col>
                     <Col sm={8} span={24}>
                       <Card onClick={this.jumpTo.bind(this, '/questions')} bordered={false} className={classnames('bg-light-purple box-container', {})}>
-                        <span className='count'>0</span>
+                        <span className='count'>{questionCount}</span>
                         <p>在线问答</p>
                       </Card>
                     </Col>

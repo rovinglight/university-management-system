@@ -1,4 +1,5 @@
 import axios from 'axios'
+import authService from '../service/authService'
 const config = require('../config/config')
 // ------------------------------------
 // Constants
@@ -73,7 +74,12 @@ export const logOut = () => {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [USER_LOGIN] : (state, action) => {
-    return action.payload
+    let newState = {
+      ...action.payload,
+      isAuthorized: authService.isAuthorized(action.payload.auth)
+    }
+    console.log(newState)
+    return newState
   }
 }
 // ------------------------------------
