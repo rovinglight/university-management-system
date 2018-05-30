@@ -34,6 +34,8 @@ export default class App extends Component {
     props.getAllCompetitions()
     props.getAllStatic()
     props.getAllApproval()
+    props.getAllQuestions()
+    props.getAllProjecs()
   }
   componentDidMount () {
     //在第一次渲染后调用，只在客户端。

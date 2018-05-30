@@ -4,6 +4,8 @@ const sgroupRoute = require('./routes/sgroup')
 const competitionRoute = require('./routes/competition')
 const schemaRoute = require('./routes/schema')
 const approvalRoute =  require('./routes/approval')
+const questionRoute = require('./routes/question')
+const projectRoute = require('./routes/project')
 const userController = require('./controllers/userController')
 const cors = require('cors')
 const bodyParser = require('body-parser')
@@ -21,7 +23,11 @@ sgroupRoute(app)
 competitionRoute(app)
 schemaRoute(app)
 approvalRoute(app)
+questionRoute(app)
+projectRoute(app)
 
 app.listen(3000)
+
+app.mongoose = mongoose
 
 module.exports = app

@@ -9,7 +9,9 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => ({
   userInfo: state.userInfo,
   competitions: state.competitions,
-  static: state.static
+  static: state.static,
+  approval: state.approval,
+  question: state.question
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDo)

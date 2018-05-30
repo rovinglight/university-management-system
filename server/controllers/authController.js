@@ -19,6 +19,9 @@ const authController = {
     }).catch((e) => {
       res.status(400).send(e)
     })
+  },
+  isAuthorized: () => {
+
   }
 }
 
