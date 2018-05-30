@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Row, Col, Button, List, Avatar, Modal, Input, message, Select, Icon, Pagination } from 'antd'
+import { Row, Col, Button, List, Avatar, Modal, Input, message, Select, Icon, Pagination, Form } from 'antd'
 import classnames from 'classnames'
 import authService from '../../service/authService'
 const { TextArea } = Input
 const Option = Select.Option
+const FormItem = Form.Item
 
 import './Projects.scss'
 
@@ -12,10 +13,12 @@ export default class Projects extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      cpModal: {
-        show: false,
-        loading: false,
-        fields: {}
+      newModal: {
+        visible: false,
+        fields: {
+          name: '',
+          desc: ''
+        }
       }
     }
   }
@@ -30,17 +33,55 @@ export default class Projects extends Component {
     _.set(newState, path, result)
     this.setState(newState)
   }
+  toggleModal () {
+    this.setState({
+      newModal: {
+        ...this.state.newModal,
+        visible: !this.state.newModal.visible
+      }
+    })
+  }
+  submitModal () {
+    let user = _.cloneDeep(this.props.userInfo)
+    _.unset(user, 'isAuthorized')
+    let project = this.state.newModal.fields
+    _.assign(project, {
+      sponsorId: this.props.userInfo._id,
+      sponsorName: this.props.userInfo.name,
+      foundTime: new Date(),
+      status: 'active',
+      members: [{
+        'memberId': user._id,
+        'memberName': user.name,
+        'status': 'active'
+      }]
+    })
+    this.props.upsertProject(project).then((res) => {
+      message.success('创建成功')
+      this.toggleModal()
+    }).catch((e) => {
+      message.error('创建失败')
+    })
+  }
+  applyForProject (project) {
+    let user = this.props.userInfo
+    project = _.cloneDeep(project)
+    delete project.__v
+    project.members.push({
+      memberId: user._id,
+      memebrName: user.name,
+      status: 'waitForPermission'
+    })
+    this.props.upsertProject(project).then((res) => {
+      message.success('申请成功')
+      this.toggleModal()
+    }).catch((e) => {
+      message.error('申请失败')
+    })
+  }
   render () {
-    console.log(this.state)
-    const listData = []
-    for (let i = 0; i < 23; i++) {
-      listData.push({
-        href: 'http://ant.design',
-        title: `测试项目 ${i}`,
-        description: '此处为项目的简述部分，应叙述项目目标，应小于25个字。',
-        content: '此处为项目简介部分，相对于简述应当更加详细，可以扩展叙述项目目标，实现方法，所用技术以及成员要求等一系列信息，字数不超过100为佳',
-      });
-    }
+    let user = this.props.userInfo
+    let projects = this.props.project.projects
     const IconText = ({ type, text }) => (
       <span>
         <Icon type={type} style={{ marginRight: 8 }} />
@@ -60,6 +101,7 @@ export default class Projects extends Component {
               <h2>
                 所有项目
                 <Button
+                  onClick={this.toggleModal.bind(this)}
                   className={classnames('float-right vertical-middle')}
                   shape="circle"
                   icon='plus'
@@ -74,28 +116,55 @@ export default class Projects extends Component {
                       onChange: (page) => {
                         console.log(page);
                       },
-                      pageSize: 3,
+                      pageSize: 5,
                     }}
-                    dataSource={listData}
-                    renderItem={item => (
-                      <List.Item
-                        key={item.title}
-                        actions={[<IconText type="team" text="5" />, <a>申请加入</a>, <a>管理</a>]}
-                      >
-                        <List.Item.Meta
-                          avatar={<Avatar src={item.avatar} />}
-                          title={<a href={item.href}>{item.title}</a>}
-                          description={item.description}
-                        />
-                        {item.content}
-                      </List.Item>
-                    )}
+                    dataSource={projects}
+                    renderItem={(item, index) => {
+                      let actions = [
+                        <IconText type="team" text={item.members.length} />,
+                        <a onClick={this.applyForProject.bind(this, item)}>申请加入</a>,
+                        <a>管理</a>
+                      ]
+                      if (_.find(item.members, {memberId: user._id})) {
+                        actions.splice(1, 1)
+                      }
+                      return (
+                        <List.Item
+                          key={index}
+                          actions={actions}
+                        >
+                          <List.Item.Meta
+                            avatar={<Avatar src={item.avatar} />}
+                            title={<a>{item.name}</a>}
+                            description={`发起人：${item.sponsorName}`}
+                          />
+                          {item.desc}
+                        </List.Item>
+                      )
+                    }}
                   />
                 </Col>
               </Row>
             </div>
           </Col>
         </Row>
+        <Modal
+          visible={this.state.newModal.visible}
+          title='创建项目'
+          onCancel={this.toggleModal.bind(this)}
+          footer={[
+            <Button key="back" onClick={this.toggleModal.bind(this)}>放弃创建</Button>,
+            <Button key="submit" onClick={this.submitModal.bind(this)} type="primary">
+              创建项目
+            </Button>,
+          ]}>
+          <FormItem label='项目名称'>
+            <Input value={this.state.newModal.fields.name} onChange={this.handleChange.bind(this, 'newModal.fields.name')} />
+          </FormItem>
+          <FormItem label='项目简介'>
+            <TextArea value={this.state.newModal.fields.desc} onChange={this.handleChange.bind(this, 'newModal.fields.desc')} />
+          </FormItem>
+        </Modal>
       </div>
     )
   }

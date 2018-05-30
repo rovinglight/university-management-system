@@ -33,6 +33,7 @@ export default class App extends Component {
     props.getAllStatic()
     props.getAllApproval()
     props.getAllQuestions()
+    props.getAllProjecs()
   }
   componentDidMount () {
     let sessionKey = localStorage.getItem('sessionKey')

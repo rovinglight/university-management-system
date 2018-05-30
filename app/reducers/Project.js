@@ -8,17 +8,41 @@ const GET_ALL_PROJECT = 'GET_ALL_PROJECT'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const getAllGroups = () => {
+export const getAllProjecs = () => {
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios({
         method: 'get',
-        url: `http://${config.ums_web.host}:${config.ums_web.port}/projects`
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/project`
       }).then((res) => {
         dispatch({
           type: GET_ALL_PROJECT,
           payload: {
-            groups: res.data
+            projects: res.data
+          }
+        })
+        resolve(res.data)
+      }).catch((e) => {
+        console.log(e)
+        reject(e)
+      })
+    })
+  }
+}
+export const upsertProject = (project) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/project/upsert`,
+        data: {
+          project: project
+        }
+      }).then((res) => {
+        dispatch({
+          type: GET_ALL_PROJECT,
+          payload: {
+            projects: res.data
           }
         })
         resolve(res.data)
