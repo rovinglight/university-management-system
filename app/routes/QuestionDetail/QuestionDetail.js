@@ -52,18 +52,7 @@ export default class QuestionDetail extends Component {
   render () {
     let question = _.find(this.props.question.questions, {_id: this.props.match.params.questionId})
     let reply = _.get(question, 'reply') || []
-    let fakeData = [
-      {
-        responsor: '测试学生账户',
-        content: '老师你好，我是一名金融专业的学生，希望能够了解计算机专业外的学生是否能参加「互联网+」的比赛？'
-      }, {
-        responsor: '团委老师',
-        content: '互联网+比赛不限制参赛专业，有意愿即可报名'
-      }, {
-        responsor: '测试学生账户',
-        content: '谢谢老师'
-      }
-    ]
+    let isAuthorized = _.get(this.props, 'userInfo.isAuthorized') || (() => true)
     return (
       <div className="question-detail">
         <Row className="page-title">
@@ -110,7 +99,10 @@ export default class QuestionDetail extends Component {
                     })
                   }
                 </Col>
-                <Col className='padding-20'>
+                <Col
+                  className={classnames('padding-20', {
+                    hide: !isAuthorized([])
+                })}>
                   <Row>
                     <Col>
                       <TextArea

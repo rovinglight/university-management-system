@@ -72,9 +72,10 @@ export default class Competitions extends Component {
   render () {
     console.log(this.state)
     let userAuths = _.get(this.props, 'userInfo.auth')
-    let isAuthorized = authService.isAuthorized(userAuths)
+    let isAuthorized = _.get(this.props, 'userInfo.isAuthorized') || (() => true)
     let competitions = _.get(this.props, 'competitions.competitions')
     let firstClassCompetitions = _.filter(competitions, {grade: 'first'})
+    let secondClassCompetitions = _.filter(competitions, {grade: 'second'})
     let cpModal = _.get(this.state, 'cpModal')
     return (
       <div className="competitions">
@@ -101,36 +102,56 @@ export default class Competitions extends Component {
                 itemLayout="vertical"
                 size="large"
                 dataSource={firstClassCompetitions}
-                renderItem={item => (
-                  <List.Item
-                    style={{'textAlign': 'left'}}
-                    key={item.title}
-                    actions={[
-                      <Popconfirm
-                        title="确定要删除该赛事？"
-                        onConfirm={this.removeCompetition.bind(this, item._id)}
-                        okText="删除"
-                        cancelText="放弃">
-                        <a href="javascript;">删除</a>
-                      </Popconfirm>,
-                      <a onClick={this.toggleCpModal.bind(this, item)}>编辑</a>,
+                renderItem={item => {
+                  let actions = [
                       <a
                         disabled={!item.officialSite}
                         target='_blank'
                         href={item.officialSite}>
                         官网
-                      </a>,
-                      <a onClick={this.createApproval.bind(this, item.name)}>申办竞赛</a>
-                    ]}
-                  >
-                    <List.Item.Meta
-                      avatar={<Avatar className={`vertical-middle icon-gap bg-gradient-${_.random(1, 10)}`} icon="rocket" />}
-                      title={item.name}
-                      description={item.organizers}
-                    />
-                    {item.content}
-                  </List.Item>
-                )}
+                      </a>
+                  ]
+                  let actionWithAuths = [
+                    {
+                      action: (<Popconfirm
+                        title="确定要删除该赛事？"
+                        onConfirm={this.removeCompetition.bind(this, item._id)}
+                        okText="删除"
+                        cancelText="放弃">
+                        <a href="javascript;">删除</a>
+                      </Popconfirm>),
+                      auth: []
+                    }, {
+                      action: (<a onClick={this.toggleCpModal.bind(this, item)}>编辑</a>),
+                      auth: []
+                    },
+                    {
+                      action: (<a onClick={this.createApproval.bind(this, item.name)}>申办竞赛</a>),
+                      auth: [
+                        {role: 'teacher'}
+                      ]
+                    }
+                  ]
+                  actionWithAuths.forEach((action, index) => {
+                    if (isAuthorized(action.auth)) {
+                      actions.push(action.action)
+                    }
+                  })
+                  return (
+                    <List.Item
+                      style={{'textAlign': 'left'}}
+                      key={item.title}
+                      actions={actions}
+                    >
+                      <List.Item.Meta
+                        avatar={<Avatar className={`vertical-middle icon-gap bg-gradient-${_.random(1, 10)}`} icon="rocket" />}
+                        title={item.name}
+                        description={item.organizers}
+                      />
+                      {item.content}
+                    </List.Item>
+                  )
+                }}
               />
             </div>
           </Col>
@@ -144,9 +165,64 @@ export default class Competitions extends Component {
                   })}
                   shape="circle"
                   icon='plus'
-                  onClick={this.toggleCpModal.bind(this, {grade: 'second'})}
+                  onClick={this.toggleCpModal.bind(this, {grade: 'first'})}
                   size='large' />
               </h2>
+              <List
+                itemLayout="vertical"
+                size="large"
+                dataSource={secondClassCompetitions}
+                renderItem={item => {
+                  let actions = [
+                      <a
+                        disabled={!item.officialSite}
+                        target='_blank'
+                        href={item.officialSite}>
+                        官网
+                      </a>
+                  ]
+                  let actionWithAuths = [
+                    {
+                      action: (<Popconfirm
+                        title="确定要删除该赛事？"
+                        onConfirm={this.removeCompetition.bind(this, item._id)}
+                        okText="删除"
+                        cancelText="放弃">
+                        <a href="javascript;">删除</a>
+                      </Popconfirm>),
+                      auth: []
+                    }, {
+                      action: (<a onClick={this.toggleCpModal.bind(this, item)}>编辑</a>),
+                      auth: []
+                    },
+                    {
+                      action: (<a onClick={this.createApproval.bind(this, item.name)}>申办竞赛</a>),
+                      auth: [
+                        {role: 'teacher'}
+                      ]
+                    }
+                  ]
+                  actionWithAuths.forEach((action, index) => {
+                    if (isAuthorized(action.auth)) {
+                      actions.push(action.action)
+                    }
+                  })
+                  return (
+                    <List.Item
+                      style={{'textAlign': 'left'}}
+                      key={item.title}
+                      actions={actions}
+                    >
+                      <List.Item.Meta
+                        avatar={<Avatar className={`vertical-middle icon-gap bg-gradient-${_.random(1, 10)}`} icon="rocket" />}
+                        title={item.name}
+                        description={item.organizers}
+                      />
+                      {item.content}
+                    </List.Item>
+                  )
+                }}
+              />
             </div>
           </Col>
         </Row>

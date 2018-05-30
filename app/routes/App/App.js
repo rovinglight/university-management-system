@@ -18,6 +18,7 @@ import Questions from '../Questions/QuestionsContainer'
 import QuestionDetail from '../QuestionDetail/QuestionDetailContainer'
 import Statistics from '../Statistics/StatisticsContainer'
 import ToDo from '../ToDo/ToDoContainer'
+import authService from '../../service/authService'
 import classnames from 'classnames'
 
 import './App.scss'
@@ -44,6 +45,29 @@ export default class App extends Component {
         localStorage.removeItem('sessionKey')
       })
     }
+  }
+  jumpTo (path) {
+    this.props.history.push(path)
+  }
+  VerifyAuth () {
+    let user = this.props.userInfo
+    let sessionKey = localStorage.getItem('sessionKey')
+    let pageDisplay = this.props.static.pageDisplay
+    if (sessionKey && user.role === 'visitor') {
+      return
+    }
+    let isAuthorized = authService.isAuthorized(user.auth || [])
+    pageDisplay && pageDisplay.forEach((page, index) => {
+      if (_.includes(this.props.routing.location.pathname, page.path)) {
+        if (!isAuthorized(page.allowed)) {
+          this.jumpTo('/')
+        }
+      }
+    })
+
+  }
+  componentDidUpdate () {
+    this.VerifyAuth()
   }
   getSideStatus (status) {
     this.setState({sideShow: status})

@@ -103,6 +103,8 @@ export default class SgroupApproval extends Component {
     })
   }
   render () {
+    let user = this.props.userInfo
+    let isAuthorized = _.get(this.props, 'userInfo.isAuthorized') || (() => true)
     const rowSelection = {
       selectedRowKeys: this.state.selectedRowKeys,
       onChange: this.onSelectChange.bind(this),
@@ -146,7 +148,18 @@ export default class SgroupApproval extends Component {
       title: '操作',
       render: (text, record) => {
         return(
-          <Link to={`/approval/detail/${record.key}`}>管理</Link>
+          <Link
+            className={classnames({
+              hide: !isAuthorized([
+                {"role": "SecretaryOfYouthLeaguecommittee"},
+                {"role": "DeputySecretaryOfYouthLeaguecommittee"},
+                {"role": "teacher"},
+                {"role": "competitionCommittee"}
+              ]) && (user._id === record.sponsorId)
+            })}
+            to={`/approval/detail/${record.key}`}>
+            管理
+          </Link>
         )
       }
     }]
@@ -166,7 +179,9 @@ export default class SgroupApproval extends Component {
               <h2>
                 申办历史
                 <Button
-                  className='float-right vertical-middle'
+                  className={classnames('float-right vertical-middle', {
+                    hide: !isAuthorized([{role: 'student'}])
+                  })}
                   shape="circle"
                   icon='plus'
                   onClick={this.toggleModal.bind(this, 'sgroupModal')}

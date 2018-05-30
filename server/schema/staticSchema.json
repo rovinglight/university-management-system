@@ -1,32 +1,34 @@
 {
-  "allroles" : [{
-    "role": "administrator",
-    "display": "管理员"
-  }, {
-    "role": "studentGroupPresident",
-    "display": "学生组织主席"
-  }, {
-    "role": "studentGroupMember",
-    "display": "学生组织成员"
-  }, {
-    "role": "studentGroupApplicant",
-    "display": "学生组织申请者"
-  }, {
-    "role": "SecretaryOfYouthLeaguecommittee",
-    "display": "团委书记"
-  }, {
-    "role": "DeputySecretaryOfYouthLeaguecommittee",
-    "display": "团委副书记"
-  }, {
-    "role": "teacher",
-    "display": "教师"
-  }, {
-    "role": "student",
-    "display": "学生"
-  }, {
-    "role": "competitionCommittee",
-    "display": "学科竞赛领导小组"
-  }],
+  "allroles" : [
+    {
+      "role": "administrator",
+      "display": "管理员"
+    }, {
+      "role": "studentGroupPresident",
+      "display": "学生组织主席"
+    }, {
+      "role": "studentGroupMember",
+      "display": "学生组织成员"
+    }, {
+      "role": "studentGroupApplicant",
+      "display": "学生组织申请者"
+    }, {
+      "role": "SecretaryOfYouthLeaguecommittee",
+      "display": "团委书记"
+    }, {
+      "role": "DeputySecretaryOfYouthLeaguecommittee",
+      "display": "团委副书记"
+    }, {
+      "role": "teacher",
+      "display": "教师"
+    }, {
+      "role": "student",
+      "display": "学生"
+    }, {
+      "role": "competitionCommittee",
+      "display": "学科竞赛领导小组"
+    }
+  ],
   "approvalStep": {
     "type": [{
       "type": "submit",
@@ -50,5 +52,60 @@
         "display": "已完成"
       }
     ]
-  }
+  },
+  "pageDisplay": [
+    {
+      "path": "/competitions/approval",
+      "allowed": [
+        {
+          "role": "SecretaryOfYouthLeaguecommittee"
+        }, {
+          "role": "DeputySecretaryOfYouthLeaguecommittee"
+        }, {
+          "role": "teacher"
+        }, {
+          "role": "competitionCommittee"
+        }
+      ]
+    }, {
+      "path": "/studentgroups/new/approval",
+      "allowed": [
+        {
+          "role": "SecretaryOfYouthLeaguecommittee"
+        }, {
+          "role": "DeputySecretaryOfYouthLeaguecommittee"
+        }, {
+          "role": "student"
+        }
+      ]
+    }, {
+      "path": "/studentgroups/admin",
+      "allowed": [
+        {
+          "role": "administrator"
+        }
+      ]
+    }, {
+      "path": "/statistics",
+      "allowed": [
+        {
+          "role": "administrator"
+        }
+      ]
+    }, {
+      "path": "/approval/manage",
+      "allowed": [
+        {
+          "role": "administrator"
+        }
+      ]
+    }, {
+      "path": "/auth/manage",
+      "allowed": [
+        {
+          "role": "administrator"
+        }
+      ]
+    }
+  ]
 }
