@@ -21,7 +21,9 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (state) => ({
-  userInfo: state.userInfo
+  userInfo: state.userInfo,
+  static: state.static,
+  routing: state.routing
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

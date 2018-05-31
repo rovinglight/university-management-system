@@ -96,14 +96,16 @@ export default class Approval extends Component {
     })
   }
   render () {
+    let user = this.props.userInfo
     let approvalId = this.props.match.params.approvalId
     let approval = _.find(this.props.approval.approvals, {_id: approvalId})
     let approvalProcess = _.get(approval, 'approvalProcess')
     let staticSchema = this.props.static
     let previousStep, allroles = staticSchema.allroles
-    let currentStep = _.find(approvalProcess, {status: 'waiting'})
+    let currentStep = _.find(approvalProcess, {status: 'waiting'}) || {}
     let approvalComment = _.get(currentStep, 'comment')
     let stepHistory = this.state.stepHistory
+    let isAuthorized = _.get(this.props, 'userInfo.isAuthorized') || (() => true)
     console.log(this.state)
     return (
       <div className="approval">
@@ -136,7 +138,9 @@ export default class Approval extends Component {
                     <Col className='padding-20'>
                       <Button
                         onClick={this.grantStep.bind(this, approval)}
-                        className={classnames({hide: _.get(currentStep, 'stepType') !== 'submit'})}>
+                        className={classnames({
+                          hide: (_.get(currentStep, 'stepType') !== 'submit') || (user._id !== _.get(approval, 'sponsorId')) && !isAuthorized([])
+                        })}>
                         提交审核
                       </Button>
                     </Col>
@@ -220,21 +224,32 @@ export default class Approval extends Component {
                               <TextArea
                                 value={this.state.comment}
                                 onChange={this.handleChange.bind(this, 'comment')}
-                                className='margin-bottom-10'
+                                className={classnames('icon-gap margin-bottom-10', {
+                                  hide: !isAuthorized([{role: currentStep.role}]) && (approval.sponsorId !== user._id)
+                                })}
                                 autosize={{ minRows: 2, maxRows: 6 }}
                                 placeholder='意见' />
                             </Col>
                           </Row>
                           <Row type='flex' justify='center'>
-                            <Col>
-                              <Button onClick={this.submitComment.bind(this, approval)} className='icon-gap'>
+                            <Col className={classnames({
+                              hide: !isAuthorized([{role: currentStep.role}]) && (approval.sponsorId !== user._id)
+                            })}>
+                              <Button
+                                className={classnames('icon-gap', {
+                                  hide: !isAuthorized([{role: currentStep.role}]) && (approval.sponsorId !== user._id)
+                                })}
+                                onClick={this.submitComment.bind(this, approval)}
+                                className='icon-gap'>
                                 提交意见
                               </Button>
+                            </Col>
+                            <Col className={classnames({
+                              hide: !isAuthorized([{role: currentStep && currentStep.role}])
+                            })}>
                               <Button className='icon-gap' onClick={this.grantStep.bind(this, approval)}>
                                 通过审批
                               </Button>
-                            </Col>
-                            <Col>
                               <Button type='danger' onClick={this.rejectStep.bind(this, approval)}>
                                 不予通过
                               </Button>
