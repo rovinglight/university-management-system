@@ -23,19 +23,15 @@ export default class Login extends Component {
       loginBtnLoading: false
     }
   }
-  componentDidUpdate () {
+  componentDidUpdate () { //？
     //componentDidUpdate在组件完成更新后立即调用。在初始化时不会被调用。
     if (this.props.userInfo.sessionKey) {
         this.props.history.push('/')
-        //push(path, [state]) 在历史堆栈信息里加入一个新条目。
-        //history是RR4的两大重要依赖之一，另一个是React。
+        //在历史堆栈信息里加入一个新条目。
     }
   }
-  handleChange (path, e) {
+  handleChange (path, e) { //？
     _.set(this.state, path, e.target.value)
-    // _.set(object, path, value)
-    // 设置 object对象中对应 path属性路径上的值，如果path不存在，则创建。 
-    // 缺少的索引属性会创建为数组，而缺少的属性会创建为对象。使用 _.setWith定制path创建。 
     this.setState(this.state)
   }
   validation () {
@@ -43,7 +39,7 @@ export default class Login extends Component {
     let validation = {}
     let form = this.state.form
     for (let key in form) {
-      if (!form[key]) {//为空
+      if (!form[key]) { //为空
         flag = false
         validation[key] = true
       } else {
@@ -89,11 +85,10 @@ export default class Login extends Component {
                           <FormItem
                             help={validation.user ? "账号不可为空" : ""}
                             validateStatus={validation.user ? "error" : ""}>
-                            {/* 校验状态，如不设置，则会根据校验规则自动生成，可选：'success' 'warning' 'error' 'validating' */}
                             <Input
                               autoFocus
                               value={this.state.form.user}
-                              onChange={this.handleChange.bind(this, 'form.user')}
+                              onChange={this.handleChange.bind(this, 'form.user')} //？
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               size="large"
                               placeholder="学号" />
@@ -103,8 +98,8 @@ export default class Login extends Component {
                             validateStatus={validation.pwd ? "error" : ""}>
                             <Input
                               value={this.state.form.pwd}
-                              onChange={this.handleChange.bind(this, 'form.pwd')}
-                              onPressEnter={this.login.bind(this)}
+                              onChange={this.handleChange.bind(this, 'form.pwd')}  //？
+                              onPressEnter={this.login.bind(this)}    //？
                               prefix={<Icon type="lock"
                               style={{ color: 'rgba(0,0,0,.25)' }} />}
                               size="large"

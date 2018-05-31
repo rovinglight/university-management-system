@@ -1,7 +1,6 @@
 import axios from 'axios'
 import config from '../config/config'
 import authService from '../service/authService'
-const config = require('../config/config')
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -20,8 +19,8 @@ export const login = (user, pwd) => {
           pwd: pwd
         }
       }).then((res) => {
-        localStorage.setItem('sessionKey', res.data.sessionKey) //sessionKey的作用是什么？
-        dispatch({
+        localStorage.setItem('sessionKey', res.data.sessionKey) 
+        dispatch({    //dispatch这个地方的过程还不是很清楚
           type: USER_LOGIN,
           payload: {
             ...res.data
@@ -77,7 +76,7 @@ const ACTION_HANDLERS = {
   [USER_LOGIN] : (state, action) => {
     let newState = {
       ...action.payload,
-      isAuthorized: authService.isAuthorized(action.payload.auth)
+      isAuthorized: authService.isAuthorized(action.payload.auth)  
     }
     console.log(newState)
     return newState
@@ -89,6 +88,6 @@ const ACTION_HANDLERS = {
 const initialState = {role: 'visitor'}
 
 export default function userInfoReducer (state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]   //ACTION_HANDLERS[GET_ALL_GROUPS]
+  const handler = ACTION_HANDLERS[action.type]
   return handler ? handler(state, action) : state
 }

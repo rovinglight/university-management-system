@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import Login from './Login'
 import { login } from '../../reducers/UserInfo'
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {   //这个文件里面的是啥意思
   return {
     login: (user, pwd) => dispatch(login(user, pwd)),
   }

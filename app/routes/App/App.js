@@ -23,8 +23,6 @@ import classnames from 'classnames'
 
 import './App.scss'
 
-// 路由器组件无法接受两个及以上的子元素。基于这种限制的存在，创建一个<App>组件来渲染应用其余部分是一个有效的方法
-// （对于服务端渲染，将应用从router组件中分离也是重要的）。
 export default class App extends Component {
   constructor (props) {
     super(props)
@@ -40,20 +38,19 @@ export default class App extends Component {
   }
   componentDidMount () {
     //在第一次渲染后调用，只在客户端。
-    let sessionKey = localStorage.getItem('sessionKey') //获取sessionKey本地存储的值，
-    //localStorage用于持久化的本地存储，除非主动删除数据，否则数据是永远不会过期的。
+    let sessionKey = localStorage.getItem('sessionKey')
     if (sessionKey) {
       this.props.loginWithSessionKey(sessionKey).then((user) => {
         message.success(`${user.name}登录成功`)
       }).catch((e) => {
-        localStorage.removeItem('sessionKey') //删除sessionKey本地存储的值
+        localStorage.removeItem('sessionKey') 
       })
     }
   }
   jumpTo (path) {
-    this.props.history.push(path)
+    this.props.history.push(path) //往历史堆栈信息里面加入一个新的条目 意义？
   }
-  VerifyAuth () {
+  VerifyAuth () {   //权限判定
     let user = this.props.userInfo
     let sessionKey = localStorage.getItem('sessionKey')
     let pageDisplay = this.props.static.pageDisplay
@@ -68,7 +65,6 @@ export default class App extends Component {
         }
       }
     })
-
   }
   componentDidUpdate () {
     this.VerifyAuth()
@@ -92,9 +88,6 @@ export default class App extends Component {
           <Route exact path={`/competitions/approval`} component={CompetitionsApproval} />
           <Route exact path={`/approval/manage`} component={ApprovalManage} />
           <Route exact path={`/approval/:schemaId/:approvalId`} component={Approval} />
-          {/* 当一个路由的path匹配成功后，路由用来确定渲染结果的参数有三种。只需要提供其中一个即可。
-          component ：一个React组件。当带有component参数的route匹配成功后，route会返回一个新的元素，
-          其为component参数所对应的React组件（使用React.createElement创建）。 */}
           <Route exact path={`/approval/detail/:approvalId`} component={Approval} />
           <Route exact path={`/user`} component={UserInfo} />
           <Route exact path={`/projects`} component={Projects} />
@@ -102,6 +95,8 @@ export default class App extends Component {
           <Route exact path={`/questions/detail/:questionId`} component={QuestionDetail} />
           <Route exact path={`/statistics`} component={Statistics} />
           <Route exact path={`/`} component={ToDo} />
+          {/* component ：一个React组件。当带有component参数的route匹配成功后，route会返回一个新的元素，
+          其为component参数所对应的React组件。 这个地方应该怎么理解？*/}
         </div>
       </div>
     )
