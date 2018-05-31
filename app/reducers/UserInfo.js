@@ -1,10 +1,7 @@
 import axios from 'axios'
-<<<<<<< HEAD
 import config from '../config/config'
-=======
 import authService from '../service/authService'
 const config = require('../config/config')
->>>>>>> master
 // ------------------------------------
 // Constants
 // ------------------------------------
