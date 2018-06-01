@@ -96,13 +96,11 @@ export default class Approval extends Component {
       showStepHistory: !this.state.showStepHistory
     })
   }
-  removeFile () {
-
-  }
   render () {
     let user = this.props.userInfo
     let approvalId = this.props.match.params.approvalId
     let approval = _.find(this.props.approval.approvals, {_id: approvalId})
+    _.unset(approval, '__v')
     let approvalProcess = _.get(approval, 'approvalProcess')
     let staticSchema = this.props.static
     let previousStep, allroles = staticSchema.allroles
@@ -113,7 +111,18 @@ export default class Approval extends Component {
     let isAuthorized = _.get(this.props, 'userInfo.isAuthorized') || (() => true)
     let sessionKey = localStorage.getItem('sessionKey')
     let uploadedFile = currentStep.uploadedFile
-    let defaultFileList = uploadedFile && uploadedFile.map((file, index) => {
+    let defaultUploadedFile = _.cloneDeep(currentStep.uploadedFile)
+    if (currentStep && currentStep.stepType !== 'submit' && currentStepIndex !== 0) {
+      for(let i = currentStepIndex; i >= 0; i--) {
+        if (approvalProcess[i].stepType !== 'submit') {
+          continue
+        } else {
+          defaultUploadedFile = approvalProcess[i].uploadedFile
+          break
+        }
+      }
+    }
+    let defaultFileList = defaultUploadedFile && defaultUploadedFile.map((file, index) => {
       return {
         uid: index,
         name: file,
