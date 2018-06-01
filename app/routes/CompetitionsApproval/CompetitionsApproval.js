@@ -120,7 +120,8 @@ export default class CompetitionsApproval extends Component {
         return (
           <Moment locale="zh-cn" format="YYYY年MMMDo，a hh:mm" fromNow>{record.time}</Moment>
         )
-      }
+      },
+      sorter: (a, b) => (new Date(a.time)).getTime() - (new Date(b.time)).getTime(),
     }, {
       title: '操作',
       render: (text, record) => {
