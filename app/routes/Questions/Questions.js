@@ -38,6 +38,9 @@ export default class Questions extends Component {
     this.setState({
       newModal: {
         ...this.state.newModal,
+        fields: {
+          question: ''
+        },
         visible: !this.state.newModal.visible
       }
     })
