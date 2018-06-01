@@ -55,6 +55,7 @@ export default class UserInfo extends Component {
   submitUpdate () {
     this.props.updateUserInfo(this.state.editModal.fields).then((res) => {
       message.success('更新成功')
+      this.toggleModal('editModal')
     }).catch((e) => {
       message.error('更新失败')
     })
