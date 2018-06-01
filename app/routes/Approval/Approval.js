@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import Moment from 'react-moment'
 import 'moment/locale/zh-cn'
 import moment from 'moment'
+import config from '../../config/config'
 const TabPane = Tabs.TabPane
 const { TextArea } = Input
 const Dragger = Upload.Dragger
@@ -94,6 +95,9 @@ export default class Approval extends Component {
       showStepHistory: !this.state.showStepHistory
     })
   }
+  removeFile () {
+
+  }
   render () {
     let user = this.props.userInfo
     let approvalId = this.props.match.params.approvalId
@@ -102,9 +106,70 @@ export default class Approval extends Component {
     let staticSchema = this.props.static
     let previousStep, allroles = staticSchema.allroles
     let currentStep = _.find(approvalProcess, {status: 'waiting'}) || {}
+    let currentStepIndex = _.findIndex(approvalProcess, {status: 'waiting'})
     let approvalComment = _.get(currentStep, 'comment')
     let stepHistory = this.state.stepHistory
     let isAuthorized = _.get(this.props, 'userInfo.isAuthorized') || (() => true)
+    let sessionKey = localStorage.getItem('sessionKey')
+    let uploadedFile = currentStep.uploadedFile
+    let defaultFileList = uploadedFile && uploadedFile.map((file, index) => {
+      return {
+        uid: index,
+        name: file,
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/download?type=submit&approvalId=${approvalId}&stepIndex=${currentStepIndex}&fileName=${file}`
+      }
+    })
+    let props = {
+      name: 'file',
+      action: `http://${config.ums_web.host}:${config.ums_web.port}/upload`,
+      headers: {
+        type: 'submit',
+        approvalid: approvalId,
+        status: 'done',
+        stepindex: currentStepIndex
+      },
+      defaultFileList: defaultFileList,
+      beforeUpload: (file, fileList) => {
+        return new Promise((resolve, reject) => {
+          if (_.includes(uploadedFile, file.name)) {
+            message.error('请勿上传同名文件')
+            return reject(file)
+          }
+          file.url = `http://${config.ums_web.host}:${config.ums_web.port}/download?type=submit&approvalId=${approvalId}&stepIndex=${currentStepIndex}&fileName=${file.name}`
+          return resolve(file)
+        })
+      },
+      onChange(info) {
+        if (info.file.status === 'done') {
+          console.log(info)
+          currentStep.uploadedFile.push(info.file.name)
+          message.success(`${info.file.name} file uploaded successfully`)
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`)
+        }
+      },
+      onRemove (file) {
+        return new Promise((resolve, reject) => {
+
+          return reject(file)
+        })
+      }
+    }
+    let dragger = (<div/>)
+    if (currentStep._id) {
+      dragger = (
+        <Dragger {...props} disabled={_.includes(['rejected', 'complete'], _.get(approval, 'status')) || (currentStep.stepType !== 'submit')}>
+          <p className="ant-upload-drag-icon">
+            <Icon type="inbox" />
+          </p>
+          <p className="ant-upload-text">上传申请文件</p>
+          <p className="ant-upload-hint">支持多文件上传，拖拽进来即可</p>
+        </Dragger>
+      )
+    }
+    if (sessionKey) {
+      props.headers.sessionkey = sessionKey
+    }
     console.log(this.state)
     return (
       <div className="approval">
@@ -125,13 +190,7 @@ export default class Approval extends Component {
                     </Col>
                   </Row>
                   <Row>
-                    <Dragger disabled={_.includes(['rejected', 'complete'], _.get(approval, 'status'))}>
-                      <p className="ant-upload-drag-icon">
-                        <Icon type="inbox" />
-                      </p>
-                      <p className="ant-upload-text">上传申请文件</p>
-                      <p className="ant-upload-hint">支持多文件上传，拖拽进来即可</p>
-                    </Dragger>
+                    {dragger}
                   </Row>
                   <Row type='flex' align='middle' justify='center'>
                     <Col className='padding-20'>
