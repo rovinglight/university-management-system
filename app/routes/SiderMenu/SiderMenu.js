@@ -64,9 +64,7 @@ export default class SiderMenu extends Component {
           <Link to="/user">个人设置</Link>
         </Menu.Item>
         <Menu.Item>
-          <Badge dot={true}>
-            <Link to="/">待办事项 </Link>
-          </Badge>
+          <Link to="/">待办事项 </Link>
         </Menu.Item>
         <Menu.Item>
           <a onClick={this.logout.bind(this)}>登出</a>
@@ -175,11 +173,9 @@ export default class SiderMenu extends Component {
                 </Link>
                 <Dropdown overlay={menu}>
                   <span className={classnames("ant-dropdown-link font-14 header-item", {hide: !loggedIn})} href="#">
-                     <Badge dot={true}>
-                       <Avatar className={`vertical-middle icon-gap bg-gradient-${this.state.randomNum}`} icon="user" />
-                       {this.props.userInfo.name}
-                       <Icon type="down" />
-                     </Badge>
+                     <Avatar className={`vertical-middle icon-gap bg-gradient-${this.state.randomNum}`} icon="user" />
+                     {this.props.userInfo.name}
+                     <Icon type="down" />
                   </span>
                 </Dropdown>
               </Col>
