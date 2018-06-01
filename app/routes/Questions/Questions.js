@@ -68,6 +68,7 @@ export default class Questions extends Component {
     })
   }
   render () {
+    let user = _.get(this.props, 'userInfo') || {}
     let questions = this.props.question.questions
     let isAuthorized = this.props.userInfo.isAuthorized
     return (
@@ -109,9 +110,14 @@ export default class Questions extends Component {
                           title={[<Avatar key='1' className={`vertical-middle icon-gap bg-gradient-${_.random(1, 10)}`} icon="user" />, <span key='2'>{item.questionerName}</span>]}
                           extra={[
                             <Moment className='icon-gap' key='2' locale="zh-cn" format="YYYY年MMMDo，a hh:mm" fromNow>{item.time}</Moment>,
-                            <Button className={classnames({
-                              hide: !isAuthorized([])
-                            })} onClick={this.deleteQuestion.bind(this, item._id)} key='1'>删除</Button>
+                            <Button
+                              className={classnames({
+                                hide: !isAuthorized([]) && item.questionerId !== user._id
+                              })}
+                              onClick={this.deleteQuestion.bind(this, item._id)}
+                              key='1'>
+                              删除
+                            </Button>
                           ]}
                         >
                           {item.question}
