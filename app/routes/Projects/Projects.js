@@ -103,7 +103,12 @@ export default class Projects extends Component {
                 所有项目
                 <Button
                   onClick={this.toggleModal.bind(this)}
-                  className={classnames('float-right vertical-middle')}
+                  className={classnames('float-right vertical-middle', {
+                    hide: !isAuthorized([
+                      {role: "student"},
+                      {role: "teacher"}
+                    ])
+                  })}
                   shape="circle"
                   icon='plus'
                   size='large' />
