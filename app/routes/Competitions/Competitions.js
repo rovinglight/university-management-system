@@ -136,6 +136,8 @@ export default class Competitions extends Component {
                     if (isAuthorized(action.auth)) {
                       actions.push(action.action)
                     }
+                    console.log(action.auth)
+                    console.log(isAuthorized(action.auth))
                   })
                   return (
                     <List.Item
