@@ -127,12 +127,14 @@ export default class Approval extends Component {
     let requiredFilesList = this.requiredFileGenerator(currentStep.requiredFiles, currentStepIndex, schemaId)
     let uploadedFile = currentStep.uploadedFile
     let defaultUploadedFile = _.cloneDeep(currentStep.uploadedFile)
+    let fileStepIndex = currentStepIndex
     if (currentStep && currentStep.stepType !== 'submit' && currentStepIndex !== 0) {
       for(let i = currentStepIndex; i >= 0; i--) {
         if (approvalProcess[i].stepType !== 'submit') {
           continue
         } else {
           defaultUploadedFile = approvalProcess[i].uploadedFile
+          fileStepIndex = i
           break
         }
       }
@@ -141,7 +143,7 @@ export default class Approval extends Component {
       return {
         uid: index,
         name: file,
-        url: `http://${config.ums_web.host}:${config.ums_web.port}/files?type=submit&approvalId=${approvalId}&stepIndex=${currentStepIndex}&fileName=${file}`
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/files?type=submit&approvalId=${approvalId}&stepIndex=${fileStepIndex}&fileName=${file}`
       }
     })
     let props = {
