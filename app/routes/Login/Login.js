@@ -27,7 +27,6 @@ export default class Login extends Component {
     //componentDidUpdate在组件完成更新后立即调用。在初始化时不会被调用。
     if (this.props.userInfo.sessionKey) {
         this.props.history.push('/')
-        //在历史堆栈信息里加入一个新条目。
     }
   }
   handleChange (path, e) { //键盘输入
