@@ -3,8 +3,10 @@ import { Row, Col, Button, Divider, Select, Tooltip, List, Avatar, message, Form
 import GroupCard from '../../components/GroupCard/GroupCard'
 import classnames from 'classnames'
 import authService from '../../service/authService'
+import config from '../../config/config'
+import axios from 'axios'
 const Option = Select.Option
-const FormItem = Form.Item;
+const FormItem = Form.Item
 
 import './ApprovalManage.scss'
 
@@ -133,51 +135,118 @@ export default class ApprovalManage extends Component {
                 className="demo-loadmore-list"
                 itemLayout="horizontal"
                 dataSource={approvalStack}
-                renderItem={(item, index) => (
-                  <List.Item actions={[
-                    <Button disabled={index === 0} onClick={this.swapProcess.bind(this, index, index - 1)} shape="circle" icon="arrow-up" />,
-                    <Button disabled={index + 1 === approvalStack.length} onClick={this.swapProcess.bind(this, index, index + 1)} shape="circle" icon="arrow-down" />,
-                    <Button onClick={this.removeProcess.bind(this, index)} shape="circle" icon="delete" />
-                  ]}>
-                    <List.Item.Meta
-                      avatar={<Avatar className='bg-gradient-5'>{index + 1}</Avatar>}
-                      title={<span>步骤设置</span>}
-                      description={
-                        <FormItem label='步骤类型'>
-                          <Select value={item.stepType} style={{ width: 120 }} onChange={this.handleChange.bind(this, `processToEdit.approvalStack[${index}].stepType`)}>
-                            {
-                              stepTypes.map((stepType, i) => {
-                                return (
-                                  <Option key={i} value={stepType.type}>{stepType.display}</Option>
-                                )
-                              })
-                            }
-                          </Select>
-                        </FormItem>
-                      }
-                    />
-                    <FormItem className={classnames({hide: item.stepType !== 'approval'})} label='审批人'>
-                      <Select
-                        value={item.role} style={{ width: 120 }}
-                        onChange={this.handleChange.bind(this, `processToEdit.approvalStack[${index}].role`)}>
-                        {
-                          allroles.map((role, i) => {
-                            return (
-                              <Option key={i} value={role.role}>{role.display}</Option>
-                            )
-                          })
+                renderItem={(item, index) => {
+                  let requiredFiles = item.requiredFiles
+                  let defaultFileList = requiredFiles && requiredFiles.map((file, i) => {
+                    return {
+                      uid: index,
+                      name: file,
+                      url: `http://${config.ums_web.host}:${config.ums_web.port}/files?type=required&schemaId=${this.state.processToEdit._id}&stepIndex=${index}&fileName=${file}`
+                    }
+                  })
+                  let props = {
+                    name: 'file',
+                    action: `http://${config.ums_web.host}:${config.ums_web.port}/upload`,
+                    headers: {
+                      type: 'required',
+                      schemaid: this.state.processToEdit._id,
+                      status: 'done',
+                      stepindex: index,
+                      sessionkey: this.props.userInfo.sessionKey
+                    },
+                    defaultFileList: defaultFileList,
+                    beforeUpload: (file, fileList) => {
+                      return new Promise((resolve, reject) => {
+                        if (_.includes(requiredFiles, file.name)) {
+                          message.error('请勿上传同名文件')
+                          return reject(file)
                         }
-                      </Select>
-                    </FormItem>
-                    <FormItem className={classnames({hide: item.stepType !== 'submit'})} label='所需文件'>
-                      <Upload>
-                        <Button>
-                          <Icon type="upload" /> Upload
-                        </Button>
-                      </Upload>
-                    </FormItem>
-                  </List.Item>
-                )}
+                        file.url = `http://${config.ums_web.host}:${config.ums_web.port}/files?type=required&schemaId=${this.state.processToEdit._id}&stepIndex=${index}&fileName=${file.name}`
+                        return resolve(file)
+                      })
+                    },
+                    onChange(info) {
+                      if (info.file.status === 'done') {
+                        console.log(info)
+                        item.requiredFiles.push(info.file.name)
+                        message.success(`${info.file.name} 上传成功`)
+                      } else if (info.file.status === 'error') {
+                        message.error(`${info.file.name} 上传失败`)
+                      }
+                    },
+                    onRemove (file) {
+                      return new Promise((resolve, reject) => {
+                        axios({
+                          method: 'delete',
+                          url: file.url
+                        }).then((res) => {
+                          item.requiredFiles = _.filter(item.requiredFiles, (uFile) => {
+                            if (uFile === file.name) {
+                              return false
+                            }
+                            return true
+                          })
+                          message.success('删除成功')
+                          resolve(true)
+                        }).catch((e) => {
+                          message.error('删除失败')
+                          reject(file)
+                        })
+                      })
+                    }
+                  }
+                  let upload = (<div/>)
+                  upload = (
+                    <Upload
+                      key={this.state.processToEdit._id}
+                      {...props}>
+                      <Button>
+                        <Icon type="upload" /> Upload
+                      </Button>
+                    </Upload>
+                  )
+                  return (
+                    <List.Item actions={[
+                      <Button disabled={index === 0} onClick={this.swapProcess.bind(this, index, index - 1)} shape="circle" icon="arrow-up" />,
+                      <Button disabled={index + 1 === approvalStack.length} onClick={this.swapProcess.bind(this, index, index + 1)} shape="circle" icon="arrow-down" />,
+                      <Button onClick={this.removeProcess.bind(this, index)} shape="circle" icon="delete" />
+                    ]}>
+                      <List.Item.Meta
+                        avatar={<Avatar className='bg-gradient-5'>{index + 1}</Avatar>}
+                        title={<span>步骤设置</span>}
+                        description={
+                          <FormItem label='步骤类型'>
+                            <Select value={item.stepType} style={{ width: 120 }} onChange={this.handleChange.bind(this, `processToEdit.approvalStack[${index}].stepType`)}>
+                              {
+                                stepTypes.map((stepType, i) => {
+                                  return (
+                                    <Option key={i} value={stepType.type}>{stepType.display}</Option>
+                                  )
+                                })
+                              }
+                            </Select>
+                          </FormItem>
+                        }
+                      />
+                      <FormItem className={classnames({hide: item.stepType !== 'approval'})} label='审批人'>
+                        <Select
+                          value={item.role} style={{ width: 120 }}
+                          onChange={this.handleChange.bind(this, `processToEdit.approvalStack[${index}].role`)}>
+                          {
+                            allroles.map((role, i) => {
+                              return (
+                                <Option key={i} value={role.role}>{role.display}</Option>
+                              )
+                            })
+                          }
+                        </Select>
+                      </FormItem>
+                      <FormItem className={classnames({hide: item.stepType !== 'submit'})} label='所需文件'>
+                        {upload}
+                      </FormItem>
+                    </List.Item>
+                  )
+                }}
               />
             </div>
           </Col>

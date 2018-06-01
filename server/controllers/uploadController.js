@@ -71,7 +71,21 @@ const uploadController = {
       let schemaId = req.query.schemaId
       let stepIndex = req.query.stepIndex
       let fileName = req.query.fileName
-
+      approvalSchemaModel.findById(schemaId).then((schema) => {
+        let requiredFiles = schema.approvalStack[stepIndex].requiredFiles
+        schema.approvalStack[stepIndex].requiredFiles = _.filter(requiredFiles, (file) => {
+          if (file === fileName) {
+            return false
+          }
+          return true
+        })
+        schema.save().then((result) => {
+          res.status(200).send(result)
+        })
+        fs.unlinkSync(`./uploads/approvalSchema/${schemaId}/${stepIndex}/${fileName}`)
+      }).catch((e) => {
+        res.status(400).send(e)
+      })
     }
     if (type === 'submit') {
       let approvalId = req.query.approvalId
