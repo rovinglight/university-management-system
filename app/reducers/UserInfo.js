@@ -85,7 +85,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = {role: 'visitor'}
+const initialState = {role: 'visitor', isAuthorized: () => false}
 
 export default function userInfoReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]

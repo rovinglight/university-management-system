@@ -82,6 +82,7 @@ export default class Projects extends Component {
   render () {
     let user = this.props.userInfo
     let projects = this.props.project.projects
+    let isAuthorized = this.props.userInfo.isAuthorized
     const IconText = ({ type, text }) => (
       <span>
         <Icon type={type} style={{ marginRight: 8 }} />
@@ -120,18 +121,19 @@ export default class Projects extends Component {
                     }}
                     dataSource={projects}
                     renderItem={(item, index) => {
-                      let actions = [
+                      let actionsToDisplay = [
                         <IconText type="team" text={item.members.length} />,
-                        <a onClick={this.applyForProject.bind(this, item)}>申请加入</a>,
-                        <a>管理</a>
                       ]
-                      if (_.find(item.members, {memberId: user._id})) {
-                        actions.splice(1, 1)
+                      if (!_.find(item.members, {memberId: user._id}) && isAuthorized([{role: 'student'}])) {
+                        actionsToDisplay.push(<a onClick={this.applyForProject.bind(this, item)}>申请加入</a>)
+                      }
+                      if (item.sponsorId === user._id || isAuthorized([])) {
+                        actionsToDisplay.push(<a>管理</a>)
                       }
                       return (
                         <List.Item
                           key={index}
-                          actions={actions}
+                          actions={actionsToDisplay}
                         >
                           <List.Item.Meta
                             avatar={<Avatar src={item.avatar} />}

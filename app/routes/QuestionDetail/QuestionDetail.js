@@ -101,7 +101,11 @@ export default class QuestionDetail extends Component {
                 </Col>
                 <Col
                   className={classnames('padding-20', {
-                    hide: !isAuthorized([])
+                    hide: !isAuthorized([
+                      {"role": "SecretaryOfYouthLeaguecommittee"},
+                      {"role": "DeputySecretaryOfYouthLeaguecommittee"},
+                      {"role": "competitionCommittee"}
+                    ])
                 })}>
                   <Row>
                     <Col>
