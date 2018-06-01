@@ -20,7 +20,7 @@ export const login = (user, pwd) => {
         }
       }).then((res) => {
         localStorage.setItem('sessionKey', res.data.sessionKey) 
-        dispatch({    
+        dispatch({    //广播了一个action
           type: USER_LOGIN,
           payload: {
             ...res.data
@@ -43,7 +43,7 @@ export const loginWithSessionKey = (sessionKey) => {
           sessionKey: sessionKey
         }
       }).then((res) => {
-        dispatch({ //广播了一个action
+        dispatch({ 
           type: USER_LOGIN,
           payload: {
             ...res.data

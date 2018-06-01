@@ -7,7 +7,7 @@ const GET_ALL_COMPETITION = 'GET_ALL_COMPETITION'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const getAllCompetitions = () => {
+export const getAllCompetitions = () => { 
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios({
@@ -27,7 +27,7 @@ export const getAllCompetitions = () => {
     })
   }
 }
-export const upsertCompetition = (competition) => {
+export const upsertCompetition = (competition) => { 
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios({
@@ -50,7 +50,7 @@ export const upsertCompetition = (competition) => {
     })
   }
 }
-export const removeCompetition = (competitionId) => {
+export const removeCompetition = (competitionId) => { 
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios({
