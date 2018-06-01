@@ -128,7 +128,7 @@ export default class Competitions extends Component {
                     {
                       action: (<a onClick={this.createApproval.bind(this, item.name)}>申办竞赛</a>),
                       auth: [
-                        {role: 'teacher'}
+                        {role: 'competitionCommittee'}
                       ]
                     }
                   ]

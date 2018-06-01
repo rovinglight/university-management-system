@@ -76,6 +76,36 @@ export const updateApproval = (approval) => {
     })
   }
 }
+export const deleteApproval = (approvalIdList) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/approval/delete`,
+        data: {
+          approvalIdList: approvalIdList
+        }
+      }).then((res) => {
+        let newState = _.cloneDeep(getState().approval.approvals)
+        newState = _.filter(newState, (approval) => {
+          if (_.includes(approvalIdList, approval._id)) {
+            return false
+          }
+          return true
+        })
+        dispatch({
+          type: GET_ALL_APPROVAL,
+          payload: {
+            approvals: newState
+          }
+        })
+        resolve()
+      }).catch((e) => {
+        reject(e)
+      })
+    })
+  }
+}
 // ------------------------------------
 // Action Handlers
 // ------------------------------------

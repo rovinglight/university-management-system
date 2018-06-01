@@ -130,8 +130,7 @@ export default class SiderMenu extends Component {
                       {"role": "SecretaryOfYouthLeaguecommittee"},
                       {"role": "DeputySecretaryOfYouthLeaguecommittee"},
                       {"role": "teacher"},
-                      {"role": "student"},
-                      {"role": "competitionCommittee"}])
+                      {"role": "student"}])
                     })}
                     key="applyForSgroup">
                     <Link to='/studentgroups/new/approval'>新社团申请</Link>
