@@ -69,6 +69,15 @@ export default class Competitions extends Component {
       message.error('无法创建申请')
     })
   }
+  createProjectApproval (competitionName) {
+    let projectSchema = _.find(this.props.static.approvalSchema, {name: '申请参赛'})
+    this.props.createApproval(projectSchema, competitionName).then((approvalId) => {
+      this.jumpTo(`/approval/detail/${approvalId}`)
+      message.success('申请创建成功')
+    }).catch((e) => {
+      message.error('无法创建申请')
+    })
+  }
   render () {
     console.log(this.state)
     let userAuths = _.get(this.props, 'userInfo.auth')
@@ -129,6 +138,12 @@ export default class Competitions extends Component {
                       action: (<a onClick={this.createApproval.bind(this, item.name)}>申办竞赛</a>),
                       auth: [
                         {role: 'competitionCommittee'}
+                      ]
+                    }, {
+                      action: (<a onClick={this.createProjectApproval.bind(this, item.name)}>申请参赛</a>),
+                      auth: [
+                        {role: 'student'},
+                        {role: 'teacher'}
                       ]
                     }
                   ]

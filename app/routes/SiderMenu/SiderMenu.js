@@ -43,7 +43,7 @@ export default class SiderMenu extends Component {
       approvalCompetition: '/approval/competitions',
       competitions: '/competitions',
       approvalCompetition: '/competitions/approval',
-      applyForCompetition: '/competitions/apply',
+      applyForCompetition: '/projects/approval',
       projects: '/projects',
       statistics: '/statistics'
     }
@@ -112,11 +112,13 @@ export default class SiderMenu extends Component {
                   <Menu.Item
                     className={classnames({
                       hide: !isAuthorized([
+                        {"role": "competitionCommittee"},
+                        {"role": "teacher"},
                         {"role": "student"}
                       ])
                     })}
                     key="applyForCompetition">
-                     申请参赛
+                     <Link to='/projects/approval'>申请参赛</Link>
                    </Menu.Item>
                   <Menu.Item key="projects"><Link to='/projects'>项目库</Link></Menu.Item>
                 </SubMenu>

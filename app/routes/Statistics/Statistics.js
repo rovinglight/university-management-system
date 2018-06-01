@@ -47,19 +47,27 @@ export default class Statistics extends Component {
     this.setState({
       targetUser: userInfo,
       sgroupData: this.sgroupDataGenerator(userInfo._id),
-      competitionData: this.competitionDataGenerator()
+      competitionData: this.competitionDataGenerator(userInfo._id)
     })
   }
-  competitionDataGenerator () {
-    const fakeData = [
-      {
-        key: '1',
-        name: '“互联网+”大学生创新创业大赛',
-        status: '活跃',
-        startTime: '2018-05-03T07:35:06.421Z'
+  competitionDataGenerator (studentId) {
+    let user = _.get(this.props, 'userInfo')
+    let approvals = _.get(this.props, 'approval.approvals') || []
+    let data = _.filter(approvals, (approval) => {
+      console.log()
+      if (approval.schemaId === '5b11af07887498cccea7d20e' && approval.sponsorId === studentId) {
+        return true
       }
-    ]
-    return fakeData
+      return false
+    })
+    return data.map((item, index) => {
+      return {
+        key: index,
+        name: item.name,
+        status: item.status,
+        startTime: item.startTime
+      }
+    })
   }
   sgroupDataGenerator (studentId) {
     let allroles = this.props.static.allroles
@@ -122,7 +130,12 @@ export default class Statistics extends Component {
       title: '加入时间',
       dataIndex: 'joinTime',
       key: 'joinTime',
-      render: text => (<Moment locale="zh-cn" format="YYYY年MMMDD日，a hh:mm" fromNow>{text}</Moment>)
+      render: text => {
+        if (text) {
+          return (<Moment locale="zh-cn" format="YYYY年MMMDD日，a hh:mm" fromNow>{text}</Moment>)
+        }
+        return ''
+      }
     }]
     const competitionColums = [
       {

@@ -9,9 +9,9 @@ import moment from 'moment';
 const { TextArea } = Input
 const Option = Select.Option
 
-import './CompetitionsApproval.scss'
+import './ProjectApproval.scss'
 
-export default class CompetitionsApproval extends Component {
+export default class ProjectApproval extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -163,13 +163,13 @@ export default class CompetitionsApproval extends Component {
         return(actions)
       }
     }]
-    let tableData = this.tableDateGenerator('5af450afe72327010df04c80')
+    let tableData = this.tableDateGenerator('5b11af07887498cccea7d20e')
     return (
-      <div className="competition-approval">
+      <div className="project-approval">
         <Row className="page-title">
           <Col>
             <h1>
-              竞赛申办
+              申请参赛
             </h1>
           </Col>
         </Row>
