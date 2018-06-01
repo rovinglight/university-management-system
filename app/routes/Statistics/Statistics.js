@@ -76,6 +76,9 @@ export default class Statistics extends Component {
     ]
     let result = []
     groups.forEach((group, index) => {
+      if (!_.find(group.members, {studentId: studentId})) {
+        return
+      }
       let memberInfo = _.find(group.members, {studentId: studentId})
       memberInfo = _.cloneDeep(memberInfo)
       memberInfo.groupInfo = group
