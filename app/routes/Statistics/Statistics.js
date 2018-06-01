@@ -51,15 +51,22 @@ export default class Statistics extends Component {
     })
   }
   competitionDataGenerator () {
-    const fakeData = [
-      {
-        key: '1',
-        name: '“互联网+”大学生创新创业大赛',
-        status: '活跃',
-        startTime: '2018-05-03T07:35:06.421Z'
+    let user = _.get(this.props, 'userInfo')
+    let approvals = _.get(this.props, 'approval.approvals') || []
+    let data = _.filter(approvals, (approval) => {
+      if (approval.schemaId === '5b11af07887498cccea7d20e' && approval.sponsorId === user._id) {
+        return true
       }
-    ]
-    return fakeData
+      return false
+    })
+    return data.map((item, index) => {
+      return {
+        key: index,
+        name: item.name,
+        status: item.status,
+        startTime: item.startTime
+      }
+    })
   }
   sgroupDataGenerator (studentId) {
     let allroles = this.props.static.allroles
