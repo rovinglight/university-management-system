@@ -47,14 +47,15 @@ export default class Statistics extends Component {
     this.setState({
       targetUser: userInfo,
       sgroupData: this.sgroupDataGenerator(userInfo._id),
-      competitionData: this.competitionDataGenerator()
+      competitionData: this.competitionDataGenerator(userInfo._id)
     })
   }
-  competitionDataGenerator () {
+  competitionDataGenerator (studentId) {
     let user = _.get(this.props, 'userInfo')
     let approvals = _.get(this.props, 'approval.approvals') || []
     let data = _.filter(approvals, (approval) => {
-      if (approval.schemaId === '5b11af07887498cccea7d20e' && approval.sponsorId === user._id) {
+      console.log()
+      if (approval.schemaId === '5b11af07887498cccea7d20e' && approval.sponsorId === studentId) {
         return true
       }
       return false
@@ -129,7 +130,12 @@ export default class Statistics extends Component {
       title: '加入时间',
       dataIndex: 'joinTime',
       key: 'joinTime',
-      render: text => (<Moment locale="zh-cn" format="YYYY年MMMDD日，a hh:mm" fromNow>{text}</Moment>)
+      render: text => {
+        if (text) {
+          return (<Moment locale="zh-cn" format="YYYY年MMMDD日，a hh:mm" fromNow>{text}</Moment>)
+        }
+        return ''
+      }
     }]
     const competitionColums = [
       {
