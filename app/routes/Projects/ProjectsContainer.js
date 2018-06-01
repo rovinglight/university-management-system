@@ -1,10 +1,11 @@
 import { connect } from 'react-redux'
 import Projects from './Projects'
-import { upsertProject } from '../../reducers/Project'
+import { upsertProject, deleteProject } from '../../reducers/Project'
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    upsertProject: (project) => dispatch(upsertProject(project))
+    upsertProject: (project) => dispatch(upsertProject(project)),
+    deleteProject: (projectId) => dispatch(deleteProject(projectId))
   }
 }
 

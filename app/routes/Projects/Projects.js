@@ -69,14 +69,20 @@ export default class Projects extends Component {
     delete project.__v
     project.members.push({
       memberId: user._id,
-      memebrName: user.name,
+      memberName: user.name,
       status: 'waitForPermission'
     })
     this.props.upsertProject(project).then((res) => {
       message.success('申请成功')
-      this.toggleModal()
     }).catch((e) => {
       message.error('申请失败')
+    })
+  }
+  deleteProject (projectId) {
+    this.props.deleteProject(projectId).then((res) => {
+      message.success('删除成功')
+    }).catch((e) => {
+      message.error('删除失败')
     })
   }
   render () {
@@ -126,14 +132,18 @@ export default class Projects extends Component {
                     }}
                     dataSource={projects}
                     renderItem={(item, index) => {
+                      let officialMember = _.filter(item.members, {status: 'active'})
                       let actionsToDisplay = [
-                        <IconText type="team" text={item.members.length} />,
+                        <IconText type="team" text={officialMember.length} />,
                       ]
                       if (!_.find(item.members, {memberId: user._id}) && isAuthorized([{role: 'student'}])) {
                         actionsToDisplay.push(<a onClick={this.applyForProject.bind(this, item)}>申请加入</a>)
                       }
                       if (item.sponsorId === user._id || isAuthorized([])) {
-                        actionsToDisplay.push(<a>管理</a>)
+                        actionsToDisplay.push(<Link to={`/project/manage/${item._id}`}>管理</Link>)
+                        actionsToDisplay.push(
+                          <a onClick={this.deleteProject.bind(this, item._id)}>删除</a>
+                        )
                       }
                       return (
                         <List.Item

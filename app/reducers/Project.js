@@ -53,6 +53,37 @@ export const upsertProject = (project) => {
     })
   }
 }
+export const deleteProject = (projectId) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/project/delete`,
+        data: {
+          projectId: projectId
+        }
+      }).then((res) => {
+        let newProjects = _.cloneDeep(getState().project.projects)
+        newProjects = _.filter(newProjects, (project) => {
+          if (project._id === projectId) {
+            return false
+          }
+          return true
+        })
+        dispatch({
+          type: GET_ALL_PROJECT,
+          payload: {
+            projects: newProjects
+          }
+        })
+        resolve(newProjects)
+      }).catch((e) => {
+        console.log(e)
+        reject(e)
+      })
+    })
+  }
+}
 // ------------------------------------
 // Action Handlers
 // ------------------------------------

@@ -10,7 +10,7 @@ const projectSchema = new mongoose.Schema({
   'desc': String,
   'foundTime': Date,
   'members': [{
-    'memebrName': String,
+    'memberName': String,
     'memberId': String,
     'status': String
   }]
