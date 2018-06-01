@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import Moment from 'react-moment'
 import 'moment/locale/zh-cn'
 import moment from 'moment'
+import axios from 'axios'
 import config from '../../config/config'
 const TabPane = Tabs.TabPane
 const { TextArea } = Input
@@ -116,7 +117,7 @@ export default class Approval extends Component {
       return {
         uid: index,
         name: file,
-        url: `http://${config.ums_web.host}:${config.ums_web.port}/download?type=submit&approvalId=${approvalId}&stepIndex=${currentStepIndex}&fileName=${file}`
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/files?type=submit&approvalId=${approvalId}&stepIndex=${currentStepIndex}&fileName=${file}`
       }
     })
     let props = {
@@ -135,7 +136,7 @@ export default class Approval extends Component {
             message.error('请勿上传同名文件')
             return reject(file)
           }
-          file.url = `http://${config.ums_web.host}:${config.ums_web.port}/download?type=submit&approvalId=${approvalId}&stepIndex=${currentStepIndex}&fileName=${file.name}`
+          file.url = `http://${config.ums_web.host}:${config.ums_web.port}/files?type=submit&approvalId=${approvalId}&stepIndex=${currentStepIndex}&fileName=${file.name}`
           return resolve(file)
         })
       },
@@ -143,15 +144,29 @@ export default class Approval extends Component {
         if (info.file.status === 'done') {
           console.log(info)
           currentStep.uploadedFile.push(info.file.name)
-          message.success(`${info.file.name} file uploaded successfully`)
+          message.success(`${info.file.name} 上传成功`)
         } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`)
+          message.error(`${info.file.name} 上传失败`)
         }
       },
       onRemove (file) {
         return new Promise((resolve, reject) => {
-
-          return reject(file)
+          axios({
+            method: 'delete',
+            url: file.url
+          }).then((res) => {
+            currentStep.uploadedFile = _.filter(currentStep.uploadFile, (uFile) => {
+              if (uFile === file.name) {
+                return false
+              }
+              return true
+            })
+            message.success('删除成功')
+            resolve(true)
+          }).catch((e) => {
+            message.error('删除失败')
+            reject(file)
+          })
         })
       }
     }

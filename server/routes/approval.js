@@ -7,5 +7,6 @@ module.exports = (app) => {
   app.get('/approval/all', approvalController.getAllApproval)
   app.post('/approval/update', userController.loginCheck, approvalController.updateApproval)
   app.use('/upload', userController.loginCheck, uploadController.handleUpload)
-  app.get('/download', uploadController.handleDownload)
+  app.get('/files', uploadController.handleDownload)
+  app.delete('/files', uploadController.handleDelete)
 }

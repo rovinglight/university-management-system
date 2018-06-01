@@ -2,6 +2,7 @@ const _ = require('lodash')
 const upload = require('jquery-file-upload-middleware')
 const approvalModel = require('../model/approvalModel')
 const approvalSchemaModel = require('../model/approvalSchemaModel')
+const fs = require('fs')
 
 const uploadController = {
   handleUpload: (req, res, next) => {
@@ -62,6 +63,39 @@ const uploadController = {
       let stepIndex = req.query.stepIndex
       let fileName = req.query.fileName
       res.download(`./uploads/approval/${approvalId}/${stepIndex}/${fileName}`)
+    }
+  },
+  handleDelete (req, res) {
+    let type = req.query.type
+    if (type === 'required') {
+      let schemaId = req.query.schemaId
+      let stepIndex = req.query.stepIndex
+      let fileName = req.query.fileName
+
+    }
+    if (type === 'submit') {
+      let approvalId = req.query.approvalId
+      let stepIndex = req.query.stepIndex
+      let fileName = req.query.fileName
+      approvalModel.findById(approvalId).then((approval) => {
+        let uploadFile = approval.approvalProcess[stepIndex].uploadedFile
+        approval.approvalProcess[stepIndex].uploadedFile = _.filter(uploadFile, (file) => {
+          if (file === fileName) {
+            console.log('cut')
+            return false
+          }
+          return true
+        })
+        approval.save().then((result) => {
+          res.status(200).send(result)
+        }).catch((e) => {
+          console.log(e)
+          res.status(400).send(e)
+        })
+        fs.unlinkSync(`./uploads/approval/${approvalId}/${stepIndex}/${fileName}`)
+      }).catch((e) => {
+        console.log(e)
+      })
     }
   }
 }
