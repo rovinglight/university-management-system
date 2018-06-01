@@ -198,7 +198,13 @@ export default class SgroupApproval extends Component {
               </h2>
               <Row className='margin-bottom-10'>
                 <Button className='icon-gap'>刷新</Button>
-                <Button className='icon-gap' onClick={this.deleteApproval.bind(this)}>删除</Button>
+                <Button
+                  className={classnames('icon-gap', {
+                    hide: !isAuthorized([])
+                  })}
+                  onClick={this.deleteApproval.bind(this)}>
+                  删除
+                </Button>
               </Row>
               <Table
                 rowSelection={rowSelection}

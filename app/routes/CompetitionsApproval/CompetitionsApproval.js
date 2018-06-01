@@ -79,6 +79,14 @@ export default class CompetitionsApproval extends Component {
       }
     })
   }
+  deleteApproval () {
+    let approvalIdList = this.state.selectedRowKeys
+    this.props.deleteApproval(approvalIdList).then((res) => {
+      message.success('删除成功')
+    }).catch((e) => {
+      message.error('删除失败')
+    })
+  }
   render () {
     let isAuthorized = _.get(this.props, 'userInfo.isAuthorized') || (() => true)
     let user = this.props.userInfo
@@ -168,7 +176,13 @@ export default class CompetitionsApproval extends Component {
               </h2>
               <Row className='margin-bottom-10'>
                 <Button className='icon-gap'>刷新</Button>
-                <Button className='icon-gap'>删除</Button>
+                <Button
+                  className={classnames('icon-gap', {
+                    hide: !isAuthorized([])
+                  })}
+                  onClick={this.deleteApproval.bind(this)}>
+                  删除
+                </Button>
               </Row>
               <Table
                 rowSelection={rowSelection}
