@@ -86,7 +86,11 @@ export default class Questions extends Component {
                 全部问题
                 <Button
                   onClick={this.toggleModal.bind(this)}
-                  className={classnames('float-right vertical-middle')}
+                  className={classnames('float-right vertical-middle', {
+                    hide: !isAuthorized([
+                      {role: "student"}
+                    ])
+                  })}
                   shape="circle"
                   icon='plus'
                   size='large' />
