@@ -62,14 +62,17 @@ export default class ToDo extends Component {
     let isAuthorized = this.props.userInfo.isAuthorized
     let questions = this.props.question.questions
     let count = 0
-    if (isAuthorized && isAuthorized([{role: 'student'}], false)) {
-      return 0
+    if (isAuthorized([
+      {"role": "SecretaryOfYouthLeaguecommittee"},
+      {"role": "DeputySecretaryOfYouthLeaguecommittee"},
+      {"role": "competitionCommittee"}
+    ])) {
+      questions.forEach((question, index) => {
+        if (question.reply.length === 0) {
+          count ++
+        }
+      })
     }
-    questions.forEach((question, index) => {
-      if (question.reply.length === 0) {
-        count ++
-      }
-    })
     return count
   }
   render () {
