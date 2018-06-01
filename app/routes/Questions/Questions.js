@@ -34,7 +34,7 @@ export default class Questions extends Component {
     _.set(newState, path, result)
     this.setState(newState)
   }
-  toggleModal () {
+  toggleModal () {  //可视切换状态
     this.setState({
       newModal: {
         ...this.state.newModal,
@@ -60,7 +60,7 @@ export default class Questions extends Component {
     })
   }
   deleteQuestion (questionId, e) {
-    e.stopPropagation()
+    e.stopPropagation() //停止事件传播
     this.props.deleteQuestion(questionId).then((res) => {
       message.success('删除成功')
     }).catch((e) => {
