@@ -24,7 +24,7 @@ export default class Login extends Component {
     }
   }
   componentDidUpdate () { 
-    //componentDidUpdate在组件完成更新后立即调用。在初始化时不会被调用。
+    //componentDidUpdate在组件完成更新后立即调用。
     if (this.props.userInfo.sessionKey) {
         this.props.history.push('/')
     }

@@ -63,15 +63,6 @@ export const deleteProject = (projectId) => {
           projectId: projectId
         }
       }).then((res) => {
-<<<<<<< HEAD
-        dispatch({
-          type: GET_ALL_PROJECT,
-          payload: {
-            projects: res.data
-          }
-        })
-        resolve(res.data)
-=======
         let newProjects = _.cloneDeep(getState().project.projects)
         newProjects = _.filter(newProjects, (project) => {
           if (project._id === projectId) {
@@ -86,7 +77,6 @@ export const deleteProject = (projectId) => {
           }
         })
         resolve(newProjects)
->>>>>>> master
       }).catch((e) => {
         console.log(e)
         reject(e)
