@@ -99,7 +99,7 @@ export default class Approval extends Component {
   render () {
     let user = this.props.userInfo
     let approvalId = this.props.match.params.approvalId
-    let approval = _.find(this.props.approval.approvals, {_id: approvalId})
+    let approval = _.find(this.props.approval.approvals, {_id: approvalId}) || {}
     _.unset(approval, '__v')
     let approvalProcess = _.get(approval, 'approvalProcess')
     let staticSchema = this.props.static
