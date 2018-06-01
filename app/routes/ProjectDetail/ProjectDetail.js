@@ -27,11 +27,29 @@ export default class ProjectDetail extends Component {
     _.set(newState, path, result)
     this.setState(newState)
   }
-  acceptNewMember () {
-
+  acceptNewMember (memberId, project) {
+    let member = _.find(project.members, {memberId: memberId})
+    member.status = 'active'
+    _.unset(project, '__v')
+    this.props.upsertProject(project).then((res) => {
+      message.success('更新成功')
+    }).catch((e) => {
+      message.error('更新失败')
+    })
   }
-  deleteMember () {
-
+  deleteMember (memberId, project) {
+    project.members = _.filter(project.members, (member) => {
+      if (member.memberId === memberId) {
+        return false
+      }
+      return true
+    })
+    _.unset(project, '__v')
+    this.props.upsertProject(project).then((res) => {
+      message.success('删除成功')
+    }).catch((e) => {
+      message.error('删除失败')
+    })
   }
   dataGenerator (members) {
     const statusConverter = [
@@ -45,6 +63,7 @@ export default class ProjectDetail extends Component {
     ]
     return members.map((member, index) => {
       return {
+        memberId: member.memberId,
         name: member.memberName,
         key: index,
         status: member.status,
@@ -73,16 +92,16 @@ export default class ProjectDetail extends Component {
         <span>
           <a
             className={classnames({
-              hide: false
+              hide: record.status !== 'waitForPermission'
             })}
-            onClick={this.acceptNewMember.bind(this)}>
+            onClick={this.acceptNewMember.bind(this, record.memberId, project)}>
             接受成员
             <Divider type="vertical" />
           </a>
           <a
-            onClick={this.deleteMember.bind(this)}
+            onClick={this.deleteMember.bind(this, record.memberId, project)}
             className={classnames({
-              hide: false
+              hide: project.sponsorId === user._id
             })}>
             删除成员
           </a>
@@ -97,6 +116,18 @@ export default class ProjectDetail extends Component {
           </Col>
         </Row>
         <Row>
+          <Col>
+            <div className="shadow-box bg-white padding-20 margin-bottom-25">
+              <h2>
+                {project.name}
+              </h2>
+              <Row>
+                <Col>
+                  {project.desc}
+                </Col>
+              </Row>
+            </div>
+          </Col>
           <Col>
             <div className="shadow-box bg-white padding-20 margin-bottom-25">
               <h2>
