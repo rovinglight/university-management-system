@@ -171,7 +171,7 @@ export default class SiderMenu extends Component {
                 <Link to='/login'>
                   <span className={classnames('font-14 header-item', {hide: loggedIn})}>
                     <Icon className="icon-gap" type="login" />
-                    登录/注册
+                    登录
                   </span>
                 </Link>
                 <Dropdown overlay={menu}>
