@@ -58,7 +58,7 @@ const UserService = {
   refreshSessionKey : (user) => {
     return new Promise((resolve, reject) => {
       user.lastLogin = new Date()
-      user.sessionKey = new mongoose.Types.ObjectId
+      user.sessionKey = new mongoose.Types.ObjectId //自动生成唯一字符串
       user.save().then((updated) => {
         resolve(updated)
       })

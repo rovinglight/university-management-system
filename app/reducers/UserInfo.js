@@ -8,7 +8,7 @@ const USER_LOGIN = 'USER_LOGIN'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const login = (user, pwd) => {
+export const login = (user, pwd) => {   
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios({ //发起一个post请求
@@ -20,7 +20,7 @@ export const login = (user, pwd) => {
         }
       }).then((res) => {
         localStorage.setItem('sessionKey', res.data.sessionKey) 
-        dispatch({    //dispatch这个地方的过程还不是很清楚
+        dispatch({    
           type: USER_LOGIN,
           payload: {
             ...res.data
@@ -33,7 +33,7 @@ export const login = (user, pwd) => {
     })
   }
 }
-export const loginWithSessionKey = (sessionKey) => {
+export const loginWithSessionKey = (sessionKey) => {  
   return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
       axios({
@@ -43,7 +43,7 @@ export const loginWithSessionKey = (sessionKey) => {
           sessionKey: sessionKey
         }
       }).then((res) => {
-        dispatch({
+        dispatch({ //广播了一个action
           type: USER_LOGIN,
           payload: {
             ...res.data

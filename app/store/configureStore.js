@@ -14,7 +14,7 @@ export const history = createHistory()
 const middleware = routerMiddleware(history)
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-const rootReducer = combineReducers({
+const rootReducer = combineReducers({  //使用reducer来生成store
   userInfo : userInfoReducer,
   sgroups : sgroupsReducer,
   competitions: competitionsReducer,

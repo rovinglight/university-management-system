@@ -48,8 +48,8 @@ export default class App extends Component {
     }
   }
   jumpTo (path) {
-    this.props.history.push(path) //往历史堆栈信息里面加入一个新的条目 意义？
-  }
+    this.props.history.push(path) //跳转
+  } 
   VerifyAuth () {   //权限判定
     let user = this.props.userInfo
     let sessionKey = localStorage.getItem('sessionKey')
@@ -77,8 +77,8 @@ export default class App extends Component {
       <div className='app'>
         <SiderMenu getSideStatus={this.getSideStatus.bind(this)} /> 
         <div className={classnames("main-container", {side: this.state.sideShow})}>
-        {/*状态的传递和改变不懂，classnames也没有查到资料*/}
           <Route path='/login' component={Login}/>
+          {/* <Login /> */}
           <Route exact path='/studentgroups' component={StudentGroups}/>
           <Route exact path={`/studentgroups/admin`} component={SgroupAdmin} />
           <Route exact path={`/studentgroups/manage/:groupId`} component={SgroupManage} />
@@ -95,8 +95,6 @@ export default class App extends Component {
           <Route exact path={`/questions/detail/:questionId`} component={QuestionDetail} />
           <Route exact path={`/statistics`} component={Statistics} />
           <Route exact path={`/`} component={ToDo} />
-          {/* component ：一个React组件。当带有component参数的route匹配成功后，route会返回一个新的元素，
-          其为component参数所对应的React组件。 这个地方应该怎么理解？*/}
         </div>
       </div>
     )

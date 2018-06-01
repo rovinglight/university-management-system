@@ -23,18 +23,18 @@ export default class Login extends Component {
       loginBtnLoading: false
     }
   }
-  componentDidUpdate () { //？
+  componentDidUpdate () { 
     //componentDidUpdate在组件完成更新后立即调用。在初始化时不会被调用。
     if (this.props.userInfo.sessionKey) {
         this.props.history.push('/')
         //在历史堆栈信息里加入一个新条目。
     }
   }
-  handleChange (path, e) { //？
+  handleChange (path, e) { //键盘输入
     _.set(this.state, path, e.target.value)
     this.setState(this.state)
   }
-  validation () {
+  validation () {  //校验
     let flag = true
     let validation = {}
     let form = this.state.form
@@ -49,7 +49,7 @@ export default class Login extends Component {
     this.setState({validation: validation})
     return flag
   }
-  login () {
+  login () { //登录
     let form = this.state.form
     if (!this.validation()) {
       return
@@ -88,7 +88,7 @@ export default class Login extends Component {
                             <Input
                               autoFocus
                               value={this.state.form.user}
-                              onChange={this.handleChange.bind(this, 'form.user')} //？
+                              onChange={this.handleChange.bind(this, 'form.user')} //绑定函数上下文
                               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                               size="large"
                               placeholder="学号" />
@@ -98,8 +98,8 @@ export default class Login extends Component {
                             validateStatus={validation.pwd ? "error" : ""}>
                             <Input
                               value={this.state.form.pwd}
-                              onChange={this.handleChange.bind(this, 'form.pwd')}  //？
-                              onPressEnter={this.login.bind(this)}    //？
+                              onChange={this.handleChange.bind(this, 'form.pwd')}
+                              onPressEnter={this.login.bind(this)}    //回车
                               prefix={<Icon type="lock"
                               style={{ color: 'rgba(0,0,0,.25)' }} />}
                               size="large"
