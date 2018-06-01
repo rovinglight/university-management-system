@@ -372,7 +372,7 @@ export default class SgroupManage extends Component {
           <Divider orientation="left">成立时间</Divider>
           <DatePicker allowClear={false} value={moment(this.state.infoModal.fields.foundTime)} placeholder="选择日期" onChange={this.infoDateChange.bind(this)} />
           <Divider orientation="left">社团简介</Divider>
-          <TextArea autosize={{ minRows: 2, maxRows: 6 }} maxLength='200' onChange={this.infoDescChange.bind(this)} value={this.state.infoModal.fields.desc} />
+          <TextArea autosize={{ minRows: 2, maxRows: 6 }} maxLength='200' onChange={this.handleChange.bind(this, 'infoModal.fields.desc')} value={this.state.infoModal.fields.desc} />
         </Modal>
         <Modal
           visible={this.state.auditModal.show}
