@@ -96,11 +96,25 @@ export default class Approval extends Component {
       showStepHistory: !this.state.showStepHistory
     })
   }
+  requiredFileGenerator (requiredFiles = [], currentStepIndex, schemaId) {
+    let requiredFilesList =  requiredFiles.map((file, index) => {
+      return {
+        name: file,
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/files?type=required&schemaId=${schemaId}&stepIndex=${currentStepIndex}&fileName=${file}`
+      }
+    })
+    return requiredFilesList.map((file, index) => {
+      return (
+        <a key={index} href={file.url}>{file.name}<Divider type="vertical" /></a>
+      )
+    })
+  }
   render () {
     let user = this.props.userInfo
     let approvalId = this.props.match.params.approvalId
     let approval = _.find(this.props.approval.approvals, {_id: approvalId}) || {}
     _.unset(approval, '__v')
+    let schemaId = _.get(approval, 'schemaId')
     let approvalProcess = _.get(approval, 'approvalProcess')
     let staticSchema = this.props.static
     let previousStep, allroles = staticSchema.allroles
@@ -110,6 +124,7 @@ export default class Approval extends Component {
     let stepHistory = this.state.stepHistory
     let isAuthorized = _.get(this.props, 'userInfo.isAuthorized') || (() => true)
     let sessionKey = localStorage.getItem('sessionKey')
+    let requiredFilesList = this.requiredFileGenerator(currentStep.requiredFiles, currentStepIndex, schemaId)
     let uploadedFile = currentStep.uploadedFile
     let defaultUploadedFile = _.cloneDeep(currentStep.uploadedFile)
     if (currentStep && currentStep.stepType !== 'submit' && currentStepIndex !== 0) {
@@ -209,8 +224,8 @@ export default class Approval extends Component {
                 <TabPane tab="信息提交" key="1">
                   <Row className='margin-bottom-10'>
                     <Col>
-                      要求文档:
-                      <a>申请表</a>
+                      要求文档：
+                      {requiredFilesList}
                     </Col>
                   </Row>
                   <Row>

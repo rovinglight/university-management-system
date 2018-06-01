@@ -58,6 +58,15 @@ const ApprovalService = {
         })
       })
     })
+  },
+  delete: (approvalIdList) => {
+    return new Promise((resolve, reject) => {
+      approvalModel.deleteMany({_id: {$in: approvalIdList}}).then((res) => {
+        resolve(res)
+      }).catch((e) => {
+        reject(e)
+      })
+    })
   }
 }
 

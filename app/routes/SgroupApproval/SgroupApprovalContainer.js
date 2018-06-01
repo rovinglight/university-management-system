@@ -2,13 +2,14 @@ import { connect } from 'react-redux'
 import SgroupApproval from './SgroupApproval'
 import { getAllGroups, applyForSgroup } from '../../reducers/Sgroups'
 import { upsertCompetition, removeCompetition } from '../../reducers/Competitions'
-import { createApproval } from '../../reducers/Approval'
+import { createApproval, deleteApproval } from '../../reducers/Approval'
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getAllGroups: () => dispatch(getAllGroups()),
     applyForSgroup: (userId, groupId) => dispatch(applyForSgroup(userId, groupId)),
-    createApproval: (schema, name) => dispatch(createApproval(schema, name))
+    createApproval: (schema, name) => dispatch(createApproval(schema, name)),
+    deleteApproval: (approvalIdList) => dispatch(deleteApproval(approvalIdList))
   }
 }
 

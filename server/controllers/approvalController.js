@@ -31,5 +31,13 @@ module.exports = {
       console.log(e)
       res.status(400).send(e)
     })
+  },
+  deleteApproval: (req, res) => {
+    let approvalIdList = req.body.approvalIdList
+    approvalService.delete(approvalIdList).then((result) => {
+      res.status(200).send(result)
+    }).catch((e) => {
+      res.status(400).send(e)
+    })
   }
 }
