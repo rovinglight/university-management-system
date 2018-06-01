@@ -69,6 +69,29 @@ export const logOut = () => {
     })
   }
 }
+export const updateUserInfo = (user) => {
+  return (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://${config.ums_web.host}:${config.ums_web.port}/user/update`,
+        data: {
+          user: user
+        }
+      }).then((res) => {
+        dispatch({
+          type: USER_LOGIN,
+          payload: {
+            ...res.data
+          }
+        })
+        resolve(res)
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+  }
+}
 // ------------------------------------
 // Action Handlers
 // ------------------------------------

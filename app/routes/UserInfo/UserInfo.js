@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Row, Col, Button, List, Avatar, Modal, Divider, Input, message, Select, Popconfirm, Card } from 'antd'
+import { Row, Col, Button, List, Avatar, Modal, Divider, DatePicker, Input, message, Select, Popconfirm, Card, Form } from 'antd'
 import classnames from 'classnames'
 import authService from '../../service/authService'
+import Moment from 'react-moment'
+import 'moment/locale/zh-cn'
+import moment from 'moment'
+const FormItem = Form.Item
 
 import './UserInfo.scss'
 
@@ -13,9 +17,23 @@ export default class UserInfo extends Component {
       editModal: {
         visible: false,
         fields: {
-
+          _id: '',
+          birthDate: '',
+          phoneNumber: ''
         }
       }
+    }
+  }
+  componentDidUpdate () {
+    let userInfo = this.props.userInfo
+    if (this.state.editModal.fields._id !== userInfo._id) {
+      let newState = _.cloneDeep(this.state)
+      newState.editModal.fields = {
+        _id: userInfo._id,
+        birthDate: userInfo.birthDate,
+        phoneNumber: userInfo.phoneNumber
+      }
+      this.setState(newState)
     }
   }
   handleChange (path, result) {
@@ -34,6 +52,13 @@ export default class UserInfo extends Component {
       }
     })
   }
+  submitUpdate () {
+    this.props.updateUserInfo(this.state.editModal.fields).then((res) => {
+      message.success('更新成功')
+    }).catch((e) => {
+      message.error('更新失败')
+    })
+  }
   render () {
     let user = this.props.userInfo
     let data = [{
@@ -44,7 +69,7 @@ export default class UserInfo extends Component {
       value: user.gender
     }, {
       title: '出生日期',
-      value: user.birthDate
+      value: <Moment locale="zh-cn" format="YYYY年MMMDo">{user.birthDate}</Moment>
     }, {
       title: '身份证号',
       value: user.CIdNumber
@@ -81,15 +106,20 @@ export default class UserInfo extends Component {
               </h2>
               <Row>
                 <Col className='padding-20'>
-                  <List
-                    grid={{ gutter: 16, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 3 }}
-                    dataSource={data}
-                    renderItem={item => (
-                      <List.Item>
-                        <Card style={{textAlign:'center'}} type='inner' hoverable title={item.title}>{item.value}</Card>
-                      </List.Item>
-                    )}
-                  />
+                  <Row gutter={0}>
+                    {
+                      data.map((item, index) => {
+                        return(
+                          <Col span={24} lg={8} key={index}>
+                            <Card.Grid style={{width:'100%', textAlign: 'center'}}>
+                              <Divider>{item.title}</Divider>
+                              {item.value}
+                            </Card.Grid>
+                          </Col>
+                        )
+                      })
+                    }
+                  </Row>
                 </Col>
               </Row>
             </div>
@@ -98,10 +128,15 @@ export default class UserInfo extends Component {
         <Modal
           title="编辑用户信息"
           visible={this.state.editModal.visible}
-          onOk={this.submitEdit}
+          onOk={this.submitUpdate.bind(this)}
           onCancel={this.toggleModal.bind(this, 'editModal')}
         >
-
+          <FormItem label='出生日期'>
+            <DatePicker onChange={this.handleChange.bind(this, 'editModal.fields.birthDate')} defaultValue={moment(this.state.editModal.fields.birthDate)} />
+          </FormItem>
+          <FormItem label='手机号码'>
+            <Input value={this.state.editModal.fields.phoneNumber} onChange={this.handleChange.bind(this, 'editModal.fields.phoneNumber')} />
+          </FormItem>
         </Modal>
       </div>
     )

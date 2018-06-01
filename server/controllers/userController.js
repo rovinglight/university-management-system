@@ -50,5 +50,15 @@ module.exports = {
       console.log(err)
       res.status(401).send('Login fail')
     })
+  },
+  update: (req, res) => {
+    let user = req.body.user
+    userService.update(user).then((user) => {
+      user = user.toObject()
+      return res.status(200).send(_.omit(user, ['pwd']))
+    }).catch((e) => {
+      console.log(e)
+      return res.status(400).send()
+    })
   }
 }

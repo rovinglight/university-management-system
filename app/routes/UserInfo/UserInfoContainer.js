@@ -1,10 +1,12 @@
 import { connect } from 'react-redux'
 import UserInfo from './UserInfo'
 import { getAllGroups } from '../../reducers/Sgroups'
+import { updateUserInfo } from '../../reducers/UserInfo'
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAllGroups: () => dispatch(getAllGroups())
+    getAllGroups: () => dispatch(getAllGroups()),
+    updateUserInfo: (user) => dispatch(updateUserInfo(user))
   }
 }
 

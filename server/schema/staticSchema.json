@@ -106,6 +106,36 @@
           "role": "administrator"
         }
       ]
+    }, {
+      "path": "/approval/detail",
+      "allowed": [
+        {
+          "role": "SecretaryOfYouthLeaguecommittee"
+        }, {
+          "role": "DeputySecretaryOfYouthLeaguecommittee"
+        }, {
+          "role": "teacher"
+        }, {
+          "role": "student"
+        }, {
+          "role": "competitionCommittee"
+        }
+      ]
+    }, {
+      "path": "/user",
+      "allowed": [
+        {
+          "role": "SecretaryOfYouthLeaguecommittee"
+        }, {
+          "role": "DeputySecretaryOfYouthLeaguecommittee"
+        }, {
+          "role": "teacher"
+        }, {
+          "role": "student"
+        }, {
+          "role": "competitionCommittee"
+        }
+      ]
     }
   ]
 }

@@ -63,6 +63,19 @@ const UserService = {
         resolve(updated)
       })
     })
+  },
+  update : (user) => {
+    return new Promise((resolve, reject) => {
+      UserModel.findById(user._id).then((result) => {
+        result.birthDate = user.birthDate
+        result.phoneNumber = user.phoneNumber
+        result.save().then((newUser) => {
+          resolve(newUser)
+        })
+      }).catch((e) => {
+        reject(e)
+      })
+    })
   }
 }
 
