@@ -74,6 +74,7 @@ export default class CompetitionsApproval extends Component {
         name: approval.name,
         status: status,
         sponsor: approval.sponsorName,
+        sponsorId: approval.sponsorId,
         time: approval.startDate,
         todo: todoCount
       }
@@ -81,6 +82,14 @@ export default class CompetitionsApproval extends Component {
   }
   deleteApproval () {
     let approvalIdList = this.state.selectedRowKeys
+    this.props.deleteApproval(approvalIdList).then((res) => {
+      message.success('删除成功')
+    }).catch((e) => {
+      message.error('删除失败')
+    })
+  }
+  deleteOneApproval (approvalId) {
+    let approvalIdList = [approvalId]
     this.props.deleteApproval(approvalIdList).then((res) => {
       message.success('删除成功')
     }).catch((e) => {
@@ -133,8 +142,9 @@ export default class CompetitionsApproval extends Component {
     }, {
       title: '操作',
       render: (text, record) => {
-        return(
+        let actions = [
           <Link
+            key='link'
             className={classnames({
               hide: !isAuthorized([
                 {"role": "SecretaryOfYouthLeaguecommittee"},
@@ -146,7 +156,11 @@ export default class CompetitionsApproval extends Component {
             to={`/approval/detail/${record.key}`}>
             管理
           </Link>
-        )
+        ]
+        if (record.sponsorId === user._id) {
+          actions.push(<a key='a' onClick={this.deleteOneApproval.bind(this, record.key)}><Divider type="vertical" />删除</a>)
+        }
+        return(actions)
       }
     }]
     let tableData = this.tableDateGenerator('5af450afe72327010df04c80')
