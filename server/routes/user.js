@@ -6,4 +6,5 @@ module.exports = (app) => {
   app.post('/loginSession', userController.loginWithSessionKey)
   app.post('/search', userController.loginCheck, authController.searchUser)
   app.post('/auth/update', userController.loginCheck, authController.updateAuth)
+  app.post('/user/update', userController.loginCheck, userController.update)
 }

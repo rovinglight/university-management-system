@@ -61,7 +61,7 @@ export default class App extends Component {
     pageDisplay && pageDisplay.forEach((page, index) => {
       if (_.includes(this.props.routing.location.pathname, page.path)) {
         if (!isAuthorized(page.allowed)) {
-          this.jumpTo('/')
+          this.jumpTo('/login')
         }
       }
     })
