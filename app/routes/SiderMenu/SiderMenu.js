@@ -107,16 +107,35 @@ export default class SiderMenu extends Component {
                       {"role": "DeputySecretaryOfYouthLeaguecommittee"},
                       {"role": "teacher"},
                       {"role": "competitionCommittee"}])
-                    })} 
+                    })}
                     key="approvalCompetition">
                     <Link to='/competitions/approval'>竞赛申办</Link>
                   </Menu.Item>
-                  <Menu.Item key="applyForCompetition">申请参赛</Menu.Item>
+                  <Menu.Item
+                    className={classnames({
+                      hide: !isAuthorized([
+                        {"role": "student"}
+                      ])
+                    })}
+                    key="applyForCompetition">
+                     申请参赛
+                   </Menu.Item>
                   <Menu.Item key="projects"><Link to='/projects'>项目库</Link></Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" title={<span><Icon type="solution" />学生组织</span>}>
                   <Menu.Item key="allGroup"><Link to='/studentgroups'>全部社团</Link></Menu.Item>
-                  <Menu.Item key="applyForSgroup"><Link to='/studentgroups/new/approval'>新社团申请</Link></Menu.Item>
+                  <Menu.Item
+                    className={classnames({
+                      hide: !isAuthorized([
+                      {"role": "SecretaryOfYouthLeaguecommittee"},
+                      {"role": "DeputySecretaryOfYouthLeaguecommittee"},
+                      {"role": "teacher"},
+                      {"role": "student"},
+                      {"role": "competitionCommittee"}])
+                    })}
+                    key="applyForSgroup">
+                    <Link to='/studentgroups/new/approval'>新社团申请</Link>
+                  </Menu.Item>
                   <Menu.Item
                     className={classnames({
                       hide: !isAuthorized()
