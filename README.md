@@ -1,7 +1,7 @@
 # 项目配置
 ## 运行步骤
 首次运行时需按步骤执行，而之后需要重启服务时只需执行第4步即可
--  在运行之前先要安装好docker，具体如何安装可见如下链接：
+1. 在运行之前先要安装好docker，具体如何安装可见如下链接：
 [Docker安装](https://store.docker.com/search?type=edition&offering=community)
 
 2. 在docker客户端中配置文件共享  
@@ -30,7 +30,7 @@ npm i
 npm run dev
 ```
 
-- 首次运行时导入数据库
+5. 首次运行时导入数据库
 
 ```
 docker exec -it ums_db_container /bin/bash
