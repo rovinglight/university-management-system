@@ -44,6 +44,6 @@ mongorestore -d ums ./export/ums
 2. 后端容器（ums_web_container）
 由于本项目采取前后端分离的架构，所以前端的数据以及进行的操作是在后期通过向后端进程发送Ajax请求来进行的。后端进程则提供RESTful API来供前端应用调用。后端进程总共分为三层，路由（route）、控制器（controller）和服务（service），路由位于```/server/routes```，控制器位于```/server/controllers```，服务位于```/server/services```。后端进程接收到一个请求后先由路由进行判断，并将请求交由对应控制器来进行处理，控制器则使用对应服务来对数据库进行存取并返回HTTP请求。这边需要注意的是控制器只与请求有关，不涉及数据库代码；服务则只与数据库有关，不涉及请求相关代码，这样可以使得任意一部分有变化时不会影响到全部后端代码。
 3. 数据库容器（ums_db_container）  
-数据库容器直接由官方mongodb镜像生成，数据以数据卷的形式挂载至数据库容器中的```/data/db```下，由此可以将数据同步至本机文件系统中。首次使用时需要将```/data/export```中的数据还原至数据库中。每次数据库有变化时使用命令```mongodump -d ums -o export```来将数据库导出至```/data/export```中一并同步至git仓库中，数据库数据导入如上第五步。
+数据库容器直接由官方mongodb镜像生成，考虑到Docker for Windows数据卷与mongodb镜象不兼容，数据并没有以数据卷的形式存储至本机。首次使用时需要将```/data/export```中的数据还原至数据库中。每次数据库有变化时使用命令```mongodump -d ums -o ./export```来将数据库导出至```/data/export```中一并同步至git仓库中，数据库数据导入如上第五步。数据库可使用[Robo 3T](https://robomongo.org/download)来进行调试。
 
 ![constructor](./doc/shot_1.png)
