@@ -2,7 +2,7 @@
 首次运行时需按步骤执行，而之后需要重启服务时只需执行第4步即可
 1. 在运行之前先要安装好docker，具体如何安装可见如下链接：
 [Docker安装](https://store.docker.com/search?type=edition&offering=community)
-2. 在docker客户端中配置文件共享  
+2. 在docker客户端中配置文件共享(Setting/Preferences -> fileSharing)  
 3. 配置dockerStore的国内镜像（可以先跳过这一步，如果镜像下载太慢再回头做也可）
 4. 运行docker容器（在第一次配置完成后运行以下代码即可重新启动容器）  
 
@@ -12,7 +12,7 @@
 docker-compose up
 
 # 运行后端
-# 打开一个新的terminal
+# 打开一个新的terminal/powerShell
 docker exec -it ums_web_container /bin/bash
 cd /usr/src/app
 npm cache clean --force
@@ -20,7 +20,7 @@ npm i
 npm start
 
 # 运行前端
-# 打开一个新的terminal
+# 打开一个新的terminal/powerShell
 docker exec -it ums_app_container /bin/bash
 cd /usr/src/app
 npm cache clean --force
@@ -31,9 +31,15 @@ npm run dev
 5. 导入数据库数据
 
 ```
+# 打开一个新的terminal/powerShell
 docker exec -it ums_db_container /bin/bash
 cd /data
 mongorestore -d ums ./export/ums
+```  
+
+6. 访问  
+```
+http://localhost:8080
 ```
 ## 程序结构
 项目分为三个部分，由前端容器（ums_app_container）、后端容器（ums_web_container）和数据库容器（ums_db_container）组成。
