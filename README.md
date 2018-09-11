@@ -1,5 +1,9 @@
+## 运行效果
+管理系统DEMO：[点我查看效果](http://rovinglight.com:8081/)  
+账号：123  
+密码：123
 ## 运行步骤
-本项目有两种运行方式：直接在Windows环境中运行或者使用Docker来运行。如本机系统为Windows推荐第一种方式，若使用Docker来运行可能会有一些意料之外的BUG。
+本项目有两种运行方式：直接在Windows环境中运行或者使用Docker来运行。如本机系统为Windows推荐第一种方式，若使用Docker来运行可能会有一些意料之外的BUG。 
 ### 直接在Windows环境中运行
 1. 安装[Nodejs](https://nodejs.org/en/)(版本建议8.11)
 2. 安装[MongoDB](http://www.runoob.com/mongodb/mongodb-window-install.html)
